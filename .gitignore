@@ -1,0 +1,13 @@
+CVS
+lib
+tmp
+data
+*.exe
+*.ilk
+*.pdb
+*.suo
+*.sdf
+.cvsignore
+*.ipch
+doc/html/*
+*.opensdf

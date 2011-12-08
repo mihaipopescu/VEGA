@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="vega">
+      <UniqueIdentifier>{492ef28f-4aa2-4e9b-8ed4-17f3f56c7b5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\MST">
+      <UniqueIdentifier>{1b8292cf-a47c-4a91-844b-8c1393166881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Math">
+      <UniqueIdentifier>{3d6d1fe1-f49a-4388-a10b-a1d93160d079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Graph">
+      <UniqueIdentifier>{3fd8e193-678b-46fc-affb-0f9e9b5c170d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Render">
+      <UniqueIdentifier>{5c399243-9326-4b10-b2a9-7f2a99599213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Common">
+      <UniqueIdentifier>{e499e172-c572-4d74-82cb-0ccad0cead15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Data">
+      <UniqueIdentifier>{398260bb-29db-4618-b12a-dc39c9f3a3c2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\vega\graph\disjoint_sets.hpp">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\graph\edge.hpp">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\graph\graph.hpp">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\mst\kruskal.hpp">
+      <Filter>vega\MST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\mst\prim.hpp">
+      <Filter>vega\MST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\mst\boruvka.hpp">
+      <Filter>vega\MST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\graph\common.hpp">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\vector3d.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\vector4d.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\matrix.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\common.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\vector2d.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\transformations.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\common\profiler.h">
+      <Filter>vega\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\common\singleton.h">
+      <Filter>vega\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\common\types.h">
+      <Filter>vega\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\render\camera.h">
+      <Filter>vega\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\render\image_view.h">
+      <Filter>vega\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\render\common.h">
+      <Filter>vega\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\plane.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\image.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\common.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\bitmap_graph.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\math\transfer_function.h">
+      <Filter>vega\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\render\volume_texture_view.h">
+      <Filter>vega\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_graph.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\graph\hexagonal_lattice.h">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\graph\hexagonal_prismatic_lattice.h">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="VisualVega.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\common\profiler.cpp">
+      <Filter>vega\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\render\camera.cpp">
+      <Filter>vega\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\render\image_view.cpp">
+      <Filter>vega\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\image.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\bitmap_graph.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\math\transfer_function.cpp">
+      <Filter>vega\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\math\transformations.cpp">
+      <Filter>vega\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\render\volume_texture_view.cpp">
+      <Filter>vega\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_graph.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\graph\hexagonal_lattice.cpp">
+      <Filter>vega\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\graph\hexagonal_prismatic_lattice.cpp">
+      <Filter>vega\Graph</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
