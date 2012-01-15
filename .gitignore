@@ -1,7 +1,6 @@
 CVS
 lib
 tmp
-data
 *.exe
 *.ilk
 *.pdb
