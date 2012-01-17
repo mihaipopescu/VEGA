@@ -136,10 +136,13 @@ vega::graph::hexagonal_lattice::~hexagonal_lattice()
 
         for(uint8 h=0; h<6; ++h)
         {
-            if( node->hex[h] && node->visited )
+            if( node->hex[h] )
             {
-                node->hex[h]->visited = false;
-                st.push(node->hex[h]);
+				if( node->hex[h]->visited )
+				{
+					st.push(node->hex[h]);
+					node->hex[h]->visited = false;
+				}
                 node->hex[h]->hex[link_center[h]] = NULL;
             }
         }
