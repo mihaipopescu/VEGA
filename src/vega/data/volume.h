@@ -26,6 +26,8 @@ namespace vega
             volume                      (uint16 Width, uint16 Height, uint16 Depth);
             virtual ~volume             ();
 
+			virtual bool create			(const volume &v) { copy_from(v); return true; }
+
             size_t get_size             () const { return myWidth * myHeight * myDepth; }
             uint16 get_width            () const { return myWidth; }
             uint16 get_height           () const { return myHeight; }

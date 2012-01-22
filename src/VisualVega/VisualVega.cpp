@@ -61,7 +61,8 @@ void displayCB(void)
 
     // render objects
     //g_img->render();
-    g_graph->render();
+    //g_graph->render();
+	g_graph3D->render();
     //g_volume->render();
 
     glutSwapBuffers();
@@ -177,13 +178,15 @@ bool init_gl_objects()
     profiler::create();
     profiler::get()->set_dump_on_end(true);
 
-    if( !g_img->create("data/image/lenna.bmp") )
-        return false;
+    //if( !g_img->create("data/image/lenna.bmp") )
+    //    return false;
 
-    g_graph->create(g_img->get_model());
+    //g_graph->create(g_img->get_model());
 
     //if( !g_volume->create("data/volume/bonsai.vega") )
-      //  return false;
+    //    return false;
+
+	g_graph3D->create("data/volume/bonsai.vega");
 
     return true;
 }

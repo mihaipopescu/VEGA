@@ -18,6 +18,7 @@ namespace vega
             volume_texture_view();
 
             bool create(const std::string& _FileName);
+			bool create(const data::volume& v);
             virtual void render() const;
 
         protected:

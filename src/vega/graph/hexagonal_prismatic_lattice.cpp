@@ -9,7 +9,10 @@ using namespace vega::math;
 
 vega::graph::hexagonal_prismatic_lattice::prismatic_hexagon_node::prismatic_hexagon_node( uint16 _x, uint16 _y, uint16 _z )
     : x(_x), y(_y), z(_z)
+	, density(-1.f)
+	, visited(false)
 {
+	memset(hex, NULL, 20*sizeof(prismatic_hexagon_node*));
 }
 
 vega::graph::hexagonal_prismatic_lattice::prismatic_hexagon_node::~prismatic_hexagon_node()
@@ -46,13 +49,13 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
         float fAvgDensity = 0.f;
 
         // compute average color
-        for(size_t h=0;h<16;++h)
+        for(size_t h=0;h<8;++h)
         {
-            fAvgDensity += v.get_voxel(node->x + hex_voxel_offset[h%8][0], node->y + hex_voxel_offset[h%8][1], node->z + h/8);
+            fAvgDensity += v.get_voxel(node->x + hex_voxel_offset[h][0], node->y + hex_voxel_offset[h][1], node->z);
         }
 
-        // average on 16 voxels
-        fAvgDensity *= 0.0625f;
+        // average on 8 voxels
+        fAvgDensity *= 0.125f;
         node->density = fAvgDensity;
 
 		static const int hex_neighbor_offset[6+7+7][3] = 
@@ -89,36 +92,74 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
 					}
 				}
 			}
-
-			static const int link_center[6] = {3, 4, 5, 0, 1, 2};
-			static const int link_circular_fw[6] = { 2, 3, 4, 5, 0, 1 };
-			static const int link_circular_bk[6] = { 4, 5, 0, 1, 2, 3 };
-
-			// -1 = node, -2 = NULL
-			static const int link_up[20] = { 14, 15, 16, 17, 18, 19, -1, 0, 1, 2, 3, 4, 5, -2, -2, -2, -2, -2, -2, -2};
-			static const int link_down[20] = { 7, 8, 9, 10, 11, 12, -2, -2, -2, -2, -2, -2, -2, -1, 0, 1, 2, 3, 4, 5 };
-
-			// link neighbors
-			for(int h=0; h<20; ++h)
-			{
-				if( node->hex[h] == NULL )
-					continue;
-
-				// link to center
-				node->hex[h]->hex[link_center[h]] = node;
-
-				int next = h == 5 ? 0 : h+1;
-				int prev = h == 0 ? 5 : h-1;
-
-				// link circle
-				node->hex[h]->hex[link_circular_fw[h]] = node->hex[next];
-				node->hex[h]->hex[link_circular_bk[h]] = node->hex[prev];
-
-				// link up/down
-				if( link_down[h] != -2 )
-					node->hex[h]->hex[6] = link_down[h] == -1 ? node : node->hex[link_down[h]];
-			}
-
 		}
-    }
+
+		static const int neighbor_map[20][20] = 
+		{
+			{-1, -1, 1, -2, 5, -1, 7, -1, -1, 8, 6, 12, -1, 14, -1, -1, 15, 13, 19, -1},
+			{-1, -1, -1, 2, -2, 0, 8, -1, -1, -1, 9, 6, 7, 15, -1, -1, -1, 16, 13, 14},
+			{1, -1, -1, -1, 3, -2, 9, 8, -1, -1, -1, 10, 6, 16, 15, -1, -1, -1, 17, 13},
+			{-2, 2, -1, -1, -1, 4, 10, 6, 9, -1, -1, -1, 11, 17, 13, 16, -1, -1, -1, 18},
+			{5, -2, 3, -1, -1, -1, 11, 12, 6, 10, -1, -1, -1, 18, 19, 13, 17, -1, -1, -1},
+			{-1, 0, -2, 4, -1, -1, 12, -1, 7, 6, 11, -1, -1, 19, -1, 14, 13, 18, -1, -1},
+			{7, 8, 9, 10, 11, 12, -1, -1, -1, -1, -1, -1, -1, -2, 0, 1, 2, 3, 4, 5},
+			{-1, -1, 8, 6, 12, -1, -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, 1, -2, 5, -1},
+			{-1, -1, -1, 9, 6, 7, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, 2, -2, 0},
+			{8, -1, -1, -1, 10, 6, -1, -1, -1, -1, -1, -1, -1, 2, 1, -1, -1, -1, 3, -2},
+			{6, 9, -1, -1, -1, 11, -1, -1, -1, -1, -1, -1, -1, 3, -2, 2, -1, -1, -1, 4},
+			{12, 6, 10, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 4, 5, -2, 3, -1, -1, -1},
+			{-1, 7, 6, 11, -1, -1, -1, -1, -1, -1, -1, -1, -1, 5, -1, 0, -2, 4, -1, -1},
+			{14, 15, 16, 17, 18, 19, -2, 0, 1, 2, 3, 4, 5, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, 15, 13, 19, -1, 0, -1, -1, 1, -2, 5, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, -1, -1, 16, 13, 14, 1, -1, -1, -1, 2, -2, 0, -1, -1, -1, -1, -1, -1, -1},
+			{15, -1, -1, -1, 17, 13, 2, 1, -1, -1, -1, 3, -2, -1, -1, -1, -1, -1, -1, -1},
+			{13, 16, -1, -1, -1, 18, 3, -2, 2, -1, -1, -1, 4, -1, -1, -1, -1, -1, -1, -1},
+			{19, 13, 17, -1, -1, -1, 4, 5, -2, 3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
+			{-1, 14, 13, 18, -1, -1, 5, -1, 0, -2, 4, -1, -1, -1, -1, -1, -1, -1, -1, -1}
+		};
+
+		// link neighbors
+		for(int h=0; h<20; ++h)
+		{
+			if( node->hex[h] == NULL )
+				continue;
+
+			for(int i=0; i<20; ++i)
+			{
+				if( neighbor_map[h][i] != -1 )
+				{
+					node->hex[h]->hex[i] = neighbor_map[h][i] != -2 ? node->hex[neighbor_map[h][i]] : node;
+				}
+			}
+		} //end-for
+    } // end-while
+}
+
+vega::graph::hexagonal_prismatic_lattice::~hexagonal_prismatic_lattice()
+{
+	std::stack<prismatic_hexagon_node*> st;
+	st.push(myRoot);
+
+	static const int link_center[6] = {3, 4, 5, 0, 1, 2};
+
+	while( !st.empty() )
+	{
+		prismatic_hexagon_node* node = st.top();
+		st.pop();
+
+		for(uint8 h=0; h<20; ++h)
+		{
+			if( node->hex[h] )
+			{
+				if( node->hex[h]->visited )
+				{
+					st.push(node->hex[h]);
+					node->hex[h]->visited = false;
+				}
+				node->hex[h]->hex[link_center[h]] = NULL;
+			}
+		}
+
+		delete node;
+	}
 }

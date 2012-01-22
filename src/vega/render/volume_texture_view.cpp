@@ -28,12 +28,20 @@ vega::render::volume_texture_view::volume_texture_view()
 
 bool vega::render::volume_texture_view::create( const std::string& _FileName )
 {
-    auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
-    if( !pVolume->load(_FileName, false) )
-    {
-        std::cerr << "Couldn't load volume " << _FileName.c_str() << std::endl;
-        return false;
-    }
+	auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
+	if( !pVolume->load(_FileName, false) )
+	{
+		std::cerr << "Couldn't load volume " << _FileName.c_str() << std::endl;
+		return false;
+	}
+
+	return create(*pVolume);;
+}
+
+bool vega::render::volume_texture_view::create( const volume& v )
+{
+	auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
+	pVolume->create(v);
 
     // vertex coords array
     //    v2----- v6

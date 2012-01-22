@@ -30,6 +30,7 @@ namespace vega
                 float density;                              //!< average density
                 uint16 x, y, z;                             //!< node coordinates
                 prismatic_hexagon_node * hex[20];           //!< neighbors
+				bool visited;								//!< visited flag
             };
 
             hexagonal_prismatic_lattice(const data::volume &v);
