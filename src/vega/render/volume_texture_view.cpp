@@ -35,13 +35,13 @@ bool vega::render::volume_texture_view::create( const std::string& _FileName )
 		return false;
 	}
 
-	return create(*pVolume);;
+	return create(pVolume);
 }
 
-bool vega::render::volume_texture_view::create( const volume& v )
+bool vega::render::volume_texture_view::create( const std::shared_ptr<data::volume>& v )
 {
 	auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
-	pVolume->create(v);
+	pVolume->create(*v);
 
     // vertex coords array
     //    v2----- v6

@@ -128,7 +128,7 @@ bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
     // load raw volume data
     load_raw();
 
-    std::cout << "Width = " << myWidth << ", Height = " << myHeight << std::endl;
+    std::cout << "Width = " << myWidth << ", Height = " << myHeight << ", Depth = " << myDepth << std::endl;
 
     // load voxel gradients
     myVolumeUsesGradients = _UseGradients;

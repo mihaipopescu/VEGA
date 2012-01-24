@@ -31,6 +31,7 @@ namespace vega
                 math::vector3d color;   //!< average color
                 hexagon_node* hex[6];   //!< neighbor hexagons
                 bool visited;
+				bool to_be_deleted;
                 size_t vertexId;
             };
 

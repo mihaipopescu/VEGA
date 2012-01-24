@@ -31,6 +31,7 @@ namespace vega
                 uint16 x, y, z;                             //!< node coordinates
                 prismatic_hexagon_node * hex[20];           //!< neighbors
 				bool visited;								//!< visited flag
+				bool to_be_deleted;							//!< deleted flag
             };
 
             hexagonal_prismatic_lattice(const data::volume &v);

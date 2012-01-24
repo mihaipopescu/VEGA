@@ -42,11 +42,16 @@ int g_WindowHeight = 600;
 unsigned g_FrameCount = 0;
 
 camera g_cam;
+
+#define UNIT_TEST_3D
+
+#ifndef UNIT_TEST_3D
 std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
 std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_presenter>();
+#else
 std::shared_ptr<volume_texture_view> g_volume = i_view::factory_create<volume, volume_texture_view, volume_texture_presenter>();
 std::shared_ptr<volume_texture_view> g_graph3D = i_view::factory_create<volume_graph, volume_texture_view, volume_texture_presenter>();
-
+#endif
 
 void displayCB(void)
 {
@@ -60,10 +65,13 @@ void displayCB(void)
     g_cam.render();
 
     // render objects
+#ifndef UNIT_TEST_3D
     //g_img->render();
-    //g_graph->render();
-	g_graph3D->render();
+    g_graph->render();
+#else
     //g_volume->render();
+	g_graph3D->render();
+#endif
 
     glutSwapBuffers();
     glutPostRedisplay();
@@ -120,9 +128,12 @@ void timerCB(int value)
 void keyboardCB(unsigned char key, int x, int y)
 {
     g_cam.handle_common_keys(key, x, y);
-    
+
+#ifndef UNIT_TEST_3D
     g_img->action_keyboard(key, x, y);
     g_graph->action_keyboard(key, x, y);
+#else
+#endif
 
     switch(key)
     {
@@ -145,7 +156,11 @@ void mouseCB(int button, int state, int x, int y)
 void mouseMotionCB(int x, int y)
 {
     g_cam.handle_mouse_motions(x, y);
+
+#ifndef UNIT_TEST_3D
+#else
     g_volume->action_mouse(0, 0, x, y);
+#endif
 
     glutPostRedisplay();
 }
@@ -178,15 +193,17 @@ bool init_gl_objects()
     profiler::create();
     profiler::get()->set_dump_on_end(true);
 
-    //if( !g_img->create("data/image/lenna.bmp") )
-    //    return false;
+#ifndef UNIT_TEST_3D
+    if( !g_img->create("data/image/lenna.bmp") )
+		return false;
 
-    //g_graph->create(g_img->get_model());
+    g_graph->create(g_img->get_model());
+#else
+    if( !g_volume->create("data/volume/bonsai.vega") )
+        return false;
 
-    //if( !g_volume->create("data/volume/bonsai.vega") )
-    //    return false;
-
-	g_graph3D->create("data/volume/bonsai.vega");
+	g_graph3D->create(g_volume->get_model());
+#endif
 
     return true;
 }

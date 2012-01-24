@@ -12,6 +12,7 @@ vega::graph::hexagonal_lattice::hexagon_node::hexagon_node( uint16 _x, uint16 _y
     : x(_x)
     , y(_y)
     , visited(false)
+	, to_be_deleted(false)
     , vertexId(size_t(-1))
 {
      memset(hex, NULL, 6*sizeof(hexagon_node*));
@@ -138,10 +139,10 @@ vega::graph::hexagonal_lattice::~hexagonal_lattice()
         {
             if( node->hex[h] )
             {
-				if( node->hex[h]->visited )
+				if( !node->hex[h]->to_be_deleted )
 				{
 					st.push(node->hex[h]);
-					node->hex[h]->visited = false;
+					node->hex[h]->to_be_deleted = true;
 				}
                 node->hex[h]->hex[link_center[h]] = NULL;
             }

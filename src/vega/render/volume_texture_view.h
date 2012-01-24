@@ -17,8 +17,10 @@ namespace vega
         public:
             volume_texture_view();
 
+			std::shared_ptr<data::volume> get_model() const { return std::dynamic_pointer_cast<data::volume>(myModel); }
+
             bool create(const std::string& _FileName);
-			bool create(const data::volume& v);
+			bool create(const std::shared_ptr<data::volume>& v);
             virtual void render() const;
 
         protected:

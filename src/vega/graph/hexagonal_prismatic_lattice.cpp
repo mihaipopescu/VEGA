@@ -1,7 +1,9 @@
 #include "hexagonal_prismatic_lattice.h"
 #include <stack>
 #include <map>
+#include <list>
 #include <iostream>
+#include <algorithm>
 
 using namespace vega;
 using namespace vega::math;
@@ -11,6 +13,7 @@ vega::graph::hexagonal_prismatic_lattice::prismatic_hexagon_node::prismatic_hexa
     : x(_x), y(_y), z(_z)
 	, density(-1.f)
 	, visited(false)
+	, to_be_deleted(false)
 {
 	memset(hex, NULL, 20*sizeof(prismatic_hexagon_node*));
 }
@@ -140,8 +143,8 @@ vega::graph::hexagonal_prismatic_lattice::~hexagonal_prismatic_lattice()
 	std::stack<prismatic_hexagon_node*> st;
 	st.push(myRoot);
 
-	static const int link_center[6] = {3, 4, 5, 0, 1, 2};
-
+	static const int link_center[20] = {3, 4, 5, 0, 1, 2, 13, 17, 18, 19, 14, 15, 16, 6, 10, 11, 12, 7, 8, 9};
+	
 	while( !st.empty() )
 	{
 		prismatic_hexagon_node* node = st.top();
@@ -151,10 +154,10 @@ vega::graph::hexagonal_prismatic_lattice::~hexagonal_prismatic_lattice()
 		{
 			if( node->hex[h] )
 			{
-				if( node->hex[h]->visited )
+				if( !node->hex[h]->to_be_deleted )
 				{
 					st.push(node->hex[h]);
-					node->hex[h]->visited = false;
+					node->hex[h]->to_be_deleted = true;
 				}
 				node->hex[h]->hex[link_center[h]] = NULL;
 			}
