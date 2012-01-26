@@ -13,6 +13,7 @@
 #include "../vega/data/bitmap_graph.h"
 #include "../vega/data/volume.h"
 #include "../vega/data/volume_graph.h"
+#include "../vega/data/volume_primitive.h"
 
 /*! \mainpage VisualVega
  *
@@ -44,6 +45,7 @@ unsigned g_FrameCount = 0;
 camera g_cam;
 
 #define UNIT_TEST_3D
+#define SYNTETIC_SCENE
 
 #ifndef UNIT_TEST_3D
 std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
@@ -199,10 +201,17 @@ bool init_gl_objects()
 
     g_graph->create(g_img->get_model());
 #else
+
+#ifdef SYNTETIC_SCENE
+	std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(8, 8, 8);
+	vp->create_sphere(0.f, 0.f, 0.f, 2.f);
+	g_graph3D->create(vp);
+#else
     if( !g_volume->create("data/volume/bonsai.vega") )
         return false;
 
 	g_graph3D->create(g_volume->get_model());
+#endif
 #endif
 
     return true;

@@ -98,6 +98,7 @@
     <ClInclude Include="..\vega\data\image.h" />
     <ClInclude Include="..\vega\data\volume.h" />
     <ClInclude Include="..\vega\data\volume_graph.h" />
+    <ClInclude Include="..\vega\data\volume_primitive.h" />
     <ClInclude Include="..\vega\graph\disjoint_sets.hpp" />
     <ClInclude Include="..\vega\graph\edge.hpp" />
     <ClInclude Include="..\vega\graph\graph.hpp" />
@@ -126,6 +127,7 @@
     <ClCompile Include="..\vega\data\image.cpp" />
     <ClCompile Include="..\vega\data\volume.cpp" />
     <ClCompile Include="..\vega\data\volume_graph.cpp" />
+    <ClCompile Include="..\vega\data\volume_primitive.cpp" />
     <ClCompile Include="..\vega\graph\hexagonal_lattice.cpp" />
     <ClCompile Include="..\vega\graph\hexagonal_prismatic_lattice.cpp" />
     <ClCompile Include="..\vega\math\transfer_function.cpp" />

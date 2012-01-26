@@ -126,6 +126,9 @@
     <ClInclude Include="..\vega\graph\hexagonal_prismatic_lattice.h">
       <Filter>vega\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="..\vega\data\volume_primitive.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisualVega.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="..\vega\graph\hexagonal_prismatic_lattice.cpp">
       <Filter>vega\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_primitive.cpp">
+      <Filter>vega\Data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
