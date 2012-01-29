@@ -64,6 +64,8 @@ namespace vega
         class transfer_function
         {
         public:
+			//! Constructs a monochrome transfer function
+			transfer_function();
             //! Constructs a transfer function taking a vector of palette knots.
             transfer_function(const std::vector<transfer_control_point>& vPaletteKnots);
             //! Constructs a transfer function after computing a spline from the color and alpha knots.

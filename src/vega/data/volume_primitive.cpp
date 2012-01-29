@@ -13,14 +13,14 @@ void vega::data::volume_primitive::create_cylinder( float fCx, float fCy, float 
 			int x = (int)fCx;
 			int y = (int)fCurrentCy;
 			int z = (int)fCz;
-			(x, y, z) = density;	// center density at height h
+			set_voxel(x, y, z, density);	// center density at height h
 		}
 
 		float fRadius = fBottomRadius + (fHeight - h) * (fTopRadius - fBottomRadius) / fHeight;
 
 		for(float r = fRadius; r >= 0.1f; r -= 1.0f)
 		{
-			float fStep = (float)asinf( 1.0f / r) *0.4f;			
+			float fStep = (float)asinf( 1.0f / r) *0.4f;
 			for(float phi = 0; phi < math::PI * 0.5f; phi += fStep)	
 			{
 				for(unsigned char i = 0; i < 4; i++)
@@ -31,7 +31,7 @@ void vega::data::volume_primitive::create_cylinder( float fCx, float fCy, float 
 					z = (int)( fCz + (i & 2 ? -1: 1) * r * sin(phi) );
 					if( x > (int)myWidth || y > (int)myHeight || z > (int)myDepth || x < 0 || y < 0 || z < 0)
 						continue;
-					(x, y, z) = density;
+					set_voxel(x, y, z, density);
 				}
 			}
 		}
@@ -42,7 +42,7 @@ void vega::data::volume_primitive::create_cylinder_shell( float fCx, float fCy, 
 {
 	for(float h = 0.0f; h <= fHeight; h += 1.0f)
 	{
-		float fCurrentCy = fCy - fHeight/2 + h;		
+		float fCurrentCy = fCy - fHeight/2 + h;
 
 		float fSmallRadius = fBottomSmallRadius + (fHeight - h) * (fTopSmallRadius - fBottomSmallRadius) / fHeight;
 		float fLargeRadius = fBottomLargeRadius + (fHeight - h) * (fTopLargeRadius - fBottomLargeRadius) / fHeight;
@@ -60,7 +60,7 @@ void vega::data::volume_primitive::create_cylinder_shell( float fCx, float fCy, 
 					z = (int)( fCz + (i & 2 ? -1: 1) * r * sin(phi) );
 					if( x > (int)myWidth || y > (int)myHeight || z > (int)myDepth || x < 0 || y < 0 || z < 0)
 						continue;
-					(x, y, z) = density;
+					set_voxel(x, y, z, density);
 				}
 			}
 		}
@@ -106,18 +106,18 @@ void vega::data::volume_primitive::create_honeycomb( uint8 iSpan, uint8 opacity,
 						if(IN_RANGE_X(x + ud, rx))
 						{
 							if(IN_RANGE_Y(y + s + 1, ry))
-								(rx, ry, z) = o;
+								set_voxel(rx, ry, z, o);
 
 							if(IN_RANGE_Y(y - s - 1, ry))
-								(rx, ry, z) = o;
+								set_voxel(rx, ry, z, o);
 						}
 						if(IN_RANGE_Y(y + ud, ry))
 						{
 							if(IN_RANGE_X(x + (abs(ud) - a), rx))
-								(rx, ry, z) = o;
+								set_voxel(rx, ry, z, o);
 
 							if(IN_RANGE_X(x - (abs(ud) - a), rx))
-								(rx, ry, z) = o;
+								set_voxel(rx, ry, z, o);
 						}
 					}
 					a--;
@@ -150,7 +150,7 @@ void vega::data::volume_primitive::create_regular_prism( float fCx, float fCy, f
 		int x = (int)fCx;
 		int y = (int)fCy;
 		int z = (int)fCz;
-		(x, y, z) = density;	// center density at height h
+		set_voxel(x, y, z, density);	// center density at height h
 
 		float fRadius = fBottomRadius + (myHeight - h) * (fTopRadius - fBottomRadius) / fHeight;
 		float fCurrentCy = fCy - fHeight/2 + h;
@@ -166,7 +166,7 @@ void vega::data::volume_primitive::create_regular_prism( float fCx, float fCy, f
 
 			for(int i = 0; i < numEdges; ++i)
 			{				
-				int iplus1 = (i + 1) % numEdges;				
+				int iplus1 = (i + 1) % numEdges;
 				float fZDist = v[iplus1].z - v[i].z;
 				float fXDist = v[iplus1].x - v[i].x;
 				float fZStep = fZDist > 0.0f ? 0.1f : -0.1f;
@@ -184,7 +184,7 @@ void vega::data::volume_primitive::create_regular_prism( float fCx, float fCy, f
 						y = (int)fCurrentCy;
 						z = (int)fCz;
 
-						(x, y, z) = density;
+						set_voxel(x, y, z, density);
 					}
 					else
 					{		
@@ -197,7 +197,7 @@ void vega::data::volume_primitive::create_regular_prism( float fCx, float fCy, f
 							if( x > myWidth || y > myHeight || z > myDepth || x < 0 || y < 0 || z < 0)
 								continue;
 
-							(x, y, z) = density;
+							set_voxel(x, y, z, density);
 						}					
 					}
 				}
@@ -212,7 +212,7 @@ void vega::data::volume_primitive::create_regular_prism( float fCx, float fCy, f
 						if( x > myWidth || y > myHeight || z > myDepth || x < 0 || y < 0 || z < 0)
 							continue;
 
-						(x, y, z) = density;
+						set_voxel(x, y, z, density);
 					}
 				}
 			}
@@ -229,9 +229,9 @@ void vega::data::volume_primitive::create_sphere_shell( float fCx, float fCy, fl
 	for(float r = fSmallRadius; r < fLargeRadius; r += 1.0f)
 	{
 		float fStep = asinf( 1.0f / r) / 2.0f;
-		for(float theta = 0.0f; theta < math::PI* 0.5f; theta += fStep)		
+		for(float theta = 0.0f; theta < math::PI* 0.5f; theta += fStep)
 		{
-			float fRSinTheta = r * sin(theta);			
+			float fRSinTheta = r * sin(theta);
 			float fRCosTheta = r * cos(theta);
 			for(float phi = 0; phi < math::PI * 0.5f; phi += fStep)	
 			{
@@ -244,7 +244,7 @@ void vega::data::volume_primitive::create_sphere_shell( float fCx, float fCy, fl
 					y = (int)( fCy + ( i & 2 ? fRSinThetaSinPhi : -fRSinThetaSinPhi ) );
 					z = (int)( fCz + ( i & 4 ? fRCosTheta : -fRCosTheta ) );
 					if( x < myWidth && y < myHeight && z < myDepth && x >= 0 && y >= 0 && z >= 0)
-						(x, y, z) = density;
+						set_voxel(x, y, z, density);
 				}
 			}
 		}
@@ -256,11 +256,11 @@ void vega::data::volume_primitive::create_sphere( float fCx, float fCy, float fC
 	for(float r = 1.0f; r < fRadius; r += 1.0f)
 	{
 		float fStep = (float)asinf( 1.0f / r) * 0.4f;
-		for(float theta = 0.0f; theta < math::PI * 0.5f; theta += fStep)		
+		for(float theta = 0.0f; theta < math::PI * 0.5f; theta += fStep)
 		{
-			float fRSinTheta = r * sin(theta);			
+			float fRSinTheta = r * sin(theta);
 			float fRCosTheta = r * cos(theta);
-			for(float phi = 0; phi <= math::PI * 0.5f; phi += fStep)	
+			for(float phi = 0; phi <= math::PI * 0.5f; phi += fStep)
 			{
 				float fRSinThetaCosPhi = fRSinTheta * cos(phi);
 				float fRSinThetaSinPhi = fRSinTheta * sin(phi);
@@ -271,7 +271,7 @@ void vega::data::volume_primitive::create_sphere( float fCx, float fCy, float fC
 					y = (int)( fCy + ( i & 2 ? fRSinThetaSinPhi : -fRSinThetaSinPhi ) );
 					z = (int)( fCz + ( i & 4 ? fRCosTheta : -fRCosTheta ) );
 					if( x < myWidth && y < myHeight && z < myDepth && x >= 0 && y >= 0 && z >= 0)
-						(x, y, z) = density;
+						set_voxel(x, y, z, density);
 				}
 			}
 		}
@@ -286,10 +286,10 @@ void vega::data::volume_primitive::create_thorus( float fCx, float fCy, float fC
 	{
 		float fSmallR = fSmallRadius + fThorusRadius * ( 1.0f - cos(theta) );
 		float fLargeR = fLargeRadius - fThorusRadius * ( 1.0f - cos(theta) );
-		float fRelativeHeight = fThorusRadius * sin(theta);		
+		float fRelativeHeight = fThorusRadius * sin(theta);
 		for(float r = fSmallR; r <= fLargeR; r += 1.0f)
 		{
-			float fStep = (float)asin( 1.0 / r) * 0.4f;			
+			float fStep = (float)asin( 1.0 / r) * 0.4f;	
 			for(float phi = 0; phi < math::PI * 0.5f; phi += fStep)	
 			{
 				float fRCosPhi = r * cos( phi );
@@ -302,7 +302,7 @@ void vega::data::volume_primitive::create_thorus( float fCx, float fCy, float fC
 					z = (int)( fCz + (i & 4 ? -fRSinPhi : fRSinPhi) );
 					if( x > myWidth || y > myHeight || z > myDepth || x < 0 || y < 0 || z < 0)
 						continue;
-					(x, y, z) = density;
+					set_voxel(x, y, z, density);
 				}
 			}
 		}

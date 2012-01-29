@@ -31,7 +31,8 @@ vega::data::volume::volume( uint16 iWidth, uint16 iHeight, uint16 iDepth )
     , myRawDataIsDirty(false)
     , myGradientDataIsDirty(false)
 {
-    myVoxelArray.reserve(get_size());
+	myVoxelArray.resize(get_size());
+	myTransferFunction = std::make_shared<transfer_function>();
 }
 
 vega::data::volume::~volume(void)
@@ -57,6 +58,8 @@ bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
     
     int nColorCount = 0;
     input >> nColorCount;
+
+	myTransferFunction.reset();
 
     if( nColorCount < 256 )
     {
@@ -375,11 +378,12 @@ void vega::data::volume::paint_voxels( std::vector<r8g8b8a8>& vPaintedVoxels ) c
     vPaintedVoxels.reserve(get_size());
 
     assert(get_size() == myVoxelArray.size());
-    
-    std::for_each(myVoxelArray.cbegin(), myVoxelArray.cend(), [&vPaintedVoxels, this](voxel v)
-    {
-        vPaintedVoxels.push_back(myTransferFunction->myTransferArray[v]);
-    });
+	assert(myTransferFunction);
+
+	std::for_each(myVoxelArray.cbegin(), myVoxelArray.cend(), [&vPaintedVoxels, this](voxel v)
+	{
+		vPaintedVoxels.push_back(myTransferFunction->myTransferArray[v]);
+	});
 }
 
 void vega::data::volume::copy_from( const volume& v )

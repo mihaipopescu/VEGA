@@ -162,6 +162,7 @@ void mouseMotionCB(int x, int y)
 #ifndef UNIT_TEST_3D
 #else
     g_volume->action_mouse(0, 0, x, y);
+	g_graph3D->action_mouse(0, 0, x, y);
 #endif
 
     glutPostRedisplay();
@@ -203,8 +204,10 @@ bool init_gl_objects()
 #else
 
 #ifdef SYNTETIC_SCENE
-	std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(8, 8, 8);
-	vp->create_sphere(0.f, 0.f, 0.f, 2.f);
+	std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(32, 32, 32);
+	vp->create_sphere(16.f, 16.f, 16.f, 16.f, MAXDENSITY / 8);
+	vp->create_cylinder(16.f, 16.f, 16.f, 16.f, 8.f, 8.f, MAXDENSITY / 4);
+	vp->create_thorus(16.f, 16.f, 16.f, 8.f, 16.f, MAXDENSITY / 2);
 	g_graph3D->create(vp);
 #else
     if( !g_volume->create("data/volume/bonsai.vega") )

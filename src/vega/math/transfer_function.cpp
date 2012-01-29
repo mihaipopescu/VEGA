@@ -5,6 +5,16 @@
 using namespace vega::math;
 
 
+vega::math::transfer_function::transfer_function()
+{
+	vector4d transferFunc[256];
+
+	for (int i = 0; i < 256; i++)
+	{
+		myTransferArray[i] = r8g8b8a8(i, i, i, i);
+	}
+}
+
 vega::math::transfer_function::transfer_function(const std::vector<transfer_control_point>& vPaletteKnots)
 {
     vector4d transferFunc[256];

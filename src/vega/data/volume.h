@@ -34,6 +34,7 @@ namespace vega
             uint16 get_depth            () const { return myDepth; }
 
             float  get_voxel            (uint16 x, uint16 y, uint16 z) const { return float(myVoxelArray[_I(x,y,z)])/255.f; }
+			void   set_voxel			(uint16 x, uint16 y, uint16 z, voxel v) { myVoxelArray[_I(x, y, z)] = v; }
             voxel& operator()  			(uint16 x, uint16 y, uint16 z) { return myVoxelArray[_I(x, y, z)]; }
             voxel  operator()           (uint16 x, uint16 y, uint16 z) const { return myVoxelArray[_I(x, y, z)]; }
             void*  get_raw_data()       { return myVoxelArray.data(); }

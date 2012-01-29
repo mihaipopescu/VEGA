@@ -32,7 +32,7 @@ namespace vega
             {
                 return vector4d(x * v.x, y * v.y, z * v.z, w * v.w);
             }
-
+			
             vector4d& operator-=(const vector4d& v)
             {
                 x -= v.x;
@@ -58,6 +58,11 @@ namespace vega
                 z /= w;
                 w = 1.f;
                 return *this;
+            }
+
+            float norm() const
+            {
+                return sqrtf(x*x + y*y + z*z + w*w);
             }
 
             operator vector3d()
