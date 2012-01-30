@@ -28,7 +28,7 @@ void vega::data::bitmap_graph::create( const image & img )
         st.pop();
         node->visited = true;
 
-        node->vertexId = add_vertex(vector3d(node->x, node->y));
+        node->vertexId = add_vertex(vector2d(node->x, node->y));
 
         image::set_pixel_contrast(node->x+1, node->y+1, 10.f);
 
