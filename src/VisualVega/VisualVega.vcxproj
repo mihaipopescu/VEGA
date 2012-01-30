@@ -118,6 +118,7 @@
     <ClInclude Include="..\vega\mst\prim.hpp" />
     <ClInclude Include="..\vega\render\camera.h" />
     <ClInclude Include="..\vega\render\common.h" />
+    <ClInclude Include="..\vega\render\graph_view.h" />
     <ClInclude Include="..\vega\render\image_view.h" />
     <ClInclude Include="..\vega\render\volume_texture_view.h" />
   </ItemGroup>
@@ -133,6 +134,7 @@
     <ClCompile Include="..\vega\math\transfer_function.cpp" />
     <ClCompile Include="..\vega\math\transformations.cpp" />
     <ClCompile Include="..\vega\render\camera.cpp" />
+    <ClCompile Include="..\vega\render\graph_view.cpp" />
     <ClCompile Include="..\vega\render\image_view.cpp" />
     <ClCompile Include="..\vega\render\volume_texture_view.cpp" />
     <ClCompile Include="VisualVega.cpp" />
