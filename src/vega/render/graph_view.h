@@ -2,9 +2,7 @@
 #define __VEGA_RENDER_GRAPH_VIEW__
 
 #include "common.h"
-#include "../graph/graph.hpp"
-#include "../math/vector2d.h"
-#include "../math/vector3d.h"
+#include "../data/volume.h"
 
 
 namespace vega
@@ -15,20 +13,25 @@ namespace vega
 		class graph_view : public i_view
 		{
 		public:
-			template <class VertexType>
-			void create(const graph::weighted_undirected_graph<VertexType>& g);
+			graph_view() : myRenderFlag(false) { }
+
+			void create(const std::shared_ptr<data::volume>& v);
 
 			virtual void render() const;
+			
+			void toggle_render_flag() { myRenderFlag = !myRenderFlag; }
 
 		private:
-
+			bool myRenderFlag;
+			std::vector<math::vector3d> myVertices;
 		};
 
 
 		class graph_presenter : public i_presenter
 		{
 		public:
-
+			graph_presenter(const std::shared_ptr<graph_view> & _view, const std::shared_ptr<data::volume> & _model) : i_presenter(_view, _model) { }
+			virtual void handle_keyboard( unsigned char key, int x, int y );
 		};
 	}
 }

@@ -10,7 +10,7 @@ namespace vega
 {
     namespace data
     {
-        class volume_graph : public volume, protected graph::weighted_undirected_graph<math::vector3d>
+        class volume_graph : public volume, public graph::weighted_undirected_graph<math::vector3d>
         {
         public:
             volume_graph() {}

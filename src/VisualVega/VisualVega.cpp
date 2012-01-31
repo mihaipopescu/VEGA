@@ -6,14 +6,15 @@
 #include <assert.h>
 
 #include "../vega/common/profiler.h"
-#include "../vega/render/image_view.h"
-#include "../vega/render/camera.h"
-#include "../vega/render/volume_texture_view.h"
-#include "../vega/data/image.h"
 #include "../vega/data/bitmap_graph.h"
+#include "../vega/data/image.h"
 #include "../vega/data/volume.h"
 #include "../vega/data/volume_graph.h"
 #include "../vega/data/volume_primitive.h"
+#include "../vega/render/camera.h"
+#include "../vega/render/graph_view.h"
+#include "../vega/render/image_view.h"
+#include "../vega/render/volume_texture_view.h"
 
 /*! \mainpage VisualVega
  *
@@ -51,8 +52,8 @@ camera g_cam;
 std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
 std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_presenter>();
 #else
-std::shared_ptr<volume_texture_view> g_volume = i_view::factory_create<volume, volume_texture_view, volume_texture_presenter>();
-std::shared_ptr<volume_texture_view> g_graph3D = i_view::factory_create<volume_graph, volume_texture_view, volume_texture_presenter>();
+std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume_graph, volume_texture_view, volume_texture_presenter>();
+std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_presenter>();
 #endif
 
 void displayCB(void)
@@ -71,7 +72,7 @@ void displayCB(void)
     //g_img->render();
     g_graph->render();
 #else
-    //g_volume->render();
+    g_volume3D->render();
 	g_graph3D->render();
 #endif
 
@@ -135,6 +136,8 @@ void keyboardCB(unsigned char key, int x, int y)
     g_img->action_keyboard(key, x, y);
     g_graph->action_keyboard(key, x, y);
 #else
+	g_volume3D->action_keyboard(key, x, y);
+	g_graph3D->action_keyboard(key, x, y);
 #endif
 
     switch(key)
@@ -161,7 +164,7 @@ void mouseMotionCB(int x, int y)
 
 #ifndef UNIT_TEST_3D
 #else
-    g_volume->action_mouse(0, 0, x, y);
+    g_volume3D->action_mouse(0, 0, x, y);
 	g_graph3D->action_mouse(0, 0, x, y);
 #endif
 
@@ -208,12 +211,16 @@ bool init_gl_objects()
 	vp->create_sphere(16.f, 16.f, 16.f, 16.f, MAXDENSITY / 8);
 	vp->create_cylinder(16.f, 16.f, 16.f, 16.f, 8.f, 8.f, MAXDENSITY / 4);
 	vp->create_thorus(16.f, 16.f, 16.f, 8.f, 16.f, MAXDENSITY / 2);
+	g_volume3D->create(vp);
 	g_graph3D->create(vp);
+	vp.reset();
 #else
-    if( !g_volume->create("data/volume/bonsai.vega") )
+	std::shared_ptr<volume> v = std::make_shared<volume>();
+    if( !v->load("data/volume/bonsai.vega") )
         return false;
-
-	g_graph3D->create(g_volume->get_model());
+	g_graph3D->create(v);
+	g_volume3D->create(v);
+	v.reset();
 #endif
 #endif
 

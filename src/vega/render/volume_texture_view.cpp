@@ -21,6 +21,7 @@ extern int g_WindowHeight;
 
 vega::render::volume_texture_view::volume_texture_view()
     : mySliceCount(0)
+	, myRenderFlag(true)
 {
      for(int i=0; i<eTex_ENUMNO; ++i)
          myTextureHandle[i] = 0;
@@ -113,7 +114,7 @@ bool vega::render::volume_texture_view::create( const std::shared_ptr<data::volu
 
 void vega::render::volume_texture_view::render() const
 {
-    if( mySlices.size() == 0 )
+    if( mySlices.size() == 0 || !myRenderFlag )
         return;
 
     glEnable(GL_TEXTURE_3D);
@@ -290,9 +291,23 @@ void vega::render::volume_texture_view::update_proxy_geometry()
     }
 }
 
+//////////////////////////////////////////////////////////////////////////
 void vega::render::volume_texture_presenter::handle_mouse( int button, int state, int x, int y )
 {
     std::shared_ptr<volume_texture_view> view = std::dynamic_pointer_cast<volume_texture_view>(myView.lock());
     if( view )
         view->update_proxy_geometry();
+}
+
+void vega::render::volume_texture_presenter::handle_keyboard( unsigned char key, int x, int y )
+{
+	switch( key )
+	{
+	case ' ':
+		{
+			std::shared_ptr<volume_texture_view> view = std::dynamic_pointer_cast<volume_texture_view>(myView.lock());
+			view->toggle_render_flag();
+		}
+		break;
+	}
 }

@@ -17,6 +17,10 @@ bool vega::data::volume_graph::create( const volume& v )
 	std::stack<graph::hexagonal_prismatic_lattice::prismatic_hexagon_node*> st;
     st.push( hpl->get_root() );
 
+	float w = (float)get_width();
+	float h = (float)get_height();
+	float d = (float)get_depth();
+
     while( !st.empty() )
     {
         graph::hexagonal_prismatic_lattice::prismatic_hexagon_node* node = st.top();
@@ -25,9 +29,9 @@ bool vega::data::volume_graph::create( const volume& v )
         st.pop();
         node->visited = true;
 
-        node->vertexId = add_vertex(vector3d(node->x, node->y, node->z));
+        node->vertexId = add_vertex(vector3d((float)node->x / w - 0.5f, (float)node->y / h - 0.5f,  (float)node->z / d - 0.5f));
 
-		(node->x+1, node->y+1, node->z) *= 10;
+		//set_voxel(node->x+1, node->y+1, node->z, get_voxel(node->x+1, node->y+1, node->z) * MAXDENSITY * 10);
 
         // expand the list
         for(int i=0; i<20; ++i)

@@ -21,7 +21,10 @@ namespace vega
 
             bool create(const std::string& _FileName);
 			bool create(const std::shared_ptr<data::volume>& v);
+
             virtual void render() const;
+
+			void toggle_render_flag() { myRenderFlag = !myRenderFlag; }
 
         protected:
             void update_proxy_geometry();
@@ -45,6 +48,7 @@ namespace vega
 
             std::vector<volume_slice> mySlices;
             int mySliceCount;
+			bool myRenderFlag;
         };
 
         class volume_texture_presenter : public i_presenter
@@ -52,6 +56,7 @@ namespace vega
         public:
             volume_texture_presenter(const std::shared_ptr<volume_texture_view> & _view, const std::shared_ptr<data::volume> & _model) : i_presenter(_view, _model) { }
             virtual void handle_mouse(int button, int state, int x, int y);
+			virtual void handle_keyboard( unsigned char key, int x, int y );
         };
 
     }
