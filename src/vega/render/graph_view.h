@@ -17,6 +17,8 @@ namespace vega
 
 			void create(const std::shared_ptr<data::volume>& v);
 
+			void mst_kruskal();
+
 			virtual void render() const;
 			
 			void toggle_render_flag() { myRenderFlag = !myRenderFlag; }
@@ -24,6 +26,7 @@ namespace vega
 		private:
 			bool myRenderFlag;
 			std::vector<math::vector3d> myVertices;
+			std::vector<math::vector4d> myColors;
 		};
 
 
