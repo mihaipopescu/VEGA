@@ -43,6 +43,7 @@ namespace vega
             void copy_from              (const volume& v);
             bool load                   (const std::string& _FileName, bool _UseGradients);
             bool save                   ();
+			bool save_as				(const std::string& _FileName);
             void compute_gradients      (int nSampleRadius = 1);
             void paint_voxels           (std::vector<r8g8b8a8>& vPaintedVoxels) const;
 
@@ -61,7 +62,6 @@ namespace vega
             volume operator*(const volume &v);
             volume operator-(const volume &v);
             volume operator~();
-
         protected:
             std::vector<math::transfer_control_point>   myColorKnots;
             std::vector<math::transfer_control_point>   myAlphaKnots;

@@ -162,6 +162,13 @@ bool vega::data::volume::save()
     return true;
 }
 
+bool vega::data::volume::save_as(const string& _FileName)
+{
+	myRawFilename = _FileName;
+	myRawDataIsDirty = true;
+	return save();
+}
+
 bool vega::data::volume::load_raw()
 {
     ifstream input;

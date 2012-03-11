@@ -46,7 +46,7 @@ unsigned g_FrameCount = 0;
 camera g_cam;
 
 #define UNIT_TEST_3D
-#define SYNTETIC_SCENE
+#define SYNTHETIC_SCENE
 
 #ifndef UNIT_TEST_3D
 std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
@@ -206,11 +206,18 @@ bool init_gl_objects()
     g_graph->create(g_img->get_model());
 #else
 
-#ifdef SYNTETIC_SCENE
+#ifdef SYNTHETIC_SCENE
 	std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(32, 32, 32);
+
+#if 0
 	vp->create_sphere(16.f, 16.f, 16.f, 16.f, MAXDENSITY / 8);
-	vp->create_cylinder(16.f, 16.f, 16.f, 16.f, 8.f, 8.f, MAXDENSITY / 4);
-	vp->create_thorus(16.f, 16.f, 16.f, 8.f, 16.f, MAXDENSITY / 2);
+	vp->create_sphere(16.f, 16.f, 16.f, 10.f, MAXDENSITY / 4);
+	vp->create_sphere(16.f, 16.f, 16.f, 6.f, MAXDENSITY);
+	vp->save_as("data/volume/synthetic.raw");
+#else
+	vp->load("data/volume/synthetic.vega", false);
+#endif
+
 	g_volume3D->create(vp);
 	g_graph3D->create(vp);
 	vp.reset();
