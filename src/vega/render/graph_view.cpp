@@ -6,6 +6,7 @@
 #include "../data/volume_graph.h"
 #include "../graph/graph.hpp"
 #include "../mst/kruskal.hpp"
+#include "../graph/disjoint_threshold_sets.hpp"
 
 
 void vega::render::graph_view::render() const
@@ -40,12 +41,16 @@ void vega::render::graph_view::create( const std::shared_ptr<data::volume>& v )
 void vega::render::graph_view::mst_kruskal()
 {
 	auto pVolume = std::dynamic_pointer_cast<data::volume_graph>(myModel);
-	std::vector<data::volume_graph::edge_type> mst;
+	typedef std::vector<data::volume_graph::edge_type> MSTContainer;
+	typedef vega::graph::weighted_undirected_graph<math::vector3d> Graph;
+	typedef vega::graph::disjoint_treshold_sets<Graph> DisjointSets;
+	MSTContainer mst;
+	
 	
 	std::cout << "Applying Kruskal MST... ";
 
 	mst.resize(pVolume->get_num_vertices() - 1);
-	vega::mst::kruskal(*pVolume, mst.begin());
+	vega::mst::kruskal2(*pVolume, mst.begin(), 0.3f);
 
 	myVertices.clear();
 	myColors.clear();

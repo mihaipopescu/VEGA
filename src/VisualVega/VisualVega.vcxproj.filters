@@ -132,6 +132,9 @@
     <ClInclude Include="..\vega\render\graph_view.h">
       <Filter>vega\Render</Filter>
     </ClInclude>
+    <ClInclude Include="..\vega\graph\disjoint_threshold_sets.hpp">
+      <Filter>vega\Graph</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisualVega.cpp">

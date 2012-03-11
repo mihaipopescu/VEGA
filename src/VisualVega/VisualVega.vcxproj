@@ -100,6 +100,7 @@
     <ClInclude Include="..\vega\data\volume_graph.h" />
     <ClInclude Include="..\vega\data\volume_primitive.h" />
     <ClInclude Include="..\vega\graph\disjoint_sets.hpp" />
+    <ClInclude Include="..\vega\graph\disjoint_threshold_sets.hpp" />
     <ClInclude Include="..\vega\graph\edge.hpp" />
     <ClInclude Include="..\vega\graph\graph.hpp" />
     <ClInclude Include="..\vega\graph\common.hpp" />
