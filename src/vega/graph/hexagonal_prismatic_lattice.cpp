@@ -50,16 +50,26 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
         static const int hex_voxel_offset[8][2] = { {1, 0}, {2, 0}, {0, 1}, {1, 1}, {2, 1}, {3, 1}, {1, 2}, {2, 2}};
 
         float fAvgDensity = 0.f;
+        float fMaxDeviation = 0.f;
 
         // compute average color
         for(size_t h=0;h<8;++h)
         {
-            fAvgDensity += v.get_voxel(node->x + hex_voxel_offset[h][0], node->y + hex_voxel_offset[h][1], node->z);
+            float vh = v.get_voxel(node->x + hex_voxel_offset[h][0], node->y + hex_voxel_offset[h][1], node->z);
+            fAvgDensity += vh;
+            for(size_t g=0; g<8; ++g)
+            {
+                float vg = v.get_voxel(node->x + hex_voxel_offset[g][0], node->y + hex_voxel_offset[g][1], node->z);
+                float fDeviation = fabs(vh - vg);
+                if( fDeviation > fMaxDeviation )
+                    fMaxDeviation = fDeviation;
+            }
         }
 
         // average on 8 voxels
         fAvgDensity *= 0.125f;
         node->density = fAvgDensity;
+        node->max_density_deviation = fMaxDeviation;
 
 		static const int hex_neighbor_offset[6+7+7][3] = 
 		{ 

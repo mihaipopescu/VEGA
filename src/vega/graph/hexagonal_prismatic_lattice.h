@@ -28,17 +28,18 @@ namespace vega
                 ~prismatic_hexagon_node();
 
                 float density;                              //!< average density
+                float max_density_deviation;
                 uint16 x, y, z;                             //!< node coordinates
                 prismatic_hexagon_node * hex[20];           //!< neighbors
-				bool visited;								//!< visited flag
-				bool to_be_deleted;							//!< deleted flag
+                bool visited;                               //!< visited flag
+                bool to_be_deleted;                         //!< deleted flag
                 size_t vertexId;
             };
 
             hexagonal_prismatic_lattice(const data::volume &v);
             ~hexagonal_prismatic_lattice();
 
-		prismatic_hexagon_node* get_root() { return myRoot; }
+            prismatic_hexagon_node* get_root() const { return myRoot; }
 
         private:
             prismatic_hexagon_node * myRoot;

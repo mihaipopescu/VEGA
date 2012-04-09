@@ -24,31 +24,36 @@ namespace vega
 
             for(graph_traits<Graph>::edge_container_type::const_iterator it = edges.begin(); it != edges.end(); ++it)
             {
-                if( !dset.find(it->source, it->target) )
+                if( dset.link(it->source, it->target) )
                 {
-                    dset.link(it->source, it->target);
                     *spanning_tree_edges++ = *it;
                 }
             }
         }
 
-		template <class Graph, class OutputIterator>
-		void kruskal2(const Graph& g, OutputIterator spanning_tree_edges, typename graph::graph_traits<Graph>::edge_weight_type treshold)
+        template <class Graph, class OutputIterator>
+        uint16 kruskal(const Graph& g, OutputIterator spanning_tree_edges, typename graph::graph_traits<Graph>::edge_weight_type treshold)
         {
-            disjoint_treshold_sets<Graph> dset(g.get_num_vertices(), treshold);
+            disjoint_sets<Graph> dset(g.get_num_vertices());
 
             graph_traits<Graph>::edge_container_type edges = g.edges();
 
             std::sort(edges.begin(), edges.end());
 
+            uint16 count = 0;
             for(graph_traits<Graph>::edge_container_type::const_iterator it = edges.begin(); it != edges.end(); ++it)
             {
-                if( !dset.find(it->source, it->target) )
+                if( it->weight < treshold )
                 {
-                    dset.link(it->source, it->target, it->weight);
-                    *spanning_tree_edges++ = *it;
+                    if( dset.link(it->source, it->target) )
+                    {
+                        *spanning_tree_edges++ = *it;
+                        ++count;
+                    }
                 }
             }
+
+            return count;
         }
 
     }

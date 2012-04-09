@@ -32,7 +32,8 @@ void vega::render::graph_view::create( const std::shared_ptr<data::volume>& v )
 	{
 		myVertices.push_back(pVolume->get_vertex(e->source));
 		myVertices.push_back(pVolume->get_vertex(e->target));
-		vega::math::vector4d c = vega::math::vector4d(e->weight, e->weight, e->weight, 1.f);
+        float k = 1.f; //e->weight;
+        vega::math::vector4d c = vega::math::vector4d(k, k, k, 1.f);
 		myColors.push_back(c);
 		myColors.push_back(c);
 	}
@@ -46,25 +47,26 @@ void vega::render::graph_view::mst_kruskal()
 	typedef vega::graph::disjoint_treshold_sets<Graph> DisjointSets;
 	MSTContainer mst;
 	
-	
-	std::cout << "Applying Kruskal MST... ";
+	std::cout << "Applying Thresholded Kruskal MST... ";
 
 	mst.resize(pVolume->get_num_vertices() - 1);
-	vega::mst::kruskal2(*pVolume, mst.begin(), 0.3f);
+	uint16 mst_size = vega::mst::kruskal(*pVolume, mst.begin(), 0.3f);
+
+    std::cout << mst.size() << " edges added !" << std::endl;
 
 	myVertices.clear();
 	myColors.clear();
 
-	int i = 0;
-	for(auto e = mst.cbegin(); e != mst.cend(); e++ )
+    std::cout << "Creating render vertices ...";
+	for(int i=0; i<mst_size; ++i)
 	{
-		myVertices.push_back(pVolume->get_vertex(e->source));
-		myVertices.push_back(pVolume->get_vertex(e->target));
-		float k = i * 1.f / mst.size();
+        Graph::edge_type e = mst[i];
+        myVertices.push_back(pVolume->get_vertex(e.source));
+        myVertices.push_back(pVolume->get_vertex(e.target));
+		float k = 1.f;
 		vega::math::vector4d c = vega::math::vector4d(k, k, k, 1.f);
 		myColors.push_back(c);
 		myColors.push_back(c);
-		i++;
 	}
 
 	std::cout << "Done !" << std::endl;

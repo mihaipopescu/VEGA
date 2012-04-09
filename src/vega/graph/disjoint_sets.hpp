@@ -40,12 +40,12 @@ namespace vega {
       }
 
       template <class Element>
-      void link(Element x, Element y)
+      bool link(Element x, Element y)
       {
         Element i = find(x), j = find(y);
 
         if (i==j)
-          return;
+          return false;
 
         if (rank[i] < rank[j])
         {
@@ -57,6 +57,8 @@ namespace vega {
           parent[j] = i;
           rank[i] += rank[j];
         }
+
+        return true;
       }
     
     protected:
