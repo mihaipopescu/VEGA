@@ -135,6 +135,9 @@
     <ClInclude Include="..\vega\graph\disjoint_threshold_sets.hpp">
       <Filter>vega\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisualVega.cpp">
@@ -181,6 +184,9 @@
     </ClCompile>
     <ClCompile Include="..\vega\render\graph_view.cpp">
       <Filter>vega\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp">
+      <Filter>vega\Data</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

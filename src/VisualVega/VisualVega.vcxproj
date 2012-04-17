@@ -95,6 +95,7 @@
     <ClInclude Include="..\vega\common\types.h" />
     <ClInclude Include="..\vega\data\bitmap_graph.h" />
     <ClInclude Include="..\vega\data\common.h" />
+    <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h" />
     <ClInclude Include="..\vega\data\image.h" />
     <ClInclude Include="..\vega\data\volume.h" />
     <ClInclude Include="..\vega\data\volume_graph.h" />
@@ -126,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="..\vega\common\profiler.cpp" />
     <ClCompile Include="..\vega\data\bitmap_graph.cpp" />
+    <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp" />
     <ClCompile Include="..\vega\data\image.cpp" />
     <ClCompile Include="..\vega\data\volume.cpp" />
     <ClCompile Include="..\vega\data\volume_graph.cpp" />

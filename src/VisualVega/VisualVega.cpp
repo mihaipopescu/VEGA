@@ -15,6 +15,7 @@
 #include "../vega/render/graph_view.h"
 #include "../vega/render/image_view.h"
 #include "../vega/render/volume_texture_view.h"
+#include "../vega/data/compact_hexagonal_lattice.h"
 
 /*! \mainpage VisualVega
  *
@@ -45,15 +46,21 @@ unsigned g_FrameCount = 0;
 
 camera g_cam;
 
-#define UNIT_TEST_3D
-#define SYNTHETIC_SCENE
+//#define UNIT_TEST_2D
+//#define UNIT_TEST_3D
+//#define SYNTHETIC_SCENE
+#define UNIT_TEST_COMPACT_LATTICE
 
-#ifndef UNIT_TEST_3D
+#ifdef UNIT_TEST_2D
 std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
 std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_presenter>();
-#else
+#endif
+#ifdef UNIT_TEST_3D
 std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume_graph, volume_texture_view, volume_texture_presenter>();
 std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_presenter>();
+#endif
+#ifdef UNIT_TEST_COMPACT_LATTICE
+std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<compact_hexagonal_lattice, graph_view, graph_presenter>();
 #endif
 
 void displayCB(void)
@@ -68,25 +75,29 @@ void displayCB(void)
     g_cam.render();
 
     // render objects
-#ifndef UNIT_TEST_3D
+#ifdef UNIT_TEST_2D
     //g_img->render();
     g_graph->render();
-#else
+#endif
+#ifdef UNIT_TEST_3D
     g_volume3D->render();
 	g_graph3D->render();
+#endif
+#ifdef UNIT_TEST_COMPACT_LATTICE
+    g_graph3D->render();
 #endif
 
     glutSwapBuffers();
     glutPostRedisplay();
 
-#ifdef _DEBUG
-    GLenum errCode;
-    if( (errCode = glGetError()) != GL_NO_ERROR )
-    {
-        cout << "OpenGL error:" << gluErrorString(errCode) << endl;
-        assert(false);
-    }
-#endif
+//#ifdef _DEBUG
+//    GLenum errCode;
+//    if( (errCode = glGetError()) != GL_NO_ERROR )
+//    {
+//        cout << "OpenGL error:" << gluErrorString(errCode) << endl;
+//        assert(false);
+//    }
+//#endif
 }
 
 void reshapeCB(int w, int h) 
@@ -132,12 +143,16 @@ void keyboardCB(unsigned char key, int x, int y)
 {
     g_cam.handle_common_keys(key, x, y);
 
-#ifndef UNIT_TEST_3D
+#ifdef UNIT_TEST_3D
     g_img->action_keyboard(key, x, y);
     g_graph->action_keyboard(key, x, y);
-#else
+#endif
+#ifdef UNIT_TEST_3D
 	g_volume3D->action_keyboard(key, x, y);
 	g_graph3D->action_keyboard(key, x, y);
+#endif
+#ifdef UNIT_TEST_COMPACT_LATTICE
+    g_graph3D->action_keyboard(key, x, y);
 #endif
 
     switch(key)
@@ -162,8 +177,7 @@ void mouseMotionCB(int x, int y)
 {
     g_cam.handle_mouse_motions(x, y);
 
-#ifndef UNIT_TEST_3D
-#else
+#ifdef UNIT_TEST_3D
     g_volume3D->action_mouse(0, 0, x, y);
 	g_graph3D->action_mouse(0, 0, x, y);
 #endif
@@ -199,13 +213,14 @@ bool init_gl_objects()
     profiler::create();
     profiler::get()->set_dump_on_end(true);
 
-#ifndef UNIT_TEST_3D
+#ifdef UNIT_TEST_2D
     if( !g_img->create("data/image/lenna.bmp") )
 		return false;
 
     g_graph->create(g_img->get_model());
-#else
+#endif
 
+#ifdef UNIT_TEST_3D
 #ifdef SYNTHETIC_SCENE
 	std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(32, 32, 32);
 
@@ -229,6 +244,10 @@ bool init_gl_objects()
 	g_volume3D->create(v);
 	v.reset();
 #endif
+#endif
+
+#ifdef UNIT_TEST_COMPACT_LATTICE
+    g_graph3D->create(60, 50);
 #endif
 
     return true;
