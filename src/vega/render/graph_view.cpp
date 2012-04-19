@@ -18,22 +18,18 @@ void vega::render::graph_view::render() const
 		//glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, myVertices.data());
 		//glColorPointer(4, GL_FLOAT, 0, myColors.data());
-        glDrawElements(GL_LINES, myVertices.size(), GL_UNSIGNED_SHORT, myIndices.data());
+        glDrawElements(myPrimitiveIsLine ? GL_LINES : GL_POINTS, myIndices.size(), GL_UNSIGNED_INT, myIndices.data());
 		glDisableClientState(GL_VERTEX_ARRAY);
 		//glDisableClientState(GL_COLOR_ARRAY);
 	}
 }
 
-void vega::render::graph_view::create( vega::uint8 width, vega::uint8 height )
+void vega::render::graph_view::create( vega::uint8 width, vega::uint8 height, vega::uint8 depth )
 {
     vega::data::compact_hexagonal_lattice chl;
-    chl.create(width, height, 1.0f);
+    chl.create(width, height, depth, 1.0f);
     
-    for(auto v=chl.myLattice.begin(); v != chl.myLattice.end(); ++v)
-    {
-        myVertices.push_back(vega::math::vector3d(v->x, v->y));
-    }
-
+	myVertices.insert(myVertices.begin(), chl.myLattice.begin(), chl.myLattice.end());
     myIndices.insert(myIndices.begin(), chl.myLines.begin(), chl.myLines.end());
 }
 

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <strstream>
+
 #include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/freeglut_ext.h>
+#include <GL/wglew.h>
 #include <assert.h>
 
 #include "../vega/common/profiler.h"
@@ -247,7 +249,7 @@ bool init_gl_objects()
 #endif
 
 #ifdef UNIT_TEST_COMPACT_LATTICE
-    g_graph3D->create(60, 50);
+    g_graph3D->create(32, 32, 32);
 #endif
 
     return true;
@@ -303,6 +305,12 @@ bool init(int argc, char **argv)
         cout << "OpenGL doesn't support 3d textures !" << endl;
         return false;
     }
+
+	if( !wglSwapIntervalEXT(1) )
+	{
+		cout << "Error enabling VSync !" << endl;
+		return false;
+	}
 
     if( !init_gl_objects() )
     {

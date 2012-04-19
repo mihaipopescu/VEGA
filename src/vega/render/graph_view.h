@@ -16,7 +16,7 @@ namespace vega
 			graph_view() : myRenderFlag(false), myPrimitiveIsLine(true) { }
 
 			void create(const std::shared_ptr<data::volume>& v);
-            void create( vega::uint8 width, vega::uint8 height );
+            void create( vega::uint8 width, vega::uint8 height, vega::uint8 depth );
 
 			void mst_kruskal();
 
@@ -29,7 +29,7 @@ namespace vega
 			bool myRenderFlag;
             bool myPrimitiveIsLine;
 			std::vector<math::vector3d> myVertices;
-            std::vector<uint16> myIndices;
+            std::vector<uint32> myIndices;
 			std::vector<math::vector4d> myColors;
         };
 

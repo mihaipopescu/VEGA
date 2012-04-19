@@ -3,63 +3,78 @@
 using namespace vega;
 
 
-void vega::data::compact_hexagonal_lattice::create( uint8 width, uint8 height, float span )
+void vega::data::compact_hexagonal_lattice::insert_lattice_line(uint32 idx1, uint32 idx2, uint16 delta_z)
 {
-    for(uint8 y=0; y<height; ++y)
-    {
-        float dx = y % 2 == 0 ? 0 : span / 2;
-        float fy = y * span;
-        for(uint8 x=0; x<width; ++x)
-        {
-            uint16 idx = y * width + x;
+	myLines.push_back(idx1);
+	myLines.push_back(idx2);
 
-            myLattice.push_back(math::vector2d(x * span + dx, fy));
-            if( y % 2 == 0 )
-            {
-                if( x % 3 == 2 )
-                {
-                    myLines.push_back(idx);
-                    myLines.push_back(idx-1);
-                }
-            }
-            else
-            {
-                switch( x % 3 )
-                {
-                case 0:
-                    if( x < width-1 && y > 0 )
-                    {
-                        myLines.push_back(idx);
-                        myLines.push_back(idx-width + 1);
-                    }
+	if( delta_z != 0 )
+	{
+		myLines.push_back(idx1);
+		myLines.push_back(idx1+delta_z);
 
-                    if( x > 0 )
-                    {
-                        myLines.push_back(idx);
-                        myLines.push_back(idx-1);
-                    }
+		myLines.push_back(idx2);
+		myLines.push_back(idx2+delta_z);
+	}
+}
 
-                    if( x < width - 1 && y < height -1 )
-                    {
-                        myLines.push_back(idx);
-                        myLines.push_back(idx+width + 1);
-                    }
-                    break;
-                case 2:
-                    if( x > 0 )
-                    {
-                        myLines.push_back(idx);
-                        myLines.push_back(idx-width);
-                    }
-                    if( y < height - 1 )
-                    {
-                        myLines.push_back(idx);
-                        myLines.push_back(idx+width);
-                    }
-                    break;
-                }
-            }
-        }
+void vega::data::compact_hexagonal_lattice::create( uint8 width, uint8 height, uint8 depth, float span )
+{
+	for(uint8 z=0; z<depth; ++z)
+	{
+		float fz = z * span;
+		uint16 diz = z < depth-1 ? width * height : 0;
 
-    }
+		for(uint8 y=0; y<height; ++y)
+		{
+			float dx = y % 2 == 0 ? 0 : span / 2;
+			float fy = y * span;
+			
+			for(uint8 x=0; x<width; ++x)
+			{
+				uint32 idx = z * width * height + y * width + x;
+
+				myLattice.push_back(math::vector3d(x * span + dx, fy, fz));
+				if( y % 2 == 0 )
+				{
+					if( x % 3 == 2 )
+					{
+						insert_lattice_line(idx, idx-1, diz);
+					}
+				}
+				else
+				{
+					switch( x % 3 )
+					{
+					case 0:
+						if( x < width-1 && y > 0 )
+						{
+							insert_lattice_line(idx, idx-width + 1, diz);
+						}
+
+						if( x > 0 )
+						{
+							insert_lattice_line(idx, idx-1, diz);
+						}
+
+						if( x < width - 1 && y < height -1 )
+						{
+							insert_lattice_line(idx, idx+width + 1, diz);
+						}
+						break;
+					case 2:
+						if( x > 0 )
+						{
+							insert_lattice_line(idx, idx-width, diz);
+						}
+						if( y < height - 1 )
+						{
+							insert_lattice_line(idx, idx+width, diz);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
 }

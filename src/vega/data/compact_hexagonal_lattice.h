@@ -2,7 +2,7 @@
 #define __VEGA_DATA_COMPACT_HEXAGONAL_LATTICE_H__
 
 #include <vector>
-#include "../math/vector2d.h"
+#include "../math/vector3d.h"
 #include "../common/types.h"
 #include "common.h"
 
@@ -17,11 +17,12 @@ namespace vega
             compact_hexagonal_lattice() { }
             virtual ~compact_hexagonal_lattice() { }
 
-            void create(uint8 width, uint8 height, float span);
+            void create(uint8 width, uint8 height, uint8 depth, float span);
 
+			void insert_lattice_line(uint32 idx, uint32 idx2, uint16 delta_z);
         
-            std::vector<math::vector2d> myLattice;
-            std::vector<uint16> myLines;
+            std::vector<math::vector3d> myLattice;
+            std::vector<uint32> myLines;
         };
 
 
