@@ -17,7 +17,7 @@ namespace vega
             compact_hexagonal_lattice() { }
             virtual ~compact_hexagonal_lattice() { }
 
-            void create(uint8 width, uint8 height, uint8 depth, float span);
+            void create(uint16 width, uint16 height, uint16 depth, float span);
 
 			void insert_lattice_line(uint32 idx, uint32 idx2, uint16 delta_z);
         

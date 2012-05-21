@@ -16,9 +16,6 @@
     <Filter Include="vega">
       <UniqueIdentifier>{492ef28f-4aa2-4e9b-8ed4-17f3f56c7b5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vega\MST">
-      <UniqueIdentifier>{1b8292cf-a47c-4a91-844b-8c1393166881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vega\Math">
       <UniqueIdentifier>{3d6d1fe1-f49a-4388-a10b-a1d93160d079}</UniqueIdentifier>
     </Filter>
@@ -34,6 +31,9 @@
     <Filter Include="vega\Data">
       <UniqueIdentifier>{398260bb-29db-4618-b12a-dc39c9f3a3c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vega\Algorithm">
+      <UniqueIdentifier>{8b7ed358-b27d-41b6-b6e0-e3cae7286f8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -47,15 +47,6 @@
     </ClInclude>
     <ClInclude Include="..\vega\graph\graph.hpp">
       <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\mst\kruskal.hpp">
-      <Filter>vega\MST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\mst\prim.hpp">
-      <Filter>vega\MST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\mst\boruvka.hpp">
-      <Filter>vega\MST</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\graph\common.hpp">
       <Filter>vega\Graph</Filter>
@@ -120,12 +111,6 @@
     <ClInclude Include="..\vega\data\volume_graph.h">
       <Filter>vega\Data</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\graph\hexagonal_lattice.h">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\graph\hexagonal_prismatic_lattice.h">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\data\volume_primitive.h">
       <Filter>vega\Data</Filter>
     </ClInclude>
@@ -136,6 +121,30 @@
       <Filter>vega\Graph</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\boruvka.hpp">
+      <Filter>vega\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\kmeans.hpp">
+      <Filter>vega\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\kruskal.hpp">
+      <Filter>vega\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\prim.hpp">
+      <Filter>vega\Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_texture.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_texture_graph.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\hexagonal_lattice.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\hexagonal_prismatic_lattice.h">
       <Filter>vega\Data</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,12 +182,6 @@
     <ClCompile Include="..\vega\data\volume_graph.cpp">
       <Filter>vega\Data</Filter>
     </ClCompile>
-    <ClCompile Include="..\vega\graph\hexagonal_lattice.cpp">
-      <Filter>vega\Graph</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\graph\hexagonal_prismatic_lattice.cpp">
-      <Filter>vega\Graph</Filter>
-    </ClCompile>
     <ClCompile Include="..\vega\data\volume_primitive.cpp">
       <Filter>vega\Data</Filter>
     </ClCompile>
@@ -186,6 +189,18 @@
       <Filter>vega\Render</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_texture.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_texture_graph.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\hexagonal_lattice.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\hexagonal_prismatic_lattice.cpp">
       <Filter>vega\Data</Filter>
     </ClCompile>
   </ItemGroup>

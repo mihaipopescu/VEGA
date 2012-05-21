@@ -19,7 +19,18 @@ namespace vega
 {
     namespace data
     {
-        class volume : public i_model
+        class volume_base : public i_model
+        {
+        public:
+            virtual uint16 get_width            () const = 0;
+            virtual uint16 get_height           () const = 0;
+            virtual uint16 get_depth            () const = 0;
+
+            virtual float get_voxel_distance    (uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2) const = 0;
+            virtual float get_voxel_color       (uint16 x, uint16 y, uint16 z) const = 0;
+        };
+
+        class volume : public volume_base
         {
         public:
             volume                      ();
@@ -37,6 +48,10 @@ namespace vega
 			void   set_voxel			(uint16 x, uint16 y, uint16 z, voxel v) { myVoxelArray[_I(x, y, z)] = v; }
             voxel  operator()           (uint16 x, uint16 y, uint16 z) const { return myVoxelArray[_I(x, y, z)]; }
             void*  get_raw_data()       { return myVoxelArray.data(); }
+
+            float  get_voxel_distance   (uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2) const { return fabs(get_voxel(x1, y1, z1) - get_voxel(x2, y2, z2)); }
+            float  get_voxel_color      (uint16 x, uint16 y, uint16 z) const { return get_voxel(x, y, z); }
+
             void*  get_lut_data()       { return &myTransferFunction->myTransferArray[0]; }
 
         public:

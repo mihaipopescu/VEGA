@@ -1,28 +1,28 @@
 #include <iostream>
 #include "bitmap_graph.h"
 #include "../math/transformations.h"
-#include "../graph/hexagonal_lattice.h"
+#include "../data/hexagonal_lattice.h"
 #include <stack>
 #include <iostream>
 
 
-using namespace vega;
+using namespace vega::data;
 using namespace vega::math;
 
 void vega::data::bitmap_graph::create( const image & img )
 {
     image::create(img);
 
-    graph::hexagonal_lattice * hl = new graph::hexagonal_lattice(img);
+    hexagonal_lattice * hl = new hexagonal_lattice(img);
 
     std::cout << "Generating bitmap graph..." << std::endl;
     
-    std::stack<graph::hexagonal_lattice::hexagon_node*> st;
+    std::stack<hexagonal_lattice::hexagon_node*> st;
     st.push( hl->get_root() );
 
     while( !st.empty() )
     {
-        graph::hexagonal_lattice::hexagon_node * node = st.top();
+        hexagonal_lattice::hexagon_node * node = st.top();
         
         // visit the node
         st.pop();

@@ -9,7 +9,7 @@
 
 namespace vega
 {
-    namespace mst
+    namespace algorithm
     {
         using namespace graph;
 

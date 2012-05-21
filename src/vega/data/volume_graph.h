@@ -16,6 +16,7 @@ namespace vega
             volume_graph() {}
 
             virtual bool create(const volume& v);
+            virtual bool create(const volume_base* v);
 
         };
     }

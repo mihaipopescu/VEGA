@@ -18,6 +18,7 @@
 #include "../vega/render/image_view.h"
 #include "../vega/render/volume_texture_view.h"
 #include "../vega/data/compact_hexagonal_lattice.h"
+#include "../vega/data/volume_texture.h"
 
 /*! \mainpage VisualVega
  *
@@ -49,9 +50,9 @@ unsigned g_FrameCount = 0;
 camera g_cam;
 
 //#define UNIT_TEST_2D
-//#define UNIT_TEST_3D
-//#define SYNTHETIC_SCENE
-#define UNIT_TEST_COMPACT_LATTICE
+#define UNIT_TEST_3D
+#define SYNTHETIC_SCENE
+//#define UNIT_TEST_COMPACT_LATTICE
 
 #ifdef UNIT_TEST_2D
 std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
@@ -60,6 +61,7 @@ std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image
 #ifdef UNIT_TEST_3D
 std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume_graph, volume_texture_view, volume_texture_presenter>();
 std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_presenter>();
+data::volume_texture* g_VolumeTex = NULL;
 #endif
 #ifdef UNIT_TEST_COMPACT_LATTICE
 std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<compact_hexagonal_lattice, graph_view, graph_presenter>();
@@ -145,7 +147,7 @@ void keyboardCB(unsigned char key, int x, int y)
 {
     g_cam.handle_common_keys(key, x, y);
 
-#ifdef UNIT_TEST_3D
+#ifdef UNIT_TEST_2D
     g_img->action_keyboard(key, x, y);
     g_graph->action_keyboard(key, x, y);
 #endif
@@ -237,6 +239,8 @@ bool init_gl_objects()
 
 	g_volume3D->create(vp);
 	g_graph3D->create(vp);
+    //g_VolumeTex->create(*vp);
+
 	vp.reset();
 #else
 	std::shared_ptr<volume> v = std::make_shared<volume>();

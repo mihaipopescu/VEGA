@@ -1,5 +1,6 @@
 #include "hexagonal_lattice.h"
 #include "../math/transformations.h"
+
 #include <stack>
 #include <map>
 #include <iostream>
@@ -8,7 +9,7 @@ using namespace vega;
 using namespace vega::math;
 
 
-vega::graph::hexagonal_lattice::hexagon_node::hexagon_node( uint16 _x, uint16 _y )
+vega::data::hexagonal_lattice::hexagon_node::hexagon_node( uint16 _x, uint16 _y )
     : x(_x)
     , y(_y)
     , visited(false)
@@ -18,13 +19,13 @@ vega::graph::hexagonal_lattice::hexagon_node::hexagon_node( uint16 _x, uint16 _y
      memset(hex, NULL, 6*sizeof(hexagon_node*));
 }
 
-vega::graph::hexagonal_lattice::hexagon_node::~hexagon_node()
+vega::data::hexagonal_lattice::hexagon_node::~hexagon_node()
 {
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-vega::graph::hexagonal_lattice::hexagonal_lattice( const data::image & img )
+vega::data::hexagonal_lattice::hexagonal_lattice( const data::image & img )
 {
     std::stack<hexagon_node*> st;
     std::map<unsigned int, hexagon_node*> m;
@@ -123,7 +124,7 @@ vega::graph::hexagonal_lattice::hexagonal_lattice( const data::image & img )
     }
 }
 
-vega::graph::hexagonal_lattice::~hexagonal_lattice()
+vega::data::hexagonal_lattice::~hexagonal_lattice()
 {
     std::stack<hexagon_node*> st;
     st.push(myRoot);

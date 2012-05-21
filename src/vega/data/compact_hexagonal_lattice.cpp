@@ -18,19 +18,19 @@ void vega::data::compact_hexagonal_lattice::insert_lattice_line(uint32 idx1, uin
 	}
 }
 
-void vega::data::compact_hexagonal_lattice::create( uint8 width, uint8 height, uint8 depth, float span )
+void vega::data::compact_hexagonal_lattice::create( uint16 width, uint16 height, uint16 depth, float span )
 {
-	for(uint8 z=0; z<depth; ++z)
+	for(uint16 z=0; z<depth; ++z)
 	{
 		float fz = z * span;
 		uint16 diz = z < depth-1 ? width * height : 0;
 
-		for(uint8 y=0; y<height; ++y)
+		for(uint16 y=0; y<height; ++y)
 		{
 			float dx = y % 2 == 0 ? 0 : span / 2;
 			float fy = y * span;
 			
-			for(uint8 x=0; x<width; ++x)
+			for(uint16 x=0; x<width; ++x)
 			{
 				uint32 idx = z * width * height + y * width + x;
 
