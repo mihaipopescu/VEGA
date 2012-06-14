@@ -7,22 +7,11 @@
 using namespace vega::data;
 
 
-bool vega::render::image_view::create(const char* szFilename)
+bool vega::render::image_view::create()
 {
     auto pImg = std::dynamic_pointer_cast<image>(myModel);
-    if( !pImg->create(szFilename) )
-        return false;
-
     create_texture(pImg);
     return true;
-}
-
-void vega::render::image_view::create(const std::shared_ptr<data::image> & img)
-{
-    auto pImg = std::dynamic_pointer_cast<image>(myModel);
-    pImg->create(*img);
-    
-    create_texture(pImg);
 }
 
 void vega::render::image_view::render() const
@@ -39,10 +28,10 @@ void vega::render::image_view::render() const
 
     glBegin(GL_QUADS);
 
-    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f, -0.5f, 0.5f);
-    glTexCoord2f(1.0f, 0.0f); glVertex3f(0.5f, -0.5f, 0.5f);
-    glTexCoord2f(1.0f, 1.0f); glVertex3f(0.5f, 0.5f, 0.5f);
-    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f, 0.5f, 0.5f);
+    glTexCoord2f(0.0f, 0.0f); glVertex3f(-0.5f * myASR, -0.5f, 0.5f);
+    glTexCoord2f(1.f, 0.0f); glVertex3f(0.5f * myASR, -0.5f, 0.5f);
+    glTexCoord2f(1.f, 1.0f); glVertex3f(0.5f * myASR, 0.5f, 0.5f);
+    glTexCoord2f(0.0f, 1.0f); glVertex3f(-0.5f * myASR, 0.5f, 0.5f);
 
     glEnd();
     glDisable(GL_TEXTURE_2D);
@@ -56,17 +45,19 @@ void vega::render::image_view::create_texture(const std::shared_ptr<image> & img
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // Linear Filtering
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, img->get_width(), img->get_height(), 0, GL_RGB, GL_UNSIGNED_BYTE, static_cast<const GLvoid*>(img->get_raw_data()));
+
+    myASR = (float)img->get_width() / (float)img->get_height();
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-void vega::render::image_presenter::handle_keyboard( unsigned char key, int x, int y )
+void vega::render::image_controller::handle_keyboard( unsigned char key, int x, int y )
 {
     switch( key )
     {
     case 'f':
         {
-            std::shared_ptr<image_view> view = std::dynamic_pointer_cast<image_view>(myView.lock());
+            std::shared_ptr<image_view> view = std::dynamic_pointer_cast<image_view>(myView);
             view->toggle_polygon_fill();
         }
         break;

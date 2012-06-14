@@ -5,7 +5,7 @@
 #include "graph_view.h"
 #include "../data/volume_graph.h"
 #include "../graph/graph.hpp"
-#include "../mst/kruskal.hpp"
+#include "../algorithm/mst/kruskal.hpp"
 #include "../graph/disjoint_threshold_sets.hpp"
 
 #include "../data/compact_hexagonal_lattice.h"
@@ -60,7 +60,7 @@ void vega::render::graph_view::mst_kruskal()
 	std::cout << "Applying Thresholded Kruskal MST... ";
 
 	mst.resize(pVolume->get_num_vertices() - 1);
-	uint16 mst_size = vega::mst::kruskal(*pVolume, mst.begin(), 0.3f);
+	uint16 mst_size = vega::algorithm::mst::kruskal(*pVolume, mst.begin(), 0.3f);
 
     std::cout << mst.size() << " edges added !" << std::endl;
 
@@ -84,25 +84,25 @@ void vega::render::graph_view::mst_kruskal()
 
 
 //////////////////////////////////////////////////////////////////////////
-void vega::render::graph_presenter::handle_keyboard( unsigned char key, int x, int y )
+void vega::render::graph_controller::handle_keyboard( unsigned char key, int x, int y )
 {
 	switch( key )
 	{
 	case ' ':
-		{
-			std::shared_ptr<graph_view> view = std::dynamic_pointer_cast<graph_view>(myView.lock());
-			view->toggle_render_flag();
-		}
-		break;
+	    {
+		    std::shared_ptr<graph_view> view = std::dynamic_pointer_cast<graph_view>(myView);
+		    view->toggle_render_flag();
+	    }
+	    break;
 	case 'k':
 		{
-			std::shared_ptr<graph_view> view = std::dynamic_pointer_cast<graph_view>(myView.lock());
+			std::shared_ptr<graph_view> view = std::dynamic_pointer_cast<graph_view>(myView);
 			view->mst_kruskal();
 		}
         break;
     case 'p':
         {
-            std::shared_ptr<graph_view> view = std::dynamic_pointer_cast<graph_view>(myView.lock());
+            std::shared_ptr<graph_view> view = std::dynamic_pointer_cast<graph_view>(myView);
             view->toggle_render_primitive();
         }
         break;

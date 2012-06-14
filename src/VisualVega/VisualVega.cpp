@@ -10,6 +10,7 @@
 #include "../vega/common/profiler.h"
 #include "../vega/data/bitmap_graph.h"
 #include "../vega/data/image.h"
+#include "../vega/data/resizeable_image.h"
 #include "../vega/data/volume.h"
 #include "../vega/data/volume_graph.h"
 #include "../vega/data/volume_primitive.h"
@@ -48,21 +49,25 @@ unsigned g_FrameCount = 0;
 
 camera g_cam;
 
-//#define UNIT_TEST_2D
+#define UNIT_TEST_2D
 //#define UNIT_TEST_3D
 //#define SYNTHETIC_SCENE
-#define UNIT_TEST_COMPACT_LATTICE
+//#define UNIT_TEST_COMPACT_LATTICE
 
 #ifdef UNIT_TEST_2D
-std::shared_ptr<image_view> g_img = i_view::factory_create<image, image_view, image_presenter>();
-std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_presenter>();
+std::shared_ptr<image_controller> g_imgCtrl = std::make_shared<image_controller>();
+std::shared_ptr<image_view> g_imgView = std::make_shared<image_view>();
+std::shared_ptr<image> g_img = std::make_shared<image>();
+std::shared_ptr<resizeable_image> g_resimg = std::make_shared<resizeable_image>();
+
+//std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_controller>();
 #endif
 #ifdef UNIT_TEST_3D
-std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume_graph, volume_texture_view, volume_texture_presenter>();
-std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_presenter>();
+std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume, volume_texture_view, volume_texture_controller>();
+std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_controller>();
 #endif
 #ifdef UNIT_TEST_COMPACT_LATTICE
-std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<compact_hexagonal_lattice, graph_view, graph_presenter>();
+std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<compact_hexagonal_lattice, graph_view, graph_controller>();
 #endif
 
 void displayCB(void)
@@ -78,8 +83,8 @@ void displayCB(void)
 
     // render objects
 #ifdef UNIT_TEST_2D
-    //g_img->render();
-    g_graph->render();
+    g_imgView->render();
+    //g_graph->render();
 #endif
 #ifdef UNIT_TEST_3D
     g_volume3D->render();
@@ -145,9 +150,9 @@ void keyboardCB(unsigned char key, int x, int y)
 {
     g_cam.handle_common_keys(key, x, y);
 
-#ifdef UNIT_TEST_3D
-    g_img->action_keyboard(key, x, y);
-    g_graph->action_keyboard(key, x, y);
+#ifdef UNIT_TEST_2D
+    g_imgCtrl->handle_keyboard(key, x, y);
+    //g_graph->action_keyboard(key, x, y);
 #endif
 #ifdef UNIT_TEST_3D
 	g_volume3D->action_keyboard(key, x, y);
@@ -216,10 +221,17 @@ bool init_gl_objects()
     profiler::get()->set_dump_on_end(true);
 
 #ifdef UNIT_TEST_2D
-    if( !g_img->create("data/image/lenna.bmp") )
+
+    model_view_controller(g_resimg, g_imgView, g_imgCtrl);
+
+    if( !g_resimg->create("data/image/lenna.bmp") )
 		return false;
 
-    g_graph->create(g_img->get_model());
+    g_resimg->resample<vega::algorithm::resample::bilinear_filter>(128, 256);
+    g_imgView->create();
+    
+
+    //g_graph->create(g_img->get_model());
 #endif
 
 #ifdef UNIT_TEST_3D
@@ -240,16 +252,16 @@ bool init_gl_objects()
 	vp.reset();
 #else
 	std::shared_ptr<volume> v = std::make_shared<volume>();
-    if( !v->load("data/volume/bonsai.vega") )
+    if( !v->load("data/volume/bonsai.vega", false) )
         return false;
-	g_graph3D->create(v);
+	//g_graph3D->create(v);
 	g_volume3D->create(v);
 	v.reset();
 #endif
 #endif
 
 #ifdef UNIT_TEST_COMPACT_LATTICE
-    g_graph3D->create(32, 32, 32);
+    g_graph3D->create(9, 9, 9);
 #endif
 
     return true;

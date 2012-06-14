@@ -16,9 +16,6 @@
     <Filter Include="vega">
       <UniqueIdentifier>{492ef28f-4aa2-4e9b-8ed4-17f3f56c7b5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vega\MST">
-      <UniqueIdentifier>{1b8292cf-a47c-4a91-844b-8c1393166881}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vega\Math">
       <UniqueIdentifier>{3d6d1fe1-f49a-4388-a10b-a1d93160d079}</UniqueIdentifier>
     </Filter>
@@ -34,6 +31,15 @@
     <Filter Include="vega\Data">
       <UniqueIdentifier>{398260bb-29db-4618-b12a-dc39c9f3a3c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vega\Algorithm">
+      <UniqueIdentifier>{c39c73b2-1ee0-411c-aaa7-25e3c2ee2cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Algorithm\MST">
+      <UniqueIdentifier>{3d605248-d33e-4108-bdc9-eaeff1529fe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Algorithm\Resample">
+      <UniqueIdentifier>{963a2bc3-c767-44d1-99e5-4764e227b9d8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -47,15 +53,6 @@
     </ClInclude>
     <ClInclude Include="..\vega\graph\graph.hpp">
       <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\mst\kruskal.hpp">
-      <Filter>vega\MST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\mst\prim.hpp">
-      <Filter>vega\MST</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\mst\boruvka.hpp">
-      <Filter>vega\MST</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\graph\common.hpp">
       <Filter>vega\Graph</Filter>
@@ -138,6 +135,24 @@
     <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h">
       <Filter>vega\Data</Filter>
     </ClInclude>
+    <ClInclude Include="..\vega\algorithm\mst\boruvka.hpp">
+      <Filter>vega\Algorithm\MST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\mst\kruskal.hpp">
+      <Filter>vega\Algorithm\MST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\mst\prim.hpp">
+      <Filter>vega\Algorithm\MST</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\resample\weights_table.h">
+      <Filter>vega\Algorithm\Resample</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\algorithm\resample\filters.h">
+      <Filter>vega\Algorithm\Resample</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\resizeable_image.h">
+      <Filter>vega\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisualVega.cpp">
@@ -186,6 +201,12 @@
       <Filter>vega\Render</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp">
+      <Filter>vega\Data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\algorithm\resample\weights_table.cpp">
+      <Filter>vega\Algorithm\Resample</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\resizeable_image.cpp">
       <Filter>vega\Data</Filter>
     </ClCompile>
   </ItemGroup>

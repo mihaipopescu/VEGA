@@ -34,10 +34,9 @@ namespace vega
         };
 
 
-        class graph_presenter : public i_presenter
+        class graph_controller : public i_controller
         {
-		public:
-			graph_presenter(const std::shared_ptr<graph_view> & _view, const std::shared_ptr<data::i_model> & _model) : i_presenter(_view, _model) { }
+        public:
 			virtual void handle_keyboard( unsigned char key, int x, int y );
 		};
 	}

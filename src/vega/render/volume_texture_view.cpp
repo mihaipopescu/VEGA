@@ -292,20 +292,20 @@ void vega::render::volume_texture_view::update_proxy_geometry()
 }
 
 //////////////////////////////////////////////////////////////////////////
-void vega::render::volume_texture_presenter::handle_mouse( int button, int state, int x, int y )
+void vega::render::volume_texture_controller::handle_mouse( int button, int state, int x, int y )
 {
-    std::shared_ptr<volume_texture_view> view = std::dynamic_pointer_cast<volume_texture_view>(myView.lock());
+    std::shared_ptr<volume_texture_view> view = std::dynamic_pointer_cast<volume_texture_view>(myView);
     if( view )
         view->update_proxy_geometry();
 }
 
-void vega::render::volume_texture_presenter::handle_keyboard( unsigned char key, int x, int y )
+void vega::render::volume_texture_controller::handle_keyboard( unsigned char key, int x, int y )
 {
 	switch( key )
 	{
 	case ' ':
 		{
-			std::shared_ptr<volume_texture_view> view = std::dynamic_pointer_cast<volume_texture_view>(myView.lock());
+			std::shared_ptr<volume_texture_view> view = std::dynamic_pointer_cast<volume_texture_view>(myView);
 			view->toggle_render_flag();
 		}
 		break;

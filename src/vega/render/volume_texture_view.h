@@ -10,10 +10,10 @@ namespace vega
 {
     namespace render
     {
-        class volume_texture_presenter;
+        class volume_texture_controller;
         class volume_texture_view : public i_view
         {
-            friend class volume_texture_presenter;
+            friend class volume_texture_controller;
         public:
             volume_texture_view();
 
@@ -51,12 +51,11 @@ namespace vega
 			bool myRenderFlag;
         };
 
-        class volume_texture_presenter : public i_presenter
+        class volume_texture_controller : public i_controller
         {
         public:
-            volume_texture_presenter(const std::shared_ptr<volume_texture_view> & _view, const std::shared_ptr<data::volume> & _model) : i_presenter(_view, _model) { }
             virtual void handle_mouse(int button, int state, int x, int y);
-			virtual void handle_keyboard( unsigned char key, int x, int y );
+			virtual void handle_keyboard( unsigned char key, int x, int y);
         };
 
     }

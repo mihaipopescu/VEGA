@@ -11,58 +11,44 @@ namespace vega
         class vega::data::i_model;
         class i_view;
 
-        // Model-View-Presenter Pattern: Supervising Controller
-        // http://msdn.microsoft.com/en-us/library/ff647543.aspx
-        // The presenter updates the view to reflect changes in the model.
-        // The interaction with the model is handled through the presenter.
-        class i_presenter
+        // Model-View-Controller Design Pattern
+        class i_controller
         {
         public:
-            i_presenter(const std::shared_ptr<i_view>& _view, const std::shared_ptr<vega::data::i_model>& _model) : myView(_view), myModel(_model) { }
-            virtual ~i_presenter() {}
+            i_controller() { }
+            virtual ~i_controller() {}
+
+            void set_model(const std::shared_ptr<vega::data::i_model>& _model) { myModel = _model; }
+            void set_view(const std::shared_ptr<i_view>& _view) { myView = _view; }
 
             virtual void handle_keyboard(unsigned char key, int x, int y) { }
             virtual void handle_mouse(int button, int state, int x, int y) { }
 
         protected:
-            std::weak_ptr<i_view> myView;
-            std::weak_ptr<vega::data::i_model> myModel;
+            std::shared_ptr<i_view> myView;
+            std::shared_ptr<vega::data::i_model> myModel;
         };
 
-        // MVP: View Interface
-        // How do I display my data ?
         class i_view 
         {
         public:
             i_view() { }
             virtual ~i_view() {}
 
-            void set_presenter(const std::shared_ptr<i_presenter>& _presenter) { myPresenter = _presenter; }
             void set_model(const std::shared_ptr<vega::data::i_model>& _model) { myModel = _model; }
-
-            void action_keyboard(unsigned char key, int x, int y) { myPresenter->handle_keyboard(key, x, y); }
-            void action_mouse(int button, int state, int x, int y) { myPresenter->handle_mouse(button, state, x, y); }
-
-            template <class Model, class View, class Presenter>
-            static std::shared_ptr<View> factory_create()
-            {
-                std::shared_ptr<Model> myModel = std::make_shared<Model>();
-                std::shared_ptr<View> myView = std::make_shared<View>();
-                std::shared_ptr<Presenter> myPresenter = std::make_shared<Presenter>(myView, myModel);
-
-                // make connections
-                myView->set_presenter(myPresenter);
-                myView->set_model(myModel);
-
-                return myView;
-            }
 
             virtual void render() const = 0;
 
-        public:
-            std::shared_ptr<i_presenter> myPresenter;
+        protected:
             std::shared_ptr<vega::data::i_model> myModel;
         };
+
+        static void model_view_controller(const std::shared_ptr<vega::data::i_model>& _model, const std::shared_ptr<i_view>& _view, const std::shared_ptr<i_controller>& _controller)
+        {
+            _view->set_model(_model);
+            _controller->set_model(_model);
+            _controller->set_view(_view);
+        }
 
     }
 }

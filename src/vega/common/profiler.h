@@ -6,9 +6,9 @@
 #include <map>
 
 
-#define PROFILE_BEGIN(key) vega::utils::profiler::get()->begin_profile(key);
-#define PROFILE_END(key) vega::utils::profiler::get()->end_profile(key);
-#define PROFILE_SMART(key) vega::utils::profile_smart profile_smartobj_##key(key);
+#define PROFILE_BEGIN(key) vega::utils::profiler::get()->begin_profile(key)
+#define PROFILE_END(key) vega::utils::profiler::get()->end_profile(key)
+#define PROFILE_SMART(key) vega::utils::profile_smart profile_smartobj_##key(key)
 
 namespace vega
 {

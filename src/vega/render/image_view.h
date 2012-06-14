@@ -13,10 +13,9 @@ namespace vega
         class image_view : public i_view
         {
         public:
-            image_view() : myPolygonModeFill(true), myTexture(0) { }
+            image_view() : myPolygonModeFill(true), myTexture(0), myASR(1.f) { }
 
-            virtual bool create(const char* szFilename);
-            virtual void create(const std::shared_ptr<data::image> & img);
+            virtual bool create();
 
             void toggle_polygon_fill() { myPolygonModeFill = !myPolygonModeFill; }
 
@@ -30,12 +29,12 @@ namespace vega
         private:
             uint32 myTexture;
             bool myPolygonModeFill;
+            float myASR;
         };
 
-        class image_presenter : public i_presenter
+        class image_controller : public i_controller
         {
         public:
-            image_presenter(const std::shared_ptr<image_view> & _view, const std::shared_ptr<data::image> & _model) : i_presenter(_view, _model) { }
             void handle_keyboard(unsigned char key, int x, int y);
         };
     }

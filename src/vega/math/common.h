@@ -5,6 +5,8 @@
 
 #define SQR(x) ((x)*(x))
 
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 namespace vega
 {
@@ -12,6 +14,7 @@ namespace vega
     {
         const float PI = 3.1415926535897932384626433832795f;
         const float PIBY2 = 1.5707963267948966192313216916398f;
+
         const float EPSILON = 1e-6f;
         const float INFINIT = (float)(0x8000000);
 
