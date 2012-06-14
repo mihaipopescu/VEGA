@@ -13,7 +13,7 @@ namespace vega
 		class graph_view : public i_view
 		{
 		public:
-			graph_view() : myRenderFlag(false), myPrimitiveIsLine(true) { }
+			graph_view() : myRenderFlag(false), myPrimitiveIsLine(true), myVerticesAreIndexed(false) { }
 
 			void create(const std::shared_ptr<data::volume>& v);
             void create( vega::uint8 width, vega::uint8 height, vega::uint8 depth );
@@ -28,6 +28,7 @@ namespace vega
 		private:
 			bool myRenderFlag;
             bool myPrimitiveIsLine;
+            bool myVerticesAreIndexed;
 			std::vector<math::vector3d> myVertices;
             std::vector<uint32> myIndices;
 			std::vector<math::vector4d> myColors;

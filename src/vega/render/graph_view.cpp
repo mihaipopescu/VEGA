@@ -12,13 +12,16 @@
 
 void vega::render::graph_view::render() const
 {
-	//if(myRenderFlag)
+	if(myRenderFlag)
 	{
 		glEnableClientState(GL_VERTEX_ARRAY);
 		//glEnableClientState(GL_COLOR_ARRAY);
 		glVertexPointer(3, GL_FLOAT, 0, myVertices.data());
 		//glColorPointer(4, GL_FLOAT, 0, myColors.data());
-        glDrawElements(myPrimitiveIsLine ? GL_LINES : GL_POINTS, myIndices.size(), GL_UNSIGNED_INT, myIndices.data());
+        if( myVerticesAreIndexed )
+            glDrawElements(myPrimitiveIsLine ? GL_LINES : GL_POINTS, myIndices.size(), GL_UNSIGNED_INT, myIndices.data());
+        else
+            glDrawArrays(GL_LINES, 0, myVertices.size());
 		glDisableClientState(GL_VERTEX_ARRAY);
 		//glDisableClientState(GL_COLOR_ARRAY);
 	}
@@ -31,6 +34,8 @@ void vega::render::graph_view::create( vega::uint8 width, vega::uint8 height, ve
     
 	myVertices.insert(myVertices.begin(), chl.myLattice.begin(), chl.myLattice.end());
     myIndices.insert(myIndices.begin(), chl.myLines.begin(), chl.myLines.end());
+
+    myVerticesAreIndexed = true;
 }
 
 void vega::render::graph_view::create( const std::shared_ptr<data::volume>& v )
@@ -42,10 +47,10 @@ void vega::render::graph_view::create( const std::shared_ptr<data::volume>& v )
 	{
 		myVertices.push_back(pVolume->get_vertex(e->source));
 		myVertices.push_back(pVolume->get_vertex(e->target));
-        float k = 1.f; //e->weight;
-        vega::math::vector4d c = vega::math::vector4d(k, k, k, 1.f);
-		myColors.push_back(c);
-		myColors.push_back(c);
+        //float k = 1.f; //e->weight;
+        //vega::math::vector4d c = vega::math::vector4d(k, k, k, 1.f);
+		//myColors.push_back(c);
+		//myColors.push_back(c);
 	}
 }
 
@@ -73,10 +78,10 @@ void vega::render::graph_view::mst_kruskal()
         Graph::edge_type e = mst[i];
         myVertices.push_back(pVolume->get_vertex(e.source));
         myVertices.push_back(pVolume->get_vertex(e.target));
-		float k = 1.f;
-		vega::math::vector4d c = vega::math::vector4d(k, k, k, 1.f);
-		myColors.push_back(c);
-		myColors.push_back(c);
+		//float k = 1.f;
+		//vega::math::vector4d c = vega::math::vector4d(k, k, k, 1.f);
+		//myColors.push_back(c);
+		//myColors.push_back(c);
 	}
 
 	std::cout << "Done !" << std::endl;

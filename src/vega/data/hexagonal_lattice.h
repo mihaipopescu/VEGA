@@ -1,13 +1,13 @@
-#ifndef __VEGA_GRAPH_HEXAGONAL_LATTICE_H__
-#define __VEGA_GRAPH_HEXAGONAL_LATTICE_H__
+#ifndef __VEGA_DATA_HEXAGONAL_LATTICE_H__
+#define __VEGA_DATA_HEXAGONAL_LATTICE_H__
 
+#include "image.h"
 #include "../common/types.h"
-#include "../data/image.h"
 #include "../math/vector3d.h"
 
 namespace vega
 {
-    namespace graph
+    namespace data
     {
         class hexagonal_lattice
         {
@@ -36,7 +36,7 @@ namespace vega
             };
 
         public:
-            hexagonal_lattice(const data::image & img);
+            hexagonal_lattice(const image & img);
             ~hexagonal_lattice();
 
             hexagon_node* get_root() { return myRoot; }
@@ -47,4 +47,4 @@ namespace vega
     }
 }
 
-#endif // __VEGA_GRAPH_HEXAGONAL_LATTICE_H__
+#endif // __VEGA_DATA_HEXAGONAL_LATTICE_H__

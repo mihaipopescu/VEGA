@@ -19,6 +19,7 @@
 #include "../vega/render/image_view.h"
 #include "../vega/render/volume_texture_view.h"
 #include "../vega/data/compact_hexagonal_lattice.h"
+#include "../vega/data/volume_texture.h"
 
 /*! \mainpage VisualVega
  *
@@ -65,6 +66,7 @@ std::shared_ptr<resizeable_image> g_resimg = std::make_shared<resizeable_image>(
 #ifdef UNIT_TEST_3D
 std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume, volume_texture_view, volume_texture_controller>();
 std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_controller>();
+data::volume_texture* g_VolumeTex = NULL;
 #endif
 #ifdef UNIT_TEST_COMPACT_LATTICE
 std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<compact_hexagonal_lattice, graph_view, graph_controller>();
@@ -249,6 +251,8 @@ bool init_gl_objects()
 
 	g_volume3D->create(vp);
 	g_graph3D->create(vp);
+    //g_VolumeTex->create(*vp);
+
 	vp.reset();
 #else
 	std::shared_ptr<volume> v = std::make_shared<volume>();

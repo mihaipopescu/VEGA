@@ -9,7 +9,7 @@ using namespace vega;
 using namespace vega::math;
 
 
-vega::graph::hexagonal_prismatic_lattice::prismatic_hexagon_node::prismatic_hexagon_node( uint16 _x, uint16 _y, uint16 _z )
+vega::data::hexagonal_prismatic_lattice::prismatic_hexagon_node::prismatic_hexagon_node( uint16 _x, uint16 _y, uint16 _z )
     : x(_x), y(_y), z(_z)
 	, density(-1.f)
 	, visited(false)
@@ -18,13 +18,13 @@ vega::graph::hexagonal_prismatic_lattice::prismatic_hexagon_node::prismatic_hexa
 	memset(hex, NULL, 20*sizeof(prismatic_hexagon_node*));
 }
 
-vega::graph::hexagonal_prismatic_lattice::prismatic_hexagon_node::~prismatic_hexagon_node()
+vega::data::hexagonal_prismatic_lattice::prismatic_hexagon_node::~prismatic_hexagon_node()
 {
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const data::volume &v )
+vega::data::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const volume_base* v )
 {
     std::stack<prismatic_hexagon_node*> st;
     std::map<unsigned int, prismatic_hexagon_node*> m;
@@ -35,12 +35,12 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
     st.push(myRoot);
     m[0] = myRoot;
 
-#ifdef _DEBUG
-	if( std::max( std::max(v.get_width(), v.get_height()), v.get_depth()) > 1024)
-	{
-		std::cerr << "WARNING: hexagonal_prismatic_lattice hash code will have conflicts !" << std::endl;
-	}
-#endif
+//#ifdef _DEBUG
+//	if( std::max( std::max(v.get_width(), v.get_height()), v.get_depth()) > 1024)
+//	{
+//		std::cerr << "WARNING: hexagonal_prismatic_lattice hash code will have conflicts !" << std::endl;
+//	}
+//#endif
 
     while( !st.empty() )
     {
@@ -52,18 +52,18 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
         float fAvgDensity = 0.f;
         float fMaxDeviation = 0.f;
 
-        // compute average color
+        // compute average color: TODO
         for(size_t h=0;h<8;++h)
         {
-            float vh = v.get_voxel(node->x + hex_voxel_offset[h][0], node->y + hex_voxel_offset[h][1], node->z);
+            float vh = v->get_voxel_color(node->x + hex_voxel_offset[h][0], node->y + hex_voxel_offset[h][1], node->z);
             fAvgDensity += vh;
-            for(size_t g=0; g<8; ++g)
-            {
-                float vg = v.get_voxel(node->x + hex_voxel_offset[g][0], node->y + hex_voxel_offset[g][1], node->z);
-                float fDeviation = fabs(vh - vg);
-                if( fDeviation > fMaxDeviation )
-                    fMaxDeviation = fDeviation;
-            }
+            //for(size_t g=0; g<8; ++g)
+            //{
+            //    float vg = v->get_voxel_color(node->x + hex_voxel_offset[g][0], node->y + hex_voxel_offset[g][1], node->z);
+            //    float fDeviation = fabs(vh - vg);
+            //    if( fDeviation > fMaxDeviation )
+            //        fMaxDeviation = fDeviation;
+            //}
         }
 
         // average on 8 voxels
@@ -88,7 +88,7 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
 			if( node->hex[h] == NULL )
 			{
 				// if we are on the range
-				if(xx >= 0 && xx + 3 < (int)v.get_width() && yy >= 0 && yy + 2 < (int)v.get_height() && zz >= 0 && zz + 1 < (int)v.get_depth())
+				if(xx >= 0 && xx + 3 < (int)v->get_width() && yy >= 0 && yy + 2 < (int)v->get_height() && zz >= 0 && zz + 1 < (int)v->get_depth())
 				{
 					unsigned int id = (xx << 20) | (yy << 10) | zz; // 10 bit code
 
@@ -148,7 +148,7 @@ vega::graph::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const dat
     } // end-while
 }
 
-vega::graph::hexagonal_prismatic_lattice::~hexagonal_prismatic_lattice()
+vega::data::hexagonal_prismatic_lattice::~hexagonal_prismatic_lattice()
 {
 	std::stack<prismatic_hexagon_node*> st;
 	st.push(myRoot);

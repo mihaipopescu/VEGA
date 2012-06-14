@@ -1,12 +1,11 @@
-#ifndef __VEGA_GRAPH_HEXAGONAL_PRISMATIC_LATTICE_H__
-#define __VEGA_GRAPH_HEXAGONAL_PRISMATIC_LATTICE_H__
+#ifndef __VEGA_DATA_HEXAGONAL_PRISMATIC_LATTICE_H__
+#define __VEGA_DATA_HEXAGONAL_PRISMATIC_LATTICE_H__
 
-#include "hexagonal_lattice.h"
-#include "../data/volume.h"
+#include "volume.h"
 
 namespace vega
 {
-    namespace graph
+    namespace data
     {
         class hexagonal_prismatic_lattice
         {
@@ -36,7 +35,7 @@ namespace vega
                 size_t vertexId;
             };
 
-            hexagonal_prismatic_lattice(const data::volume &v);
+            hexagonal_prismatic_lattice(const volume_base* v);
             ~hexagonal_prismatic_lattice();
 
             prismatic_hexagon_node* get_root() const { return myRoot; }
@@ -48,4 +47,4 @@ namespace vega
 }
 
 
-#endif // __VEGA_GRAPH_HEXAGONAL_PRISMATIC_LATTICE_H__
+#endif // __VEGA_DATA_HEXAGONAL_PRISMATIC_LATTICE_H__
