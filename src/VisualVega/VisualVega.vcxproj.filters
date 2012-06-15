@@ -40,6 +40,12 @@
     <Filter Include="vega\Algorithm\Resample">
       <UniqueIdentifier>{963a2bc3-c767-44d1-99e5-4764e227b9d8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vega\Data\Image">
+      <UniqueIdentifier>{ee1a9445-0bbe-4cd2-87d5-99546af3d578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vega\Data\Volume">
+      <UniqueIdentifier>{5a63e9fb-6dab-47e4-bc89-afaff5f3258a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -96,16 +102,7 @@
     <ClInclude Include="..\vega\math\plane.h">
       <Filter>vega\Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\data\image.h">
-      <Filter>vega\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\volume.h">
-      <Filter>vega\Data</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\data\common.h">
-      <Filter>vega\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\bitmap_graph.h">
       <Filter>vega\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\math\transfer_function.h">
@@ -114,20 +111,11 @@
     <ClInclude Include="..\vega\render\volume_texture_view.h">
       <Filter>vega\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\data\volume_graph.h">
-      <Filter>vega\Data</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\volume_primitive.h">
-      <Filter>vega\Data</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\render\graph_view.h">
       <Filter>vega\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\graph\disjoint_threshold_sets.hpp">
       <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h">
-      <Filter>vega\Data</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\algorithm\mst\boruvka.hpp">
       <Filter>vega\Algorithm\MST</Filter>
@@ -141,29 +129,41 @@
     <ClInclude Include="..\vega\algorithm\resample\filters.h">
       <Filter>vega\Algorithm\Resample</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\data\resizeable_image.h">
-      <Filter>vega\Data</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\algorithm\mst\kruskal.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>vega\Algorithm\MST</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\data\volume_texture.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\vega\data\bitmap_graph.h">
+      <Filter>vega\Data\Image</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\data\volume_texture_graph.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\vega\data\image.h">
+      <Filter>vega\Data\Image</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\graph\hexagonal_lattice.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\vega\data\resizeable_image.h">
+      <Filter>vega\Data\Image</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\graph\hexagonal_prismatic_lattice.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\hexagonal_lattice.h">
-      <Filter>vega\Data</Filter>
+    <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h">
+      <Filter>vega\Data\Volume</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\data\hexagonal_prismatic_lattice.h">
-      <Filter>vega\Data</Filter>
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume.h">
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_graph.h">
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_primitive.h">
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_texture.h">
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\volume_texture_graph.h">
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\hexagonal_lattice.h">
+      <Filter>vega\Data\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -179,15 +179,6 @@
     <ClCompile Include="..\vega\render\image_view.cpp">
       <Filter>vega\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\vega\data\image.cpp">
-      <Filter>vega\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\data\volume.cpp">
-      <Filter>vega\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\data\bitmap_graph.cpp">
-      <Filter>vega\Data</Filter>
-    </ClCompile>
     <ClCompile Include="..\vega\math\transfer_function.cpp">
       <Filter>vega\Math</Filter>
     </ClCompile>
@@ -197,35 +188,44 @@
     <ClCompile Include="..\vega\render\volume_texture_view.cpp">
       <Filter>vega\Render</Filter>
     </ClCompile>
-    <ClCompile Include="..\vega\data\volume_graph.cpp">
-      <Filter>vega\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\data\volume_primitive.cpp">
-      <Filter>vega\Data</Filter>
-    </ClCompile>
     <ClCompile Include="..\vega\render\graph_view.cpp">
       <Filter>vega\Render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp">
-      <Filter>vega\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\algorithm\resample\weights_table.cpp">
       <Filter>vega\Algorithm\Resample</Filter>
     </ClCompile>
+    <ClCompile Include="..\vega\data\bitmap_graph.cpp">
+      <Filter>vega\Data\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\image.cpp">
+      <Filter>vega\Data\Image</Filter>
+    </ClCompile>
     <ClCompile Include="..\vega\data\resizeable_image.cpp">
-      <Filter>vega\Data</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\data\volume_texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\vega\data\volume_texture_graph.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>vega\Data\Image</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\data\hexagonal_lattice.cpp">
-      <Filter>vega\Data</Filter>
+      <Filter>vega\Data\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp">
+      <Filter>vega\Data\Volume</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\data\hexagonal_prismatic_lattice.cpp">
-      <Filter>vega\Data</Filter>
+      <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume.cpp">
+      <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_graph.cpp">
+      <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_primitive.cpp">
+      <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_texture.cpp">
+      <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\volume_texture_graph.cpp">
+      <Filter>vega\Data\Volume</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

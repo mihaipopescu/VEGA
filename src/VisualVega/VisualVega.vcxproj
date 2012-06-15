@@ -40,14 +40,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>..\..\</OutDir>
-    <IntDir>..\..\tmp\$(Configuration)\</IntDir>
+    <IntDir>..\..\tmp\$(Configuration)\$(TargetName)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
     <IncludePath>$(SolutionDir)\external\glew\include;$(SolutionDir)\external\freeglut\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\..\</OutDir>
-    <IntDir>..\..\tmp\$(Configuration)\</IntDir>
+    <IntDir>..\..\tmp\$(Configuration)\$(TargetName)\</IntDir>
     <IncludePath>$(SolutionDir)\external\glew\include;$(SolutionDir)\external\freeglut\include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -58,6 +58,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;FREEGLUT_STATIC;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,8 +116,6 @@
     <ClInclude Include="..\vega\graph\edge.hpp" />
     <ClInclude Include="..\vega\graph\graph.hpp" />
     <ClInclude Include="..\vega\graph\common.hpp" />
-    <ClInclude Include="..\vega\graph\hexagonal_lattice.h" />
-    <ClInclude Include="..\vega\graph\hexagonal_prismatic_lattice.h" />
     <ClInclude Include="..\vega\math\common.h" />
     <ClInclude Include="..\vega\math\matrix.h" />
     <ClInclude Include="..\vega\math\plane.h" />
@@ -156,6 +155,11 @@
   <ItemGroup>
     <ProjectReference Include="..\external\freeglut\freeglut.vcxproj">
       <Project>{877e8b37-11c7-453f-a909-0279150fe1a1}</Project>
+      <Private>false</Private>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
+      <LinkLibraryDependencies>true</LinkLibraryDependencies>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <ProjectReference Include="..\external\glew\glew.vcxproj">
       <Project>{afa6b7a8-7f00-4446-8417-ab6095fc029e}</Project>
