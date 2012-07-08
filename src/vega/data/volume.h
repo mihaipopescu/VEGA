@@ -19,48 +19,35 @@ namespace vega
 {
     namespace data
     {
-        class volume_base : public i_model
-        {
-        public:
-            virtual uint16 get_width            () const = 0;
-            virtual uint16 get_height           () const = 0;
-            virtual uint16 get_depth            () const = 0;
-
-            virtual float get_voxel_distance    (uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2) const = 0;
-            virtual float get_voxel_color       (uint16 x, uint16 y, uint16 z) const = 0;
-        };
-
-        class volume : public volume_base
+        class volume : public i_model
         {
         public:
             volume                      ();
             volume                      (uint16 Width, uint16 Height, uint16 Depth);
             virtual ~volume             ();
 
-			virtual bool create			(const volume &v) { copy_from(v); return true; }
-
             size_t get_size             () const { return myWidth * myHeight * myDepth; }
+
             uint16 get_width            () const { return myWidth; }
             uint16 get_height           () const { return myHeight; }
             uint16 get_depth            () const { return myDepth; }
 
             float  get_voxel            (uint16 x, uint16 y, uint16 z) const { return float(myVoxelArray[_I(x,y,z)])/255.f; }
 			void   set_voxel			(uint16 x, uint16 y, uint16 z, voxel v) { myVoxelArray[_I(x, y, z)] = v; }
-            voxel  operator()           (uint16 x, uint16 y, uint16 z) const { return myVoxelArray[_I(x, y, z)]; }
+            voxel& operator()           (uint16 x, uint16 y, uint16 z) { return myVoxelArray[_I(x, y, z)]; }
+
             void*  get_raw_data()       { return myVoxelArray.data(); }
-
-            float  get_voxel_distance   (uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2) const { return fabs(get_voxel(x1, y1, z1) - get_voxel(x2, y2, z2)); }
-            float  get_voxel_color      (uint16 x, uint16 y, uint16 z) const { return get_voxel(x, y, z); }
-
             void*  get_lut_data()       { return &myTransferFunction->myTransferArray[0]; }
+            void*  get_color_data()     { return myPaintedVoxels.data(); }
+
+            float       get_voxel_color_distance(uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2) const;
+            r8g8b8a8    get_voxel_color         (uint16 x, uint16 y, uint16 z) const { return myPaintedVoxels[_I(x, y, z)]; }
 
         public:
-            void copy_from              (const volume& v);
             bool load                   (const std::string& _FileName, bool _UseGradients);
             bool save                   ();
 			bool save_as				(const std::string& _FileName);
             void compute_gradients      (int nSampleRadius = 1);
-            void paint_voxels           (std::vector<r8g8b8a8>& vPaintedVoxels) const;
 
         protected:
             bool load_raw               ();
@@ -86,6 +73,7 @@ namespace vega
             std::vector<voxel>                          myVoxelArray;
             std::vector<math::vector3d>                 myGradients;
             std::shared_ptr<math::transfer_function>    myTransferFunction;
+            std::vector<r8g8b8a8>                       myPaintedVoxels;
 
             bool                                        myVolumeUsesGradients;
             bool                                        myGradientDataIsDirty;

@@ -101,6 +101,11 @@ namespace vega
                 return fabsf(norm()) < EPSILON;
             }
 
+            bool is_invalid() const
+            {
+                return x >= INF;
+            }
+
             operator vector2d()
             {
                 return vector2d(x, y);

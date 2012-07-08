@@ -1,54 +1,34 @@
-#include <iostream>
 #include "bitmap_graph.h"
 #include "../math/transformations.h"
-#include "../data/hexagonal_lattice.h"
-#include <stack>
-#include <iostream>
+#include "../common/logger.h"
 
-
-using namespace vega::data;
-using namespace vega::math;
 
 void vega::data::bitmap_graph::create( const image & img )
 {
-    image::create(img);
+    SMART_LOG_FN;
 
-    hexagonal_lattice * hl = new hexagonal_lattice(img);
-
-    std::cout << "Generating bitmap graph..." << std::endl;
+    myLattice = std::make_shared<hexagonal_lattice>(img);
     
-    std::stack<hexagonal_lattice::hexagon_node*> st;
-    st.push( hl->get_root() );
-
-    while( !st.empty() )
+    uint32 k = 0;
+    for(int i=0;i<myLattice->myHeight;++i)
     {
-        hexagonal_lattice::hexagon_node * node = st.top();
-        
-        // visit the node
-        st.pop();
-        node->visited = true;
-
-        node->vertexId = add_vertex(vector2d(node->x, node->y));
-
-        image::set_pixel_contrast(node->x+1, node->y+1, 10.f);
-
-        // expand the list
-        for(int i=0; i<6; ++i)
+        for(int j=0;j<myLattice->myWidth;++j)
         {
-            if( node->hex[i] )
+            myLattice->myLatticeCells[k++].vertexId = add_vertex(k);
+        }
+    }
+
+    k=0;
+    for(int i=0;i<myLattice->myHeight;++i)
+    {
+        for(int j=0;j<myLattice->myWidth;++j)
+        {
+            hexagonal_lattice::hexagon_node& node = myLattice->myLatticeCells[k++];
+            for(int h=0;h<6;++h)
             {
-                if( !node->hex[i]->visited )
-                {
-                    st.push(node->hex[i]);
-                }
-                else
-                {
-                    add_edge(node->vertexId, node->hex[i]->vertexId, HSV_distance_from_RGB(node->color, node->hex[i]->color));
-                }
+                if( node.hex[h] != (uint32)-1 )
+                    add_edge(node.vertexId, myLattice->myLatticeCells[node.hex[h]].vertexId, math::HSV_distance_from_RGB(node.color, myLattice->myLatticeCells[node.hex[h]].color));
             }
         }
     }
-    
-    std::cout << "Cleaning up after creating bitmap graph..." << std::endl;
-    delete hl;
 }

@@ -10,6 +10,9 @@ using namespace vega::data;
 bool vega::render::image_view::create()
 {
     auto pImg = std::dynamic_pointer_cast<image>(myModel);
+    if( pImg == NULL )
+        return false;
+
     create_texture(pImg);
     return true;
 }

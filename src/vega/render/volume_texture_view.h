@@ -17,10 +17,7 @@ namespace vega
         public:
             volume_texture_view();
 
-			std::shared_ptr<data::volume> get_model() const { return std::dynamic_pointer_cast<data::volume>(myModel); }
-
-            bool create(const std::string& _FileName);
-			bool create(const std::shared_ptr<data::volume>& v);
+            virtual bool create();
 
             virtual void render() const;
 
@@ -35,6 +32,7 @@ namespace vega
                 eTex_TranferFunction,
                 eTex_ENUMNO
             };
+
             uint32 myTextureHandle[2];
             
             std::vector<vega::math::vector3d> myFrameVertices;

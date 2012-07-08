@@ -27,22 +27,12 @@ vega::render::volume_texture_view::volume_texture_view()
          myTextureHandle[i] = 0;
 }
 
-bool vega::render::volume_texture_view::create( const std::string& _FileName )
+bool vega::render::volume_texture_view::create( )
 {
-	auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
-	if( !pVolume->load(_FileName, false) )
-	{
-		std::cerr << "Couldn't load volume " << _FileName.c_str() << std::endl;
-		return false;
-	}
+    auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
 
-	return create(pVolume);
-}
-
-bool vega::render::volume_texture_view::create( const std::shared_ptr<data::volume>& v )
-{
-	auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
-	pVolume->create(*v);
+    if( pVolume == NULL )
+        return false;
 
     // vertex coords array
     //    v2----- v6
@@ -76,14 +66,6 @@ bool vega::render::volume_texture_view::create( const std::shared_ptr<data::volu
     myFrameSegments[11] = std::pair<int,int>(3, 7);
 
     update_proxy_geometry();
-
-    std::cout << "Creating Volumetric Texture... ";
-
-    // create 3D texture 
-    std::vector<r8g8b8a8> v3DTextureData;
-    pVolume->paint_voxels(v3DTextureData);
-
-    std::cout << "Done !" << std::endl;
     
     glEnable(GL_TEXTURE_3D);
 
@@ -99,7 +81,7 @@ bool vega::render::volume_texture_view::create( const std::shared_ptr<data::volu
 
     // set pixel store with no alignment when reading from main memory
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, pVolume->get_width(), pVolume->get_height(), pVolume->get_depth(), 0, GL_RGBA, GL_UNSIGNED_BYTE, v3DTextureData.data());
+    glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA8, pVolume->get_width(), pVolume->get_height(), pVolume->get_depth(), 0, GL_RGBA, GL_UNSIGNED_BYTE, pVolume->get_color_data());
 
     glBindTexture(GL_TEXTURE_2D, myTextureHandle[eTex_TranferFunction]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);

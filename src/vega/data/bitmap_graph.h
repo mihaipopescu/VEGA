@@ -2,25 +2,22 @@
 #define __VEGA_DATA_BITMAP_GRAPH_H__
 
 #include <memory>
-#include "common.h"
 #include "image.h"
-#include "../math/vector2d.h"
-#include "../graph/graph.hpp"
+#include "../data/graph.hpp"
+#include "hexagonal_lattice.h"
 
 
 namespace vega
 {
     namespace data
     {
-        class bitmap_graph : public image, protected graph::weighted_undirected_graph<math::vector2d>
+        class bitmap_graph : protected data::graph::weighted_undirected_graph<uint32>
         {
         public:
-            bitmap_graph() {}
-
-            virtual void create(const image & img);
+            void create(const image & img);
 
         protected:
-
+            std::shared_ptr<hexagonal_lattice> myLattice;
         };
     }
 }

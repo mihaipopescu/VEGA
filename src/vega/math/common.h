@@ -16,7 +16,7 @@ namespace vega
         const float PIBY2 = 1.5707963267948966192313216916398f;
 
         const float EPSILON = 1e-6f;
-        const float INFINIT = (float)(0x8000000);
+        const float INF = (float)(0x80000000);
 
         inline bool is_null(float v)
         {

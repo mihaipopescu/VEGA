@@ -1,6 +1,7 @@
 #ifndef __VEGA_DATA_HEXAGONAL_LATTICE_H__
 #define __VEGA_DATA_HEXAGONAL_LATTICE_H__
 
+#include <vector>
 #include "image.h"
 #include "../common/types.h"
 #include "../math/vector3d.h"
@@ -24,25 +25,18 @@ namespace vega
                 //     \__/
                 //
 
-                hexagon_node(uint16 _x, uint16 _y);
-                ~hexagon_node();
-
-                uint16 x, y;            //!< insertion point 
+                uint16 x, y;            //!< insertion point
                 math::vector3d color;   //!< average color
-                hexagon_node* hex[6];   //!< neighbor hexagons
-                bool visited;
-				bool to_be_deleted;
-                size_t vertexId;
+                uint32 hex[6];          //!< neighbor hexagons lattice index
+                uint32 vertexId;        
             };
 
         public:
             hexagonal_lattice(const image & img);
-            ~hexagonal_lattice();
-
-            hexagon_node* get_root() { return myRoot; }
-
-        private:
-            hexagon_node * myRoot;
+        
+            std::vector<hexagon_node> myLatticeCells;
+            uint16 myWidth;
+            uint16 myHeight;
         };
     }
 }
