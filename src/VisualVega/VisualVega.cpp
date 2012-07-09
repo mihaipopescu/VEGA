@@ -14,6 +14,7 @@
 #include "../vega/data/volume.h"
 #include "../vega/data/volume_graph.h"
 #include "../vega/data/volume_primitive.h"
+#include "../vega/data/resizeable_volume.h"
 #include "../vega/render/camera.h"
 #include "../vega/render/graph_view.h"
 #include "../vega/render/image_view.h"
@@ -60,6 +61,7 @@ std::shared_ptr<image_controller> g_imgCtrl = std::make_shared<image_controller>
 std::shared_ptr<image_view> g_imgView = std::make_shared<image_view>();
 std::shared_ptr<image> g_img = std::make_shared<image>();
 std::shared_ptr<resizeable_image> g_resimg = std::make_shared<resizeable_image>();
+std::shared_ptr<resizeable_volume> g_resvol = std::make_shared<resizeable_volume>();
 
 //std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_controller>();
 #endif
@@ -232,6 +234,8 @@ bool init_gl_objects()
     g_resimg->resample<vega::algorithm::resample::bilinear_filter>(128, 256);
     g_imgView->create();
     
+    g_resvol->load("data/volume/synthetic.vega", false);
+    g_resvol->resample<vega::algorithm::resample::bilinear_filter>(64, 16, 32);
 
     //g_graph->create(g_img->get_model());
 #endif

@@ -165,6 +165,9 @@
     <ClInclude Include="..\vega\data\hexagonal_lattice.h">
       <Filter>vega\Data\Image</Filter>
     </ClInclude>
+    <ClInclude Include="..\vega\data\resizeable_volume.h">
+      <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisualVega.cpp">
@@ -225,6 +228,9 @@
       <Filter>vega\Data\Volume</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\data\volume_texture_graph.cpp">
+      <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\data\resizeable_volume.cpp">
       <Filter>vega\Data\Volume</Filter>
     </ClCompile>
   </ItemGroup>

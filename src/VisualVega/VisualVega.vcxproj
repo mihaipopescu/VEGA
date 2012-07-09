@@ -106,6 +106,7 @@
     <ClInclude Include="..\vega\data\hexagonal_prismatic_lattice.h" />
     <ClInclude Include="..\vega\data\image.h" />
     <ClInclude Include="..\vega\data\resizeable_image.h" />
+    <ClInclude Include="..\vega\data\resizeable_volume.h" />
     <ClInclude Include="..\vega\data\volume.h" />
     <ClInclude Include="..\vega\data\volume_graph.h" />
     <ClInclude Include="..\vega\data\volume_primitive.h" />
@@ -139,6 +140,7 @@
     <ClCompile Include="..\vega\data\hexagonal_prismatic_lattice.cpp" />
     <ClCompile Include="..\vega\data\image.cpp" />
     <ClCompile Include="..\vega\data\resizeable_image.cpp" />
+    <ClCompile Include="..\vega\data\resizeable_volume.cpp" />
     <ClCompile Include="..\vega\data\volume.cpp" />
     <ClCompile Include="..\vega\data\volume_graph.cpp" />
     <ClCompile Include="..\vega\data\volume_primitive.cpp" />
