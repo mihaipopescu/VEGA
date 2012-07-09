@@ -15,8 +15,7 @@ namespace vega
 		public:
 			graph_view() : myRenderFlag(false), myPrimitiveIsLine(true), myVerticesAreIndexed(false) { }
 
-			void create(const std::shared_ptr<data::volume>& v);
-            void create( vega::uint8 width, vega::uint8 height, vega::uint8 depth );
+			bool create();
 
 			void mst_kruskal();
 

@@ -1,5 +1,5 @@
-#ifndef __VEGA_GRAPH_COMMON_HPP__
-#define __VEGA_GRAPH_COMMON_HPP__
+#ifndef __VEGA_DATA_COMMON_HPP__
+#define __VEGA_DATA_COMMON_HPP__
 
 
 namespace vega

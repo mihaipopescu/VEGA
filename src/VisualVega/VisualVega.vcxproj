@@ -96,12 +96,18 @@
     <ClInclude Include="..\vega\algorithm\mst\prim.hpp" />
     <ClInclude Include="..\vega\algorithm\resample\filters.h" />
     <ClInclude Include="..\vega\algorithm\resample\weights_table.h" />
+    <ClInclude Include="..\vega\common\logger.h" />
     <ClInclude Include="..\vega\common\profiler.h" />
     <ClInclude Include="..\vega\common\singleton.h" />
     <ClInclude Include="..\vega\common\types.h" />
     <ClInclude Include="..\vega\data\bitmap_graph.h" />
     <ClInclude Include="..\vega\data\common.h" />
     <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h" />
+    <ClInclude Include="..\vega\data\disjoint_sets.hpp" />
+    <ClInclude Include="..\vega\data\disjoint_threshold_sets.hpp" />
+    <ClInclude Include="..\vega\data\edge.hpp" />
+    <ClInclude Include="..\vega\data\graph.hpp" />
+    <ClInclude Include="..\vega\data\graph_traits.hpp" />
     <ClInclude Include="..\vega\data\hexagonal_lattice.h" />
     <ClInclude Include="..\vega\data\hexagonal_prismatic_lattice.h" />
     <ClInclude Include="..\vega\data\image.h" />
@@ -110,13 +116,6 @@
     <ClInclude Include="..\vega\data\volume.h" />
     <ClInclude Include="..\vega\data\volume_graph.h" />
     <ClInclude Include="..\vega\data\volume_primitive.h" />
-    <ClInclude Include="..\vega\data\volume_texture.h" />
-    <ClInclude Include="..\vega\data\volume_texture_graph.h" />
-    <ClInclude Include="..\vega\graph\disjoint_sets.hpp" />
-    <ClInclude Include="..\vega\graph\disjoint_threshold_sets.hpp" />
-    <ClInclude Include="..\vega\graph\edge.hpp" />
-    <ClInclude Include="..\vega\graph\graph.hpp" />
-    <ClInclude Include="..\vega\graph\common.hpp" />
     <ClInclude Include="..\vega\math\common.h" />
     <ClInclude Include="..\vega\math\matrix.h" />
     <ClInclude Include="..\vega\math\plane.h" />
@@ -133,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\vega\algorithm\resample\weights_table.cpp" />
+    <ClCompile Include="..\vega\common\logger.cpp" />
     <ClCompile Include="..\vega\common\profiler.cpp" />
     <ClCompile Include="..\vega\data\bitmap_graph.cpp" />
     <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp" />
@@ -144,8 +144,6 @@
     <ClCompile Include="..\vega\data\volume.cpp" />
     <ClCompile Include="..\vega\data\volume_graph.cpp" />
     <ClCompile Include="..\vega\data\volume_primitive.cpp" />
-    <ClCompile Include="..\vega\data\volume_texture.cpp" />
-    <ClCompile Include="..\vega\data\volume_texture_graph.cpp" />
     <ClCompile Include="..\vega\math\transfer_function.cpp" />
     <ClCompile Include="..\vega\math\transformations.cpp" />
     <ClCompile Include="..\vega\render\camera.cpp" />

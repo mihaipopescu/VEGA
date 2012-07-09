@@ -3,21 +3,26 @@
 
 #include "common.h"
 #include "volume.h"
-#include "../graph/graph.hpp"
+#include "../data/graph.hpp"
 #include "../math/vector3d.h"
+#include "../data/hexagonal_prismatic_lattice.h"
+
+#include <memory>
 
 namespace vega
 {
     namespace data
     {
-        class volume_graph : public volume, public graph::weighted_undirected_graph<math::vector3d>
+        class volume_graph : public data::graph::weighted_undirected_graph<uint32>
         {
         public:
             volume_graph() {}
 
-            virtual bool create(const volume& v);
-            virtual bool create(const volume_base* v);
+            void create(const volume& v);
 
+
+        public:
+            std::shared_ptr<hexagonal_prismatic_lattice> myLattice;
         };
     }
 }

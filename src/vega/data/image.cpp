@@ -42,8 +42,8 @@ namespace vega
             GetDIBits(mdc, _DIBHandle, 0, 0, NULL, (BITMAPINFO*)&_biInfo, DIB_RGB_COLORS);
 
             std::vector<uint8> pData(_biInfo.bmiHeader.biSizeImage);
-            myHeight = _biInfo.bmiHeader.biHeight;
-            myWidth = _biInfo.bmiHeader.biWidth;
+            myHeight = (uint16)_biInfo.bmiHeader.biHeight;
+            myWidth = (uint16)_biInfo.bmiHeader.biWidth;
 
             // read the bitmap data
             // NOTE: We use this method to access the bitmap bits in order to modify them
@@ -71,7 +71,7 @@ namespace vega
             {
                 myHeight = 0;
                 myWidth = 0;
-                std::cerr << "Failed ! Reason: Invalid image bitcout." << std::endl;
+                std::cerr << "Failed ! Reason: Invalid image bit count." << std::endl;
                 DeleteObject(_DIBHandle);
                 DeleteDC(mdc);
                 return false;
@@ -83,5 +83,33 @@ namespace vega
             std::cout << "Width = " << myWidth << ", Height = " << myHeight << std::endl;
             return true;
         }
+
+        bool image::get_pixel( uint16 x, uint16 y, math::vector3d& pixel ) const
+        {
+            size_t index = 3*(y*myWidth + x);
+            if( index >= myRGBData.size() )
+                return false;
+
+            pixel = math::vector3d(myRGBData[index+0]/255.f, myRGBData[index+1]/255.f, myRGBData[index+2]/255.f);
+            return true;
+        }
+
+        bool image::set_pixel_contrast( uint16 x, uint16 y, float fContrast )
+        {
+            size_t index = 3*(y*myWidth + x);
+            if( index >= myRGBData.size() )
+                return false;
+
+            float r = myRGBData[index+0] * fContrast;
+            float g = myRGBData[index+1] * fContrast;
+            float b = myRGBData[index+2] * fContrast;
+
+            myRGBData[index+0] = r > 255.f ? 255 : (uint8)r;
+            myRGBData[index+1] = g > 255.f ? 255 : (uint8)g;
+            myRGBData[index+2] = b > 255.f ? 255 : (uint8)b;
+
+            return true;
+        }
+
     }
 }

@@ -7,6 +7,7 @@
 #include <GL/wglew.h>
 #include <assert.h>
 
+#include "../vega/common/logger.h"
 #include "../vega/common/profiler.h"
 #include "../vega/data/bitmap_graph.h"
 #include "../vega/data/image.h"
@@ -20,7 +21,7 @@
 #include "../vega/render/image_view.h"
 #include "../vega/render/volume_texture_view.h"
 #include "../vega/data/compact_hexagonal_lattice.h"
-#include "../vega/data/volume_texture.h"
+
 
 /*! \mainpage VisualVega
  *
@@ -51,10 +52,9 @@ unsigned g_FrameCount = 0;
 
 camera g_cam;
 
-#define UNIT_TEST_2D
-//#define UNIT_TEST_3D
-//#define SYNTHETIC_SCENE
-//#define UNIT_TEST_COMPACT_LATTICE
+//#define UNIT_TEST_2D
+#define UNIT_TEST_3D
+#define SYNTHETIC_SCENE
 
 #ifdef UNIT_TEST_2D
 std::shared_ptr<image_controller> g_imgCtrl = std::make_shared<image_controller>();
@@ -62,17 +62,19 @@ std::shared_ptr<image_view> g_imgView = std::make_shared<image_view>();
 std::shared_ptr<image> g_img = std::make_shared<image>();
 std::shared_ptr<resizeable_image> g_resimg = std::make_shared<resizeable_image>();
 std::shared_ptr<resizeable_volume> g_resvol = std::make_shared<resizeable_volume>();
+#endif
 
-//std::shared_ptr<image_view> g_graph = i_view::factory_create<bitmap_graph, image_view, image_controller>();
-#endif
 #ifdef UNIT_TEST_3D
-std::shared_ptr<volume_texture_view> g_volume3D = i_view::factory_create<volume, volume_texture_view, volume_texture_controller>();
-std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<volume_graph, graph_view, graph_controller>();
-data::volume_texture* g_VolumeTex = NULL;
+std::shared_ptr<volume> g_volume3D = std::make_shared<volume>();
+
+std::shared_ptr<graph_view> g_graph3D = std::make_shared<graph_view>();
+std::shared_ptr<graph_controller> g_graph3DCtrl = std::make_shared<graph_controller>();
+
+std::shared_ptr<volume_texture_view> g_VolumeTex = std::make_shared<volume_texture_view>();
+std::shared_ptr<volume_texture_controller> g_VolTexCtrl = std::make_shared<volume_texture_controller>();
 #endif
-#ifdef UNIT_TEST_COMPACT_LATTICE
-std::shared_ptr<graph_view> g_graph3D = i_view::factory_create<compact_hexagonal_lattice, graph_view, graph_controller>();
-#endif
+
+
 
 void displayCB(void)
 {
@@ -91,12 +93,10 @@ void displayCB(void)
     //g_graph->render();
 #endif
 #ifdef UNIT_TEST_3D
-    g_volume3D->render();
+    g_VolumeTex->render();
 	g_graph3D->render();
 #endif
-#ifdef UNIT_TEST_COMPACT_LATTICE
-    g_graph3D->render();
-#endif
+
 
     glutSwapBuffers();
     glutPostRedisplay();
@@ -135,6 +135,7 @@ void reshapeCB(int w, int h)
 void cleanupCB()
 {
     profiler::destroy();
+    logger::destroy();
 }
 
 void timerCB(int value)
@@ -156,14 +157,11 @@ void keyboardCB(unsigned char key, int x, int y)
 
 #ifdef UNIT_TEST_2D
     g_imgCtrl->handle_keyboard(key, x, y);
-    //g_graph->action_keyboard(key, x, y);
+    //g_graph->handle_keyboard(key, x, y);
 #endif
 #ifdef UNIT_TEST_3D
-	g_volume3D->action_keyboard(key, x, y);
-	g_graph3D->action_keyboard(key, x, y);
-#endif
-#ifdef UNIT_TEST_COMPACT_LATTICE
-    g_graph3D->action_keyboard(key, x, y);
+	g_VolTexCtrl->handle_keyboard(key, x, y);
+	g_graph3DCtrl->handle_keyboard(key, x, y);
 #endif
 
     switch(key)
@@ -189,8 +187,8 @@ void mouseMotionCB(int x, int y)
     g_cam.handle_mouse_motions(x, y);
 
 #ifdef UNIT_TEST_3D
-    g_volume3D->action_mouse(0, 0, x, y);
-	g_graph3D->action_mouse(0, 0, x, y);
+    g_VolTexCtrl->handle_mouse(0, 0, x, y);
+	g_graph3DCtrl->handle_mouse(0, 0, x, y);
 #endif
 
     glutPostRedisplay();
@@ -224,6 +222,9 @@ bool init_gl_objects()
     profiler::create();
     profiler::get()->set_dump_on_end(true);
 
+    logger::create();
+    logger::get()->initialize();
+
 #ifdef UNIT_TEST_2D
 
     model_view_controller(g_resimg, g_imgView, g_imgCtrl);
@@ -235,9 +236,9 @@ bool init_gl_objects()
     g_imgView->create();
     
     g_resvol->load("data/volume/synthetic.vega", false);
-    g_resvol->resample<vega::algorithm::resample::bilinear_filter>(64, 16, 32);
+    g_resvol->resample<vega::algorithm::resample::bilinear_filter>(64, 16, 32);    
 
-    //g_graph->create(g_img->get_model());
+    //g_graph->create();
 #endif
 
 #ifdef UNIT_TEST_3D
@@ -253,11 +254,15 @@ bool init_gl_objects()
 	vp->load("data/volume/synthetic.vega", false);
 #endif
 
-	g_volume3D->create(vp);
-	g_graph3D->create(vp);
-    //g_VolumeTex->create(*vp);
+    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>();
+    vg->create(*vp);
 
-	vp.reset();
+    model_view_controller(vp, g_VolumeTex, g_VolTexCtrl);
+    model_view_controller(vg, g_graph3D, g_graph3DCtrl);
+
+    g_VolumeTex->create();
+    g_graph3D->create();
+
 #else
 	std::shared_ptr<volume> v = std::make_shared<volume>();
     if( !v->load("data/volume/bonsai.vega", false) )
@@ -268,9 +273,6 @@ bool init_gl_objects()
 #endif
 #endif
 
-#ifdef UNIT_TEST_COMPACT_LATTICE
-    g_graph3D->create(9, 9, 9);
-#endif
 
     return true;
 }
@@ -345,7 +347,7 @@ bool init(int argc, char **argv)
 int main(int argc, char **argv) 
 {
     _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-    //_CrtSetBreakAlloc(1777);
+    //_CrtSetBreakAlloc(159);
 
     if( !init(argc, argv) )
     {

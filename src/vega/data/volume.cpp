@@ -6,6 +6,7 @@
 
 #include "volume.h"
 #include "../math/transfer_function.h"
+#include "../math/transformations.h"
 
 
 #define clamp(val, vmin, vmax) std::min((vmax), std::max((vmin), (val)))
@@ -132,6 +133,17 @@ bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
     load_raw();
 
     std::cout << "Width = " << myWidth << ", Height = " << myHeight << ", Depth = " << myDepth << std::endl;
+
+    // Paint voxels
+    myPaintedVoxels.clear();
+    myPaintedVoxels.reserve(myWidth * myHeight * myDepth);
+
+    assert(myTransferFunction);
+
+    std::for_each(myVoxelArray.cbegin(), myVoxelArray.cend(), [this](voxel v)
+    {
+        myPaintedVoxels.push_back(myTransferFunction->myTransferArray[v]);
+    });
 
     // load voxel gradients
     myVolumeUsesGradients = _UseGradients;
@@ -347,7 +359,7 @@ vega::data::volume vega::data::volume::operator*(const volume &v)
     volume result = *this;			
     unsigned int size = myWidth * myHeight * myDepth;
     for(register unsigned int i = 0; i < size; ++i)
-        result.myVoxelArray[i] = (voxel)clamp((myVoxelArray[i] * v.myVoxelArray[i])*0.00390625f, 1.f* MINDENSITY, 1.f * MAXDENSITY);// 1/256 = 0.00390625
+        result.myVoxelArray[i] = (voxel)clamp((myVoxelArray[i] * v.myVoxelArray[i])/255.f, 1.f* MINDENSITY, 1.f * MAXDENSITY);
 
     myRawDataIsDirty = true;
 
@@ -379,36 +391,14 @@ vega::data::volume vega::data::volume::operator~()
     return result;
 }
 
-void vega::data::volume::paint_voxels( std::vector<r8g8b8a8>& vPaintedVoxels ) const
+float vega::data::volume::get_voxel_color_distance( uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2 ) const
 {
-    vPaintedVoxels.clear();
-    vPaintedVoxels.reserve(get_size());
+    r8g8b8a8 v1 = myPaintedVoxels[_I(x1, y1, z1)];
+    r8g8b8a8 v2 = myPaintedVoxels[_I(x2, y2, z2)];
 
-    assert(get_size() == myVoxelArray.size());
-	assert(myTransferFunction);
+    // TODO: What happens with alpha ?
+    math::vector3d p1(v1.R, v1.G, v1.B);
+    math::vector3d p2(v2.R, v2.G, v2.B);
 
-	std::for_each(myVoxelArray.cbegin(), myVoxelArray.cend(), [&vPaintedVoxels, this](voxel v)
-	{
-		vPaintedVoxels.push_back(myTransferFunction->myTransferArray[v]);
-	});
-}
-
-void vega::data::volume::copy_from( const volume& v )
-{
-    myWidth = v.myWidth;
-    myHeight = v.myHeight;
-    myDepth = v.myDepth;
-
-    myRawDataIsDirty = v.myRawDataIsDirty;
-    myGradientDataIsDirty = v.myGradientDataIsDirty;
-    myVolumeUsesGradients = v.myVolumeUsesGradients;
-
-    myVoxelArray = v.myVoxelArray;
-    myGradients = v.myGradients;
-    myTransferFunction = v.myTransferFunction;
-
-    myColorKnots = v.myColorKnots;
-    myAlphaKnots = v.myAlphaKnots;
-    myRawFilename = v.myRawFilename;
-    myGradientsFilename = v.myGradientsFilename;
+    return math::HSV_distance_from_RGB(p1 * (1.f/255), p2 * (1.f/255));
 }

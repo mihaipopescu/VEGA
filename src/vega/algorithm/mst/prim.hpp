@@ -1,8 +1,8 @@
 #ifndef __VEGA_MST_PRIM_HPP__
 #define __VEGA_MST_PRIM_HPP__
 
-#include "../../graph/graph.hpp"
-#include "../../graph/disjoint_sets.hpp"
+#include "../../data/graph.hpp"
+#include "../../data/disjoint_sets.hpp"
 
 
 namespace vega
@@ -11,7 +11,7 @@ namespace vega
     {
         namespace mst
         {
-            using namespace vega::graph;
+            using namespace vega::data;
 
             template <class Graph, class OutputIterator>
             void prim(const Graph& g, OutputIterator spanning_tree_edges)

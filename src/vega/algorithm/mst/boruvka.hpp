@@ -2,8 +2,8 @@
 #define __VEGA_MST_BORUVKA_HPP__
 
 #include <algorithm>
-#include "../../graph/graph.hpp"
-#include "../../graph/disjoint_sets.hpp"
+#include "../../data/graph.hpp"
+#include "../../data/disjoint_sets.hpp"
 #include "../../common/profiler.h"
 
 namespace vega
@@ -12,7 +12,7 @@ namespace vega
     {
         namespace mst
         {
-            using namespace vega::graph;
+            using namespace vega::data;
 
             template <class Graph, class OutputIterator>
             void boruvka(const Graph& g, OutputIterator spanning_tree_edges)

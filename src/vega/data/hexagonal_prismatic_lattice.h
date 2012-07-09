@@ -1,6 +1,7 @@
 #ifndef __VEGA_DATA_HEXAGONAL_PRISMATIC_LATTICE_H__
 #define __VEGA_DATA_HEXAGONAL_PRISMATIC_LATTICE_H__
 
+#include <vector>
 #include "volume.h"
 
 namespace vega
@@ -23,25 +24,22 @@ namespace vega
                 //     \__/          \__/         \__/
                 //
                 //
-                prismatic_hexagon_node(uint16 _x, uint16 _y, uint16 _z);
-                ~prismatic_hexagon_node();
 
                 float density;                              //!< average density
-                float max_density_deviation;
                 uint16 x, y, z;                             //!< node coordinates
-                prismatic_hexagon_node * hex[20];           //!< neighbors
-                bool visited;                               //!< visited flag
-                bool to_be_deleted;                         //!< deleted flag
-                size_t vertexId;
+                uint32 hex[20];                             //!< neighbors
+
+                math::vector3d get_vertex() const;
             };
 
-            hexagonal_prismatic_lattice(const volume_base* v);
-            ~hexagonal_prismatic_lattice();
+            hexagonal_prismatic_lattice(const volume& v);
 
-            prismatic_hexagon_node* get_root() const { return myRoot; }
+        public:
+            std::vector<prismatic_hexagon_node> myLatticeCells;
 
-        private:
-            prismatic_hexagon_node * myRoot;
+            uint16 myWidth;
+            uint16 myHeight;
+            uint16 myDepth;
         };
     }
 }

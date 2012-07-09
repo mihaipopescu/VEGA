@@ -2,9 +2,9 @@
 #define __VEGA_MST_KRUSKAL_HPP__
 
 #include <algorithm>
-#include "../../graph/graph.hpp"
-#include "../../graph/disjoint_sets.hpp"
-#include "../../graph/disjoint_threshold_sets.hpp"
+#include "../../data/graph.hpp"
+#include "../../data/disjoint_sets.hpp"
+#include "../../data/disjoint_threshold_sets.hpp"
 
 
 namespace vega
@@ -13,7 +13,7 @@ namespace vega
     {
         namespace mst
         {
-            using namespace vega::graph;
+            using namespace vega::data::graph;
 
             template <class Graph, class OutputIterator>
             void kruskal(const Graph& g, OutputIterator spanning_tree_edges)
@@ -34,7 +34,7 @@ namespace vega
             }
 
             template <class Graph, class OutputIterator>
-            uint16 kruskal(const Graph& g, OutputIterator spanning_tree_edges, typename graph::graph_traits<Graph>::edge_weight_type treshold)
+            uint16 kruskal(const Graph& g, OutputIterator spanning_tree_edges, typename data::graph::graph_traits<Graph>::edge_weight_type treshold)
             {
                 disjoint_sets<Graph> dset(g.get_num_vertices());
 

@@ -37,6 +37,8 @@ namespace vega
 
             void set_model(const std::shared_ptr<vega::data::i_model>& _model) { myModel = _model; }
 
+            virtual bool create() = 0;
+
             virtual void render() const = 0;
 
         protected:

@@ -19,9 +19,6 @@
     <Filter Include="vega\Math">
       <UniqueIdentifier>{3d6d1fe1-f49a-4388-a10b-a1d93160d079}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vega\Graph">
-      <UniqueIdentifier>{3fd8e193-678b-46fc-affb-0f9e9b5c170d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="vega\Render">
       <UniqueIdentifier>{5c399243-9326-4b10-b2a9-7f2a99599213}</UniqueIdentifier>
     </Filter>
@@ -46,23 +43,14 @@
     <Filter Include="vega\Data\Volume">
       <UniqueIdentifier>{5a63e9fb-6dab-47e4-bc89-afaff5f3258a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vega\Data\Graph">
+      <UniqueIdentifier>{3fd8e193-678b-46fc-affb-0f9e9b5c170d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\vega\graph\disjoint_sets.hpp">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\graph\edge.hpp">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\graph\graph.hpp">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\graph\common.hpp">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\math\vector3d.h">
       <Filter>vega\Math</Filter>
     </ClInclude>
@@ -114,9 +102,6 @@
     <ClInclude Include="..\vega\render\graph_view.h">
       <Filter>vega\Render</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\graph\disjoint_threshold_sets.hpp">
-      <Filter>vega\Graph</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\algorithm\mst\boruvka.hpp">
       <Filter>vega\Algorithm\MST</Filter>
     </ClInclude>
@@ -156,17 +141,28 @@
     <ClInclude Include="..\vega\data\volume_primitive.h">
       <Filter>vega\Data\Volume</Filter>
     </ClInclude>
-    <ClInclude Include="..\vega\data\volume_texture.h">
-      <Filter>vega\Data\Volume</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\volume_texture_graph.h">
-      <Filter>vega\Data\Volume</Filter>
-    </ClInclude>
     <ClInclude Include="..\vega\data\hexagonal_lattice.h">
       <Filter>vega\Data\Image</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\data\resizeable_volume.h">
       <Filter>vega\Data\Volume</Filter>
+    <ClInclude Include="..\vega\common\logger.h">
+      <Filter>vega\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\graph_traits.hpp">
+      <Filter>vega\Data\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\disjoint_sets.hpp">
+      <Filter>vega\Data\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\disjoint_threshold_sets.hpp">
+      <Filter>vega\Data\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\edge.hpp">
+      <Filter>vega\Data\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\vega\data\graph.hpp">
+      <Filter>vega\Data\Graph</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -224,14 +220,11 @@
     <ClCompile Include="..\vega\data\volume_primitive.cpp">
       <Filter>vega\Data\Volume</Filter>
     </ClCompile>
-    <ClCompile Include="..\vega\data\volume_texture.cpp">
-      <Filter>vega\Data\Volume</Filter>
+    <ClCompile Include="..\vega\common\logger.cpp">
+      <Filter>vega\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\vega\data\volume_texture_graph.cpp">
       <Filter>vega\Data\Volume</Filter>
     </ClCompile>
     <ClCompile Include="..\vega\data\resizeable_volume.cpp">
-      <Filter>vega\Data\Volume</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
