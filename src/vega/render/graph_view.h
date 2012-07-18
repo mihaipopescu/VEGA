@@ -15,7 +15,9 @@ namespace vega
 		public:
 			graph_view() : myRenderFlag(false), myPrimitiveIsLine(true), myVerticesAreIndexed(false) { }
 
-			bool create();
+			virtual bool create();
+
+            virtual void update();
 
 			void mst_kruskal();
 

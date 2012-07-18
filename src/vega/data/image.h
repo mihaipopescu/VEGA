@@ -13,9 +13,9 @@ namespace vega
         class image : public i_model
         {
         public:
-            image();
+            image(const char *szFileName);
 
-            virtual bool create(const char *szFileName);
+            virtual bool create();
 
             uint16 get_width() const { return myWidth; }
             uint16 get_height() const { return myHeight; }
@@ -26,6 +26,7 @@ namespace vega
             const void * get_raw_data() const { return static_cast<const void*>(myRGBData.data()); }
 
         protected:
+            const char * myBMPFileName;
             std::vector<uint8> myRGBData;
             uint16 myWidth;
             uint16 myHeight;

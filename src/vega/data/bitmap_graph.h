@@ -14,10 +14,13 @@ namespace vega
         class bitmap_graph : protected data::graph::weighted_undirected_graph<uint32>
         {
         public:
-            void create(const image & img);
+            bitmap_graph(const std::shared_ptr<image>& img);
+            
+            virtual bool create();
 
         protected:
             std::shared_ptr<hexagonal_lattice> myLattice;
+            std::shared_ptr<image> myImage;
         };
     }
 }

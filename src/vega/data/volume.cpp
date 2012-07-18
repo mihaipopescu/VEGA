@@ -14,13 +14,14 @@
 using namespace vega::math;
 using namespace std;
 
-vega::data::volume::volume()
+vega::data::volume::volume(const std::string& _FileName, bool _UseGradients)
     : myWidth(0)
     , myHeight(0)
     , myDepth(0)
-    , myVolumeUsesGradients(false)
+    , myVolumeUsesGradients(_UseGradients)
     , myRawDataIsDirty(false)
     , myGradientDataIsDirty(false)
+    , myHeaderFilename(_FileName)
 {
 }
 
@@ -41,15 +42,15 @@ vega::data::volume::~volume(void)
     save();
 }
 
-bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
+bool vega::data::volume::create()
 {
-    ifstream input(_FileName, ios::in);
+    ifstream input(myHeaderFilename, ios::in);
 
-    cout << "Loading volume file ["<< _FileName.c_str() << "]...";
+    cout << "Loading volume file ["<< myHeaderFilename.c_str() << "]...";
 
     if( input.fail() )
     {
-        cerr << "Failed to open volume file " << _FileName.c_str() << endl;
+        cerr << "Failed to open volume file " << myHeaderFilename.c_str() << endl;
         return false;
     }
 
@@ -107,7 +108,7 @@ bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
 
     if( input.fail() )
     {
-        cerr << "Error reading volume file " << _FileName.c_str() << endl;
+        cerr << "Error reading volume file " << myHeaderFilename.c_str() << endl;
         input.close();
         return false;
     }
@@ -121,11 +122,11 @@ bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
 
     // Create raw and gradient filename from hdr filename by changing extension
     // NOTE: The files must be in the same folder as the header !
-    if(_FileName.find_last_of('.') != string::npos)
+    if(myHeaderFilename.find_last_of('.') != string::npos)
     {
-        myGradientsFilename = _FileName.substr(0, _FileName.find_last_of('.'));
+        myGradientsFilename = myHeaderFilename.substr(0, myHeaderFilename.find_last_of('.'));
         myGradientsFilename += ".grd";
-        myRawFilename = _FileName.substr(0, _FileName.find_last_of('.'));
+        myRawFilename = myHeaderFilename.substr(0, myHeaderFilename.find_last_of('.'));
         myRawFilename += ".raw";
     }
 
@@ -146,7 +147,6 @@ bool vega::data::volume::load(const string& _FileName, bool _UseGradients)
     });
 
     // load voxel gradients
-    myVolumeUsesGradients = _UseGradients;
     if( myVolumeUsesGradients )
     {
         if( !load_gradients() )

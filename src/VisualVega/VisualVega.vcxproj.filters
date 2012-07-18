@@ -146,6 +146,7 @@
     </ClInclude>
     <ClInclude Include="..\vega\data\resizeable_volume.h">
       <Filter>vega\Data\Volume</Filter>
+    </ClInclude>
     <ClInclude Include="..\vega\common\logger.h">
       <Filter>vega\Common</Filter>
     </ClInclude>
@@ -223,8 +224,8 @@
     <ClCompile Include="..\vega\common\logger.cpp">
       <Filter>vega\Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\vega\data\resizeable_volume.cpp">
       <Filter>vega\Data\Volume</Filter>
     </ClCompile>
-    <ClCompile Include="..\vega\data\resizeable_volume.cpp">
   </ItemGroup>
 </Project>

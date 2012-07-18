@@ -22,7 +22,7 @@ namespace vega
         class volume : public i_model
         {
         public:
-            volume                      ();
+            volume                      (const std::string& _FileName, bool _UseGradients);
             volume                      (uint16 Width, uint16 Height, uint16 Depth);
             virtual ~volume             ();
 
@@ -44,15 +44,15 @@ namespace vega
             r8g8b8a8    get_voxel_color         (uint16 x, uint16 y, uint16 z) const { return myPaintedVoxels[_I(x, y, z)]; }
 
         public:
-            bool load                   (const std::string& _FileName, bool _UseGradients);
+            virtual bool create         ();
             bool save                   ();
 			bool save_as				(const std::string& _FileName);
-            void compute_gradients      (int nSampleRadius = 1);
 
         protected:
             bool load_raw               ();
             bool save_raw               () const;
 
+            void compute_gradients      (int nSampleRadius = 1);
             bool load_gradients         ();
             bool save_gradients         () const;
             
@@ -64,9 +64,11 @@ namespace vega
             volume operator*(const volume &v);
             volume operator-(const volume &v);
             volume operator~();
+
         protected:
             std::vector<math::transfer_control_point>   myColorKnots;
             std::vector<math::transfer_control_point>   myAlphaKnots;
+            std::string                                 myHeaderFilename;
             std::string                                 myRawFilename;
             std::string                                 myGradientsFilename;
 

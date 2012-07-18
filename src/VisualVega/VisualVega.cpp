@@ -56,24 +56,9 @@ camera g_cam;
 #define UNIT_TEST_3D
 #define SYNTHETIC_SCENE
 
-#ifdef UNIT_TEST_2D
-std::shared_ptr<image_controller> g_imgCtrl = std::make_shared<image_controller>();
-std::shared_ptr<image_view> g_imgView = std::make_shared<image_view>();
-std::shared_ptr<image> g_img = std::make_shared<image>();
-std::shared_ptr<resizeable_image> g_resimg = std::make_shared<resizeable_image>();
-std::shared_ptr<resizeable_volume> g_resvol = std::make_shared<resizeable_volume>();
-#endif
 
-#ifdef UNIT_TEST_3D
-std::shared_ptr<volume> g_volume3D = std::make_shared<volume>();
-
-std::shared_ptr<graph_view> g_graph3D = std::make_shared<graph_view>();
-std::shared_ptr<graph_controller> g_graph3DCtrl = std::make_shared<graph_controller>();
-
-std::shared_ptr<volume_texture_view> g_VolumeTex = std::make_shared<volume_texture_view>();
-std::shared_ptr<volume_texture_controller> g_VolTexCtrl = std::make_shared<volume_texture_controller>();
-#endif
-
+std::vector<std::shared_ptr<i_view>> g_Views;
+std::vector<std::shared_ptr<i_controller>> g_Controllers;
 
 
 void displayCB(void)
@@ -88,15 +73,10 @@ void displayCB(void)
     g_cam.render();
 
     // render objects
-#ifdef UNIT_TEST_2D
-    g_imgView->render();
-    //g_graph->render();
-#endif
-#ifdef UNIT_TEST_3D
-    g_VolumeTex->render();
-	g_graph3D->render();
-#endif
-
+    for(auto it = begin(g_Views); it != end(g_Views); it++)
+    {
+        it->get()->render();
+    }
 
     glutSwapBuffers();
     glutPostRedisplay();
@@ -155,14 +135,10 @@ void keyboardCB(unsigned char key, int x, int y)
 {
     g_cam.handle_common_keys(key, x, y);
 
-#ifdef UNIT_TEST_2D
-    g_imgCtrl->handle_keyboard(key, x, y);
-    //g_graph->handle_keyboard(key, x, y);
-#endif
-#ifdef UNIT_TEST_3D
-	g_VolTexCtrl->handle_keyboard(key, x, y);
-	g_graph3DCtrl->handle_keyboard(key, x, y);
-#endif
+    for(auto it = begin(g_Controllers); it != end(g_Controllers); it++)
+    {
+        it->get()->handle_keyboard(key, x, y);
+    }
 
     switch(key)
     {
@@ -180,16 +156,21 @@ void specialCB(int key, int x, int y)
 void mouseCB(int button, int state, int x, int y)
 {
    g_cam.handle_mouse_buttons(button, state, x, y);
+
+   for(auto it = begin(g_Controllers); it != end(g_Controllers); it++)
+   {
+       it->get()->handle_mouse(button, state, x, y);
+   }
 }
 
 void mouseMotionCB(int x, int y)
 {
     g_cam.handle_mouse_motions(x, y);
 
-#ifdef UNIT_TEST_3D
-    g_VolTexCtrl->handle_mouse(0, 0, x, y);
-	g_graph3DCtrl->handle_mouse(0, 0, x, y);
-#endif
+    for(auto it = begin(g_Controllers); it != end(g_Controllers); it++)
+    {
+        it->get()->handle_mouse(0, 0, x, y);
+    }
 
     glutPostRedisplay();
 }
@@ -243,25 +224,43 @@ bool init_gl_objects()
 
 #ifdef UNIT_TEST_3D
 #ifdef SYNTHETIC_SCENE
-	std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(32, 32, 32);
-
+	
 #if 0
+    std::shared_ptr<volume_primitive> vp = std::make_shared<volume_primitive>(32, 32, 32);
 	vp->create_sphere(16.f, 16.f, 16.f, 16.f, MAXDENSITY / 8);
 	vp->create_sphere(16.f, 16.f, 16.f, 10.f, MAXDENSITY / 4);
 	vp->create_sphere(16.f, 16.f, 16.f, 6.f, MAXDENSITY);
 	vp->save_as("data/volume/synthetic.raw");
 #else
-	vp->load("data/volume/synthetic.vega", false);
+    std::shared_ptr<volume> vp = std::make_shared<volume>("data/volume/synthetic.vega", false);
 #endif
 
-    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>();
-    vg->create(*vp);
+    if( !vp->create() )
+        return false;
 
-    model_view_controller(vp, g_VolumeTex, g_VolTexCtrl);
-    model_view_controller(vg, g_graph3D, g_graph3DCtrl);
+    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>(vp);
+    vg->create();
 
-    g_VolumeTex->create();
-    g_graph3D->create();
+    // subscribe graph to volume
+    vp->subscribe(vg);
+
+    auto voltex = std::make_shared<volume_texture_view>();
+    auto volctrl = std::make_shared<volume_texture_controller>();
+
+    auto graph3d = std::make_shared<graph_view>();
+    auto graphctrl = std::make_shared<graph_controller>();
+
+    model_view_controller(vp, voltex, volctrl);
+    model_view_controller(vg, graph3d, graphctrl);
+
+    g_Views.push_back(voltex);
+    g_Views.push_back(graph3d);
+
+    g_Controllers.push_back(volctrl);
+    g_Controllers.push_back(graphctrl);
+
+    graph3d->create();
+    voltex->create();
 
 #else
 	std::shared_ptr<volume> v = std::make_shared<volume>();

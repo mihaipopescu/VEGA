@@ -29,7 +29,7 @@ namespace vega
             std::shared_ptr<vega::data::i_model> myModel;
         };
 
-        class i_view 
+        class i_view : public data::i_observer
         {
         public:
             i_view() { }
@@ -47,6 +47,7 @@ namespace vega
 
         static void model_view_controller(const std::shared_ptr<vega::data::i_model>& _model, const std::shared_ptr<i_view>& _view, const std::shared_ptr<i_controller>& _controller)
         {
+            _model->subscribe(_view);
             _view->set_model(_model);
             _controller->set_model(_model);
             _controller->set_view(_view);

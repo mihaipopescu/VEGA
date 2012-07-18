@@ -17,6 +17,8 @@ namespace vega
 
             virtual bool create();
 
+            virtual void update();
+
             void toggle_polygon_fill() { myPolygonModeFill = !myPolygonModeFill; }
 
             std::shared_ptr<data::image> get_model() const { return std::dynamic_pointer_cast<data::image>(myModel); }

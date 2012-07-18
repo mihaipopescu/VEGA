@@ -13,16 +13,20 @@ namespace vega
 {
     namespace data
     {
-        class volume_graph : public data::graph::weighted_undirected_graph<uint32>
+        class volume_graph : public data::graph::weighted_undirected_graph<uint32>, public i_observer
         {
         public:
-            volume_graph() {}
+            volume_graph(const std::shared_ptr<volume>& v);
 
-            void create(const volume& v);
+            virtual bool create();
 
+            virtual void update();
 
         public:
             std::shared_ptr<hexagonal_prismatic_lattice> myLattice;
+
+        protected:
+            std::shared_ptr<volume> myVolume;
         };
     }
 }

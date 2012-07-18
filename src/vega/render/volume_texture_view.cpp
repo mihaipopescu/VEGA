@@ -219,7 +219,7 @@ void vega::render::volume_texture_view::update_proxy_geometry()
         // the current slice
         std::vector<vector3d> vSlice;
     
-        std::for_each(myFrameSegments.begin(), myFrameSegments.end(), [myTransformedFrameVertices, SlicePlane, &vSlice](const std::pair<int, int>& segment)
+        std::for_each(myFrameSegments.begin(), myFrameSegments.end(), [&myTransformedFrameVertices, SlicePlane, &vSlice](const std::pair<int, int>& segment)
         {
             vector3d res;
             if( SlicePlane.intersect_segment(myTransformedFrameVertices[segment.first], myTransformedFrameVertices[segment.second], res) )
@@ -271,6 +271,17 @@ void vega::render::volume_texture_view::update_proxy_geometry()
         // add the slice to the list
         mySlices.push_back(slice);
     }
+}
+
+void vega::render::volume_texture_view::update()
+{
+    glDeleteTextures(eTex_ENUMNO, myTextureHandle);
+    myFrameVertices.clear();
+    myFrameSegments.clear();
+    mySlices.clear();
+    mySliceCount = 0;
+
+    create();
 }
 
 //////////////////////////////////////////////////////////////////////////

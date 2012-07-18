@@ -9,23 +9,24 @@ namespace vega
 {
     namespace data
     {
-        image::image()
+        image::image(const char *szFileName)
             : i_model()
             , myWidth(0)
             , myHeight(0)
+            , myBMPFileName(szFileName)
         {
         }
 
-        bool image::create( const char *szFileName )
+        bool image::create()
         {
             // a handle for the current OpenGL Device Contexts
             const HDC gldc = wglGetCurrentDC();
             HDC mdc = CreateCompatibleDC(gldc);
 
-            std::cout << "Loading image file [" << szFileName << "]... ";
+            std::cout << "Loading image file [" << myBMPFileName << "]... ";
 
             // Loads the image.
-            HBITMAP _DIBHandle = (HBITMAP)LoadImage(0, szFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR | LR_CREATEDIBSECTION | LR_LOADFROMFILE);	
+            HBITMAP _DIBHandle = (HBITMAP)LoadImage(0, myBMPFileName, IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR | LR_CREATEDIBSECTION | LR_LOADFROMFILE);	
 
             if(!_DIBHandle)
             {

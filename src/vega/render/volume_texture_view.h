@@ -19,6 +19,8 @@ namespace vega
 
             virtual bool create();
 
+            virtual void update();
+
             virtual void render() const;
 
 			void toggle_render_flag() { myRenderFlag = !myRenderFlag; }

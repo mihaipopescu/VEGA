@@ -3,11 +3,17 @@
 #include "../common/logger.h"
 
 
-void vega::data::bitmap_graph::create( const image & img )
+vega::data::bitmap_graph::bitmap_graph( const std::shared_ptr<image>& img )
+    : myImage(img)
+{
+
+}
+
+bool vega::data::bitmap_graph::create()
 {
     SMART_LOG_FN;
 
-    myLattice = std::make_shared<hexagonal_lattice>(img);
+    myLattice = std::make_shared<hexagonal_lattice>(*myImage);
     
     uint32 k = 0;
     for(int i=0;i<myLattice->myHeight;++i)
@@ -31,4 +37,7 @@ void vega::data::bitmap_graph::create( const image & img )
             }
         }
     }
+
+    return true;
 }
+

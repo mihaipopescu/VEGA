@@ -6,11 +6,16 @@ using namespace vega::data;
 using namespace vega::math;
 
 
-void vega::data::volume_graph::create( const volume& v )
+vega::data::volume_graph::volume_graph( const std::shared_ptr<volume>& v )
+    : myVolume(v)
+{
+}
+
+bool vega::data::volume_graph::create()
 {
     SMART_LOG_FN;
 
-    myLattice = std::make_shared<hexagonal_prismatic_lattice>(v);
+    myLattice = std::make_shared<hexagonal_prismatic_lattice>(*myVolume);
 
     uint32 c = 0;
     for(int k=0;k<myLattice->myDepth;++k)
@@ -42,5 +47,15 @@ void vega::data::volume_graph::create( const volume& v )
             }
         }
     }
+
+    return true;
+}
+
+void vega::data::volume_graph::update()
+{
+    myLattice.reset();
+    clear_vertices();
+    clear_edges();
+    create();
 }
 

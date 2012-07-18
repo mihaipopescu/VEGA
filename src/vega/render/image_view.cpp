@@ -52,6 +52,14 @@ void vega::render::image_view::create_texture(const std::shared_ptr<image> & img
     myASR = (float)img->get_width() / (float)img->get_height();
 }
 
+void vega::render::image_view::update()
+{
+    glDeleteTextures(1, &myTexture);
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    create();
+}
+
 //////////////////////////////////////////////////////////////////////////
 
 void vega::render::image_controller::handle_keyboard( unsigned char key, int x, int y )
