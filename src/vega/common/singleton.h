@@ -10,13 +10,13 @@
   \brief This macro is used in the singleton implementation file to initialize the static instance.
   Example: \code SINGLETON_IMPL(MyClass); \endcode
  */
-#define SINGLETON_IMPL(T) template<> T* singleton<T>::myInstance = NULL;
+#define SINGLETON_IMPL(T) template<> T* vega::singleton<T>::myInstance = NULL;
 
 /*!
  * \def SINGLETON_DECL(T)
  * \brief This macro is used to declare a protected default-ctor and the friendship with the singleton class. 
  */
-#define SINGLETON_DECL(T) protected: T() { }; friend class singleton<T>; private:
+#define SINGLETON_DECL(T) protected: T() { }; friend class vega::singleton<T>; private:
 
 //! Template class for singleton pattern.
 /*!
@@ -28,20 +28,23 @@
  * } \endcode
  * \note The derived template class T must not declare any other c-tor.
  */
-template <class T>
-class singleton
+
+namespace vega
 {
-public:
-    //! Creates the singleton instance
-    static void   create()  { myInstance = new T(); }
-    //! Retrieves the singleton instance
-    static T*     get()     { return myInstance; }
-    //! Destroys the singleton instance and sets it to NULL
-    static void   destroy() { delete myInstance; myInstance = NULL; }
+    template <class T>
+    class singleton
+    {
+    public:
+        //! Creates the singleton instance
+        static void   create()  { myInstance = new T(); }
+        //! Retrieves the singleton instance
+        static T*     get()     { return myInstance; }
+        //! Destroys the singleton instance and sets it to NULL
+        static void   destroy() { delete myInstance; myInstance = NULL; }
 
-protected:
-    static T* myInstance; //!< The templated instance
-};
-
+    protected:
+        static T* myInstance; //!< The templated instance
+    };
+}
 
 #endif

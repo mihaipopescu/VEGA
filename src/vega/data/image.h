@@ -5,12 +5,13 @@
 #include "common.h"
 #include "../math/vector3d.h"
 #include "../common/types.h"
+#include "../common/model_view_controller.h"
 
 namespace vega
 {
     namespace data
     {
-        class image : public i_model
+        class image : public mvc::i_model
         {
         public:
             image(const char *szFileName);

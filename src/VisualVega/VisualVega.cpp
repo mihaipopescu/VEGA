@@ -57,8 +57,8 @@ camera g_cam;
 #define SYNTHETIC_SCENE
 
 
-std::vector<std::shared_ptr<i_view>> g_Views;
-std::vector<std::shared_ptr<i_controller>> g_Controllers;
+std::vector<std::shared_ptr<mvc::i_view>> g_Views;
+std::vector<std::shared_ptr<mvc::i_controller>> g_Controllers;
 
 
 void displayCB(void)

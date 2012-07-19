@@ -2,9 +2,10 @@
 #define __VEGA_DATA_COMPACT_HEXAGONAL_LATTICE_H__
 
 #include <vector>
+#include "common.h"
 #include "../math/vector3d.h"
 #include "../common/types.h"
-#include "common.h"
+#include "../common/model_view_controller.h"
 
 
 namespace vega
@@ -12,7 +13,7 @@ namespace vega
     namespace data
     {
 
-        class compact_hexagonal_lattice : public i_model
+        class compact_hexagonal_lattice : public mvc::i_model
         {
         public:
             compact_hexagonal_lattice(uint16 width, uint16 height, uint16 depth, float span);

@@ -6,14 +6,14 @@
 #include "../data/graph.hpp"
 #include "../math/vector3d.h"
 #include "../data/hexagonal_prismatic_lattice.h"
-
+#include "../common/model_view_controller.h"
 #include <memory>
 
 namespace vega
 {
     namespace data
     {
-        class volume_graph : public data::graph::weighted_undirected_graph<uint32>, public i_observer
+        class volume_graph : public data::graph::weighted_undirected_graph<uint32>, public mvc::i_observer
         {
         public:
             volume_graph(const std::shared_ptr<volume>& v);

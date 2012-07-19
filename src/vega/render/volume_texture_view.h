@@ -11,7 +11,7 @@ namespace vega
     namespace render
     {
         class volume_texture_controller;
-        class volume_texture_view : public i_view
+        class volume_texture_view : public mvc::i_view
         {
             friend class volume_texture_controller;
         public:
@@ -51,7 +51,7 @@ namespace vega
 			bool myRenderFlag;
         };
 
-        class volume_texture_controller : public i_controller
+        class volume_texture_controller : public mvc::i_controller
         {
         public:
             virtual void handle_mouse(int button, int state, int x, int y);

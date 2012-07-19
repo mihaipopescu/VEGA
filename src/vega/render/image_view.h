@@ -10,7 +10,7 @@ namespace vega
 {
     namespace render
     {
-        class image_view : public i_view
+        class image_view : public mvc::i_view
         {
         public:
             image_view() : myPolygonModeFill(true), myTexture(0), myASR(1.f) { }
@@ -34,7 +34,7 @@ namespace vega
             float myASR;
         };
 
-        class image_controller : public i_controller
+        class image_controller : public mvc::i_controller
         {
         public:
             void handle_keyboard(unsigned char key, int x, int y);

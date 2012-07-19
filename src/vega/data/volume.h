@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "../common/types.h"
+#include "../common/model_view_controller.h"
 #include "../math/vector3d.h"
 #include "../math/transfer_function.h"
 
@@ -19,7 +20,7 @@ namespace vega
 {
     namespace data
     {
-        class volume : public i_model
+        class volume : public mvc::i_model
         {
         public:
             volume                      (const std::string& _FileName, bool _UseGradients);

@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "../data/volume.h"
+#include "../common/model_view_controller.h"
 
 
 namespace vega
@@ -10,7 +11,7 @@ namespace vega
 	namespace render
 	{
 
-		class graph_view : public i_view
+		class graph_view : public mvc::i_view
 		{
 		public:
 			graph_view() : myRenderFlag(false), myPrimitiveIsLine(true), myVerticesAreIndexed(false) { }
@@ -36,7 +37,7 @@ namespace vega
         };
 
 
-        class graph_controller : public i_controller
+        class graph_controller : public mvc::i_controller
         {
         public:
 			virtual void handle_keyboard( unsigned char key, int x, int y );

@@ -97,6 +97,7 @@
     <ClInclude Include="..\vega\algorithm\resample\filters.h" />
     <ClInclude Include="..\vega\algorithm\resample\weights_table.h" />
     <ClInclude Include="..\vega\common\logger.h" />
+    <ClInclude Include="..\vega\common\model_view_controller.h" />
     <ClInclude Include="..\vega\common\profiler.h" />
     <ClInclude Include="..\vega\common\singleton.h" />
     <ClInclude Include="..\vega\common\types.h" />
@@ -133,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="..\vega\algorithm\resample\weights_table.cpp" />
     <ClCompile Include="..\vega\common\logger.cpp" />
+    <ClCompile Include="..\vega\common\model_view_controller.cpp" />
     <ClCompile Include="..\vega\common\profiler.cpp" />
     <ClCompile Include="..\vega\data\bitmap_graph.cpp" />
     <ClCompile Include="..\vega\data\compact_hexagonal_lattice.cpp" />

@@ -165,6 +165,9 @@
     <ClInclude Include="..\vega\data\graph.hpp">
       <Filter>vega\Data\Graph</Filter>
     </ClInclude>
+    <ClInclude Include="..\vega\common\model_view_controller.h">
+      <Filter>vega\Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VisualVega.cpp">
@@ -226,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="..\vega\data\resizeable_volume.cpp">
       <Filter>vega\Data\Volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\vega\common\model_view_controller.cpp">
+      <Filter>vega\Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
