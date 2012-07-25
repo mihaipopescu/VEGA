@@ -4,7 +4,6 @@
 #include "common.h"
 #include "graph_traits.hpp"
 #include "edge.hpp"
-#include "../common/model_view_controller.h"
 
 #include <vector>
 #include <algorithm>
@@ -17,7 +16,7 @@ namespace vega
         namespace graph
         {
             template <class Vertex>
-            class weighted_undirected_graph : public mvc::i_model
+            class weighted_undirected_graph
             {
             public:
                 typedef typename weighted_undirected_graph self;

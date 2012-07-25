@@ -232,17 +232,13 @@ bool init_gl_objects()
 	vp->create_sphere(16.f, 16.f, 16.f, 6.f, MAXDENSITY);
 	vp->save_as("data/volume/synthetic.raw");
 #else
-    std::shared_ptr<volume> vp = std::make_shared<volume>("data/volume/synthetic.vega", false);
+    
 #endif
 
-    if( !vp->create() )
+    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>("data/volume/synthetic.vega");
+
+    if( !vg->create() )
         return false;
-
-    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>(vp);
-    vg->create();
-
-    // subscribe graph to volume
-    vp->subscribe(vg);
 
     auto voltex = std::make_shared<volume_texture_view>();
     auto volctrl = std::make_shared<volume_texture_controller>();
@@ -250,7 +246,7 @@ bool init_gl_objects()
     auto graph3d = std::make_shared<graph_view>();
     auto graphctrl = std::make_shared<graph_controller>();
 
-    model_view_controller(vp, voltex, volctrl);
+    model_view_controller(vg, voltex, volctrl);
     model_view_controller(vg, graph3d, graphctrl);
 
     g_Views.push_back(voltex);
