@@ -4,10 +4,10 @@
 #include "common.h"
 #include "volume.h"
 #include "../data/graph.hpp"
-#include "../math/vector3d.h"
 #include "../data/hexagonal_prismatic_lattice.h"
-#include "../common/model_view_controller.h"
+
 #include <memory>
+
 
 namespace vega
 {
@@ -24,6 +24,7 @@ namespace vega
 
         public:
             std::shared_ptr<hexagonal_prismatic_lattice> myLattice;
+            std::vector<uint32> mySet;
         };
     }
 }

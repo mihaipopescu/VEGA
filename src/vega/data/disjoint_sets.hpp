@@ -64,13 +64,7 @@ namespace vega
                     return true;
                 }
 
-                template <class Container>
-                void clone_parent(Container &c) const
-                {
-                    c.insert(c.end(), parent.cbegin(), parent.cend());
-                }
-
-            protected:
+            public:
                 ParentContainer parent;
                 RankContainer rank;
             };

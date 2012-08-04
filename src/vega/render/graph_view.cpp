@@ -11,8 +11,8 @@ void vega::render::graph_view::render() const
 	if(myRenderFlag)
 	{
 		glEnableClientState(GL_VERTEX_ARRAY);
+        glVertexPointer(3, GL_FLOAT, 0, myVertices.data());
 		glEnableClientState(GL_COLOR_ARRAY);
-		glVertexPointer(3, GL_FLOAT, 0, myVertices.data());
 		glColorPointer(4, GL_FLOAT, 0, myColors.data());
         if( myVerticesAreIndexed )
             glDrawElements(myPrimitiveIsLine ? GL_LINES : GL_POINTS, myIndices.size(), GL_UNSIGNED_INT, myIndices.data());
@@ -30,23 +30,31 @@ bool vega::render::graph_view::create()
     if( pGraph == NULL )
         return false;
 
-    myColors.clear();
-    myVertices.clear();
+    srand(0x1234);
+    std::vector<math::vector4d> color_set;
+    for(size_t i=0; i<pGraph->get_num_vertices(); ++i)
+    {
+        color_set.push_back(math::vector4d((rand()%255)/255.f, (rand()%255)/255.f, (rand()%255)/255.f, 1.f));
+    }
 
     const math::vector3d tr(0.5f, 0.5f, 0.5f);
+    myColors.clear();
+    myVertices.clear();
+    for(size_t i=0; i<pGraph->get_num_vertices(); ++i)
+    {
+        const data::hexagonal_prismatic_lattice::prismatic_hexagon_node& node = pGraph->myLattice->myLatticeCells[i];
+        myVertices.push_back(node.get_vertex() * (1.f/pGraph->myLattice->myDepth) - tr);
+        myColors.push_back(color_set[pGraph->mySet[i]]);
+    }
 
-    myColors.insert(myColors.begin(), 2 * pGraph->get_num_edges(), math::vector4d(1.f, 1.f, 1.f, 1.f) );
-	for(auto e = pGraph->edges().begin(); e != pGraph->edges().end(); e++ )
-	{
-        uint32 s = pGraph->get_vertex(e->source);
-        uint32 t = pGraph->get_vertex(e->target);
+    myIndices.clear();
+    for(auto e = pGraph->edges().begin(); e != pGraph->edges().end(); e++ )
+    {
+        myIndices.push_back(e->source);
+        myIndices.push_back(e->target);
+    }
 
-        const data::hexagonal_prismatic_lattice::prismatic_hexagon_node& node_source = pGraph->myLattice->myLatticeCells[s];
-        const data::hexagonal_prismatic_lattice::prismatic_hexagon_node& node_target = pGraph->myLattice->myLatticeCells[t];
-       
-		myVertices.push_back(node_source.get_vertex() * (1.f/pGraph->myLattice->myDepth) - tr);
-		myVertices.push_back(node_target.get_vertex() * (1.f/pGraph->myLattice->myDepth) - tr);
-	}
+    myVerticesAreIndexed = true;
 
     return true;
 }

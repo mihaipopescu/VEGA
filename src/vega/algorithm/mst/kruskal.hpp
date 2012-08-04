@@ -33,31 +33,27 @@ namespace vega
                 }
             }
 
-            template <class Graph, class OutputIterator>
-            uint16 kruskal(const Graph& g, OutputIterator spanning_tree_edges, typename data::graph::graph_traits<Graph>::edge_weight_type treshold, std::vector<uint32>& set)
+            template <class Graph, class EdgeOutputIterator>
+            disjoint_sets<Graph> kruskal(Graph& g, EdgeOutputIterator spanning_tree_edges, size_t &edge_count, typename data::graph::graph_traits<Graph>::edge_weight_type treshold)
             {
                 disjoint_sets<Graph> dset(g.get_num_vertices());
 
-                graph_traits<Graph>::edge_container_type edges = g.edges();
+                g.sort_edges_after_weight();
 
-                std::sort(edges.begin(), edges.end());
-
-                uint16 count = 0;
-                for(graph_traits<Graph>::edge_container_type::const_iterator it = edges.begin(); it != edges.end(); ++it)
+                edge_count = 0;
+                for(graph_traits<Graph>::edge_container_type::const_iterator it = g.edges().begin(); it != g.edges().end(); ++it)
                 {
                     if( it->weight < treshold )
                     {
                         if( dset.link(it->source, it->target) )
                         {
                             *spanning_tree_edges++ = *it;
-                            ++count;
+                            ++edge_count;
                         }
                     }
                 }
 
-                dset.clone_parent(set);
-
-                return count;
+                return dset;
             }
         }
     }

@@ -2,7 +2,7 @@
 #include "../common/logger.h"
 #include "../data/graph.hpp"
 #include "../algorithm/mst/kruskal.hpp"
-#include "../data/disjoint_threshold_sets.hpp"
+
 #include <iostream>
 
 using namespace vega::data;
@@ -21,6 +21,8 @@ bool vega::data::volume_graph::create()
     volume::create();
 
     myLattice = std::make_shared<hexagonal_prismatic_lattice>(*this);
+    
+    myVertices.reserve(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
 
     uint32 c = 0;
     for(int k=0;k<myLattice->myDepth;++k)
@@ -34,6 +36,9 @@ bool vega::data::volume_graph::create()
         }
     }
 
+    
+    myEdges.reserve(20 * myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
+
     c = 0;
     for(int k=0;k<myLattice->myDepth;++k)
     {
@@ -45,13 +50,18 @@ bool vega::data::volume_graph::create()
                 for(int h=0;h<20;++h)
                 {
                     if( node.hex[h] != (uint32)-1 )
+                    {
                         add_edge(c, node.hex[h], fabsf(node.density - myLattice->myLatticeCells[node.hex[h]].density));
+                    }
                 }
 
                 c++;
             }
         }
     }
+
+    mySet.reserve(get_num_vertices());
+    mySet.insert(mySet.begin(), get_num_vertices(), 0);
 
     return true;
 }
@@ -63,16 +73,20 @@ void vega::data::volume_graph::mst_kruskal()
 
     std::cout << "Applying Thresholded Kruskal MST... ";
 
-    std::vector<uint32> set;
+    mySet.clear();
 
     mst.resize(get_num_vertices() - 1);
-    uint16 mst_size = vega::algorithm::mst::kruskal(*this, mst.begin(), 0.1f, set);
 
-    std::cout << mst.size() << " edges added !" << std::endl;
+    size_t count = 0;
+    data::graph::disjoint_sets<data::volume_graph>&& dset = vega::algorithm::mst::kruskal(*this, mst.begin(), count, 0.1f);
+
+    mySet.insert(mySet.begin(), dset.parent.begin(), dset.parent.end());
+
+    std::cout << count << " edges added !" << std::endl;
     
     weighted_undirected_graph::clear_edges();
 
-    for(int i=0; i<mst_size; ++i)
+    for(size_t i=0; i<count; ++i)
         weighted_undirected_graph::add_edge(mst[i].source, mst[i].target, mst[i].weight);
 
     std::cout << "Done !" << std::endl;
