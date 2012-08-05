@@ -59,6 +59,7 @@
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -77,6 +78,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;GLEW_STATIC;FREEGLUT_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ForcedIncludeFiles>
       </ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>$(BOOST_ROOT)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,11 +106,6 @@
     <ClInclude Include="..\vega\data\bitmap_graph.h" />
     <ClInclude Include="..\vega\data\common.h" />
     <ClInclude Include="..\vega\data\compact_hexagonal_lattice.h" />
-    <ClInclude Include="..\vega\data\disjoint_sets.hpp" />
-    <ClInclude Include="..\vega\data\disjoint_threshold_sets.hpp" />
-    <ClInclude Include="..\vega\data\edge.hpp" />
-    <ClInclude Include="..\vega\data\graph.hpp" />
-    <ClInclude Include="..\vega\data\graph_traits.hpp" />
     <ClInclude Include="..\vega\data\hexagonal_lattice.h" />
     <ClInclude Include="..\vega\data\hexagonal_prismatic_lattice.h" />
     <ClInclude Include="..\vega\data\image.h" />

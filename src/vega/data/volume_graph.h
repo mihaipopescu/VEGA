@@ -3,9 +3,9 @@
 
 #include "common.h"
 #include "volume.h"
-#include "../data/graph.hpp"
+//#include "../data/graph.hpp"
 #include "../data/hexagonal_prismatic_lattice.h"
-
+#include "boost/graph/adjacency_list.hpp"
 #include <memory>
 
 
@@ -13,8 +13,10 @@ namespace vega
 {
     namespace data
     {
-        class volume_graph : public volume, public data::graph::weighted_undirected_graph<uint32>
-        {
+        class volume_graph : public volume
+        {   
+            typedef boost::adjacency_list < boost::vecS, boost::vecS, boost::undirectedS,
+                boost::no_property, boost::property < boost::edge_weight_t, float > > Graph;
         public:
             volume_graph(const std::string& _FileName);
 
@@ -23,6 +25,7 @@ namespace vega
             void mst_kruskal();
 
         public:
+            std::shared_ptr<Graph> myGraph;
             std::shared_ptr<hexagonal_prismatic_lattice> myLattice;
             std::vector<uint32> mySet;
         };

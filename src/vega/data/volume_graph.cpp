@@ -1,10 +1,11 @@
 #include "volume_graph.h"
 #include "../common/logger.h"
-#include "../data/graph.hpp"
 #include "../algorithm/mst/kruskal.hpp"
+#include "boost/pending/disjoint_sets.hpp"
 
 #include <iostream>
 
+using namespace boost;
 using namespace vega::data;
 using namespace vega::math;
 
@@ -21,25 +22,10 @@ bool vega::data::volume_graph::create()
     volume::create();
 
     myLattice = std::make_shared<hexagonal_prismatic_lattice>(*this);
-    
-    myVertices.reserve(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
+
+    myGraph = std::make_shared<Graph>(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
 
     uint32 c = 0;
-    for(int k=0;k<myLattice->myDepth;++k)
-    {
-        for(int i=0;i<myLattice->myHeight;++i)
-        {
-            for(int j=0;j<myLattice->myWidth;++j)
-            {
-                add_vertex(c++);
-            }
-        }
-    }
-
-    
-    myEdges.reserve(20 * myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
-
-    c = 0;
     for(int k=0;k<myLattice->myDepth;++k)
     {
         for(int i=0;i<myLattice->myHeight;++i)
@@ -51,7 +37,7 @@ bool vega::data::volume_graph::create()
                 {
                     if( node.hex[h] != (uint32)-1 )
                     {
-                        add_edge(c, node.hex[h], fabsf(node.density - myLattice->myLatticeCells[node.hex[h]].density));
+                        add_edge(c, node.hex[h], fabsf(node.density - myLattice->myLatticeCells[node.hex[h]].density), *myGraph);
                     }
                 }
 
@@ -60,34 +46,38 @@ bool vega::data::volume_graph::create()
         }
     }
 
-    mySet.reserve(get_num_vertices());
-    mySet.insert(mySet.begin(), get_num_vertices(), 0);
+    mySet.reserve(num_edges(*myGraph));
+    mySet.insert(mySet.begin(), num_vertices(*myGraph), 0);
 
     return true;
 }
 
 void vega::data::volume_graph::mst_kruskal()
 {
-    typedef std::vector<data::volume_graph::edge_type> MSTContainer;
-    MSTContainer mst;
+    using namespace boost;
+
+    std::vector<graph_traits<Graph>::edge_descriptor> mst;
 
     std::cout << "Applying Thresholded Kruskal MST... ";
 
     mySet.clear();
 
-    mst.resize(get_num_vertices() - 1);
+    mst.resize(num_vertices(*myGraph) - 1);
 
     size_t count = 0;
-    data::graph::disjoint_sets<data::volume_graph>&& dset = vega::algorithm::mst::kruskal(*this, mst.begin(), count, 0.1f);
+    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), 0.1f);
 
-    mySet.insert(mySet.begin(), dset.parent.begin(), dset.parent.end());
+    mySet.insert(mySet.begin(), parent_set.begin(), parent_set.end());
 
     std::cout << count << " edges added !" << std::endl;
     
-    weighted_undirected_graph::clear_edges();
+    myGraph->clear();
+    auto weight = get(edge_weight, *myGraph);
 
-    for(size_t i=0; i<count; ++i)
-        weighted_undirected_graph::add_edge(mst[i].source, mst[i].target, mst[i].weight);
+    for(auto it = mst.begin(); it != mst.end(); ++it)
+    {
+        add_edge(it->m_source, it->m_target, get(weight, *it), *myGraph);
+    }
 
     std::cout << "Done !" << std::endl;
 

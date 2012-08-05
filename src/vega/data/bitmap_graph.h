@@ -3,7 +3,7 @@
 
 #include <memory>
 #include "image.h"
-#include "../data/graph.hpp"
+//#include "../data/graph.hpp"
 #include "hexagonal_lattice.h"
 
 
@@ -11,17 +11,17 @@ namespace vega
 {
     namespace data
     {
-        class bitmap_graph : protected data::graph::weighted_undirected_graph<uint32>
+        /*class bitmap_graph : protected data::graph::weighted_undirected_graph<uint32>
         {
         public:
-            bitmap_graph(const std::shared_ptr<image>& img);
-            
-            virtual bool create();
+        bitmap_graph(const std::shared_ptr<image>& img);
+
+        virtual bool create();
 
         protected:
-            std::shared_ptr<hexagonal_lattice> myLattice;
-            std::shared_ptr<image> myImage;
-        };
+        std::shared_ptr<hexagonal_lattice> myLattice;
+        std::shared_ptr<image> myImage;
+        };*/
     }
 }
 

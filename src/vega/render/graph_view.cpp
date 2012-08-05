@@ -30,9 +30,9 @@ bool vega::render::graph_view::create()
     if( pGraph == NULL )
         return false;
 
-    srand(0x1234);
+    srand(timeGetTime());
     std::vector<math::vector4d> color_set;
-    for(size_t i=0; i<pGraph->get_num_vertices(); ++i)
+    for(size_t i=0; i<num_vertices(*pGraph->myGraph); ++i)
     {
         color_set.push_back(math::vector4d((rand()%255)/255.f, (rand()%255)/255.f, (rand()%255)/255.f, 1.f));
     }
@@ -40,7 +40,7 @@ bool vega::render::graph_view::create()
     const math::vector3d tr(0.5f, 0.5f, 0.5f);
     myColors.clear();
     myVertices.clear();
-    for(size_t i=0; i<pGraph->get_num_vertices(); ++i)
+    for(size_t i=0; i<num_vertices(*pGraph->myGraph); ++i)
     {
         const data::hexagonal_prismatic_lattice::prismatic_hexagon_node& node = pGraph->myLattice->myLatticeCells[i];
         myVertices.push_back(node.get_vertex() * (1.f/pGraph->myLattice->myDepth) - tr);
@@ -48,10 +48,10 @@ bool vega::render::graph_view::create()
     }
 
     myIndices.clear();
-    for(auto e = pGraph->edges().begin(); e != pGraph->edges().end(); e++ )
+    for(auto e = edges(*pGraph->myGraph).first; e != edges(*pGraph->myGraph).second; e++ )
     {
-        myIndices.push_back(e->source);
-        myIndices.push_back(e->target);
+        myIndices.push_back(e->m_source);
+        myIndices.push_back(e->m_target);
     }
 
     myVerticesAreIndexed = true;

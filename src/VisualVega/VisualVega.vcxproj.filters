@@ -43,9 +43,6 @@
     <Filter Include="vega\Data\Volume">
       <UniqueIdentifier>{5a63e9fb-6dab-47e4-bc89-afaff5f3258a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="vega\Data\Graph">
-      <UniqueIdentifier>{3fd8e193-678b-46fc-affb-0f9e9b5c170d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -149,21 +146,6 @@
     </ClInclude>
     <ClInclude Include="..\vega\common\logger.h">
       <Filter>vega\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\graph_traits.hpp">
-      <Filter>vega\Data\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\disjoint_sets.hpp">
-      <Filter>vega\Data\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\disjoint_threshold_sets.hpp">
-      <Filter>vega\Data\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\edge.hpp">
-      <Filter>vega\Data\Graph</Filter>
-    </ClInclude>
-    <ClInclude Include="..\vega\data\graph.hpp">
-      <Filter>vega\Data\Graph</Filter>
     </ClInclude>
     <ClInclude Include="..\vega\common\model_view_controller.h">
       <Filter>vega\Common</Filter>
