@@ -14,7 +14,7 @@ namespace vega
         class image : public mvc::i_model
         {
         public:
-            image(const char *szFileName);
+            image(const std::string& _FileName);
 
             virtual bool create();
 
@@ -27,7 +27,7 @@ namespace vega
             const void * get_raw_data() const { return static_cast<const void*>(myRGBData.data()); }
 
         protected:
-            const char * myBMPFileName;
+            std::string myBMPFileName;
             std::vector<uint8> myRGBData;
             uint16 myWidth;
             uint16 myHeight;

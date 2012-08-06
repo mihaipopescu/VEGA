@@ -14,6 +14,7 @@ namespace vega
         class resizeable_volume : public volume
         {
         public:
+            resizeable_volume(const std::string& _FileName) : volume(_FileName, false) { }
 
             template <class T>
             void resample(uint32 dst_width, uint32 dst_height, uint32 dst_depth)
@@ -21,32 +22,35 @@ namespace vega
                 T filter;
 
                 void (resizeable_volume::*ff[3])(const algorithm::resample::generic_filter * filter, uint32 dst_width, uint32 dst_height, uint32 dst_depth);
-                uint32 filter_size[9] = 
+
+                struct filter_pass
                 {
-                    myWidth, myHeight, myDepth,
-                    myWidth, myHeight, myDepth,
-                    dst_width, dst_width, dst_depth
+                    uint32 width;
+                    uint32 height;
+                    uint32 depth;
+                } 
+                filter_size[3] = 
+                {   {myWidth, myHeight, myDepth},
+                    {myWidth, myHeight, myDepth},
+                    {dst_width, dst_height, dst_depth}
                 };
 
-                if( dst_width * myHeight * myDepth < myWidth * dst_height * myDepth && 
-                    dst_width * myHeight * myDepth < myWidth * myHeight * dst_depth )
+                if( dst_width * myHeight * myDepth <= myWidth * dst_height * myDepth && 
+                    dst_width * myHeight * myDepth <= myWidth * myHeight * dst_depth )
                 {
                     ff[0] = &resizeable_volume::horizontal_filter;
-                    filter_size[0] = dst_width;
-                    filter_size[3] = dst_width;
+                    filter_size[0].width = filter_size[1].width = dst_width;
 
-                    if( dst_width * dst_height * myDepth < dst_width * myHeight * dst_depth )
+                    if( dst_width * dst_height * myDepth <= dst_width * myHeight * dst_depth )
                     {
-                        filter_size[1] = dst_height;
-                        filter_size[5] = dst_depth;
+                        filter_size[1].height = dst_height;
                         
                         ff[1] = &resizeable_volume::vertical_filter;
                         ff[2] = &resizeable_volume::depth_filter;
                     }
                     else
                     {
-                        filter_size[2] = dst_depth;
-                        filter_size[4] = dst_height;
+                        filter_size[1].depth = dst_depth;
                         
                         ff[1] = &resizeable_volume::depth_filter;
                         ff[2] = &resizeable_volume::vertical_filter;
@@ -54,25 +58,22 @@ namespace vega
                 } 
                 else
                 {
-                    if( myWidth * dst_height * myDepth < dst_width * myHeight * myDepth && 
-                        myWidth * dst_height * myDepth < myWidth * myHeight * dst_depth )
+                    if( myWidth * dst_height * myDepth <= dst_width * myHeight * myDepth && 
+                        myWidth * dst_height * myDepth <= myWidth * myHeight * dst_depth )
                     {
                         ff[0] = &resizeable_volume::vertical_filter;
-                        filter_size[1] = dst_height;
-                        filter_size[4] = dst_height;
+                        filter_size[0].height = filter_size[1].height = dst_height;
 
-                        if( dst_width * dst_height * myDepth < myWidth * dst_height * dst_depth )
+                        if( dst_width * dst_height * myDepth <= myWidth * dst_height * dst_depth )
                         {
-                            filter_size[0] = dst_width;
-                            filter_size[5] = dst_depth;
+                            filter_size[1].width = dst_width;
 
                             ff[1] = &resizeable_volume::horizontal_filter;
                             ff[2] = &resizeable_volume::depth_filter;
                         }
                         else
                         {
-                            filter_size[2] = dst_depth;
-                            filter_size[3] = dst_width;
+                            filter_size[1].depth = dst_depth;
 
                             ff[1] = &resizeable_volume::depth_filter;
                             ff[2] = &resizeable_volume::horizontal_filter;
@@ -80,25 +81,22 @@ namespace vega
                     }
                     else
                     {
-                        if( myWidth * myHeight * dst_depth < dst_width * myHeight * myDepth && 
-                            myWidth * myHeight * dst_depth < myWidth * dst_height * myDepth )
+                        //if( myWidth * myHeight * dst_depth < dst_width * myHeight * myDepth && 
+                            //myWidth * myHeight * dst_depth < myWidth * dst_height * myDepth )
                         {
                             ff[0] = &resizeable_volume::depth_filter;
-                            filter_size[2] = dst_depth;
-                            filter_size[5] = dst_depth;
+                            filter_size[0].depth = filter_size[1].depth = dst_depth;
 
-                            if( dst_width * myHeight * dst_depth < myWidth * dst_height * dst_depth )
+                            if( dst_width * myHeight * dst_depth <= myWidth * dst_height * dst_depth )
                             {
-                                filter_size[0] = dst_width;
-                                filter_size[4] = dst_height;
+                                filter_size[1].width = dst_width;
 
                                 ff[1] = &resizeable_volume::horizontal_filter;
                                 ff[2] = &resizeable_volume::vertical_filter;
                             }
                             else
                             {
-                                filter_size[1] = dst_height;
-                                filter_size[3] = dst_width;
+                                filter_size[1].height = dst_height;
 
                                 ff[1] = &resizeable_volume::horizontal_filter;
                                 ff[2] = &resizeable_volume::vertical_filter;
@@ -110,13 +108,15 @@ namespace vega
 
                 for(int i=0; i<3; ++i)
                 {
-                    myResizedVolume.resize(filter_size[i*3] * filter_size[i*3+1] * filter_size[i*3+2], 0);
-                    (this->*ff[i])(&filter, filter_size[i*3], filter_size[i*3+1], filter_size[i*3+2]);
-                    myWidth = filter_size[i*3];
-                    myHeight = filter_size[i*3+1];
-                    myDepth = filter_size[i*3+2];
+                    myResizedVolume.resize(filter_size[i].width * filter_size[i].height * filter_size[i].depth, 0);
+                    (this->*ff[i])(&filter, filter_size[i].width, filter_size[i].height, filter_size[i].depth);
+                    myWidth = filter_size[i].width;
+                    myHeight = filter_size[i].height;
+                    myDepth = filter_size[i].depth;
                     myVoxelArray = myResizedVolume;
-                }                
+                }
+
+                paint_voxels();
             }
 
         private:

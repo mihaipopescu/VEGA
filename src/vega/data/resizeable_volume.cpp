@@ -23,14 +23,14 @@ void vega::data::resizeable_volume::horizontal_filter( const algorithm::resample
 
 			for (uint32 x = 0; x < dst_width; x++) 
 			{
-				voxel v = 0;
+				uint8 v = 0;
 				int iLeft = wt.getLeftBoundary(x);	// Retrieve left boundaries
 				int iRight = wt.getRightBoundary(x);  // Retrieve right boundaries
 				for (int i = iLeft; i <= iRight; i++)
 				{
 					// Scan between boundaries
 					// Accumulate weighted effect of each neighboring pixel
-					v += (voxel)((wt.getWeight(x, i-iLeft) * (double)(pSrcRow[i]))); 
+					v += (uint8)((wt.getWeight(x, i-iLeft) * (double)(pSrcRow[i]))); 
 				} 
 
 				// set destination row

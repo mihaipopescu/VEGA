@@ -54,7 +54,7 @@ camera g_cam;
 
 //#define UNIT_TEST_2D
 #define UNIT_TEST_3D
-#define SYNTHETIC_SCENE
+//#define SYNTHETIC_SCENE
 
 
 std::vector<std::shared_ptr<mvc::i_view>> g_Views;
@@ -259,15 +259,25 @@ bool init_gl_objects()
     voltex->create();
 
 #else
-	std::shared_ptr<volume> v = std::make_shared<volume>();
-    if( !v->load("data/volume/bonsai.vega", false) )
+	std::shared_ptr<resizeable_volume> v = std::make_shared<resizeable_volume>("data/volume/bonsai.vega");
+    
+    if( !v->create() )
         return false;
-	//g_graph3D->create(v);
-	g_volume3D->create(v);
-	v.reset();
-#endif
-#endif
 
+    v->resample<vega::algorithm::resample::bilinear_filter>(64, 64, 64);
+
+    auto voltex = std::make_shared<volume_texture_view>();
+    auto volctrl = std::make_shared<volume_texture_controller>();
+
+    model_view_controller(v, voltex, volctrl);
+
+    g_Views.push_back(voltex);
+    g_Controllers.push_back(volctrl);
+
+    voltex->create();
+	
+#endif
+#endif
 
     return true;
 }

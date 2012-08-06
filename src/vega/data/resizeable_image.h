@@ -13,6 +13,7 @@ namespace vega
         class resizeable_image : public image
         {
         public:
+            resizeable_image(const char *szFileName) : image(szFileName) { }
 
             template <class T>
             void resample(uint32 dst_width, uint32 dst_height)

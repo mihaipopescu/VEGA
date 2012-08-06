@@ -52,7 +52,8 @@ namespace vega
         protected:
             bool load_raw               ();
             bool save_raw               () const;
-
+            
+            void paint_voxels           ();
             void compute_gradients      (int nSampleRadius = 1);
             bool load_gradients         ();
             bool save_gradients         () const;

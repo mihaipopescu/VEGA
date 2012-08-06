@@ -3,7 +3,6 @@
 
 #include "common.h"
 #include "volume.h"
-//#include "../data/graph.hpp"
 #include "../data/hexagonal_prismatic_lattice.h"
 #include "boost/graph/adjacency_list.hpp"
 #include <memory>

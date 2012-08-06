@@ -135,16 +135,7 @@ bool vega::data::volume::create()
 
     std::cout << "Width = " << myWidth << ", Height = " << myHeight << ", Depth = " << myDepth << std::endl;
 
-    // Paint voxels
-    myPaintedVoxels.clear();
-    myPaintedVoxels.reserve(myWidth * myHeight * myDepth);
-
-    assert(myTransferFunction);
-
-    std::for_each(myVoxelArray.cbegin(), myVoxelArray.cend(), [this](voxel v)
-    {
-        myPaintedVoxels.push_back(myTransferFunction->myTransferArray[v]);
-    });
+    paint_voxels();
 
     // load voxel gradients
     if( myVolumeUsesGradients )
@@ -217,6 +208,20 @@ bool vega::data::volume::save_raw() const
     
     outfile.close();
     return true;
+}
+
+void vega::data::volume::paint_voxels()
+{
+    // Paint voxels
+    myPaintedVoxels.clear();
+    myPaintedVoxels.reserve(myWidth * myHeight * myDepth);
+
+    assert(myTransferFunction);
+
+    std::for_each(myVoxelArray.cbegin(), myVoxelArray.cend(), [this](voxel v)
+    {
+        myPaintedVoxels.push_back(myTransferFunction->myTransferArray[v]);
+    });
 }
 
 // Computes the gradients using a central difference scheme
