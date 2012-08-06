@@ -24,12 +24,12 @@ namespace vega
             {
                 template <class Graph, class OutputIterator, 
                 class Rank, class Parent, class Weight, class WeightTreshold>
-                    void
+                    std::size_t
                     kruskal_threshold(const Graph& G, 
                     OutputIterator spanning_tree_edges, 
                     Rank rank, Parent parent, Weight weight, WeightTreshold threshold)
                 {
-                    if (num_vertices(G) == 0) return; // Nothing to do in this case
+                    if (num_vertices(G) == 0) return 0; // Nothing to do in this case
                     typedef typename graph_traits<Graph>::vertex_descriptor Vertex;
                     typedef typename graph_traits<Graph>::edge_descriptor Edge;
                     BOOST_CONCEPT_ASSERT(( VertexListGraphConcept<Graph> ));
@@ -60,6 +60,7 @@ namespace vega
                     for (boost::tie(ei, eiend) = edges(G); ei != eiend; ++ei) 
                         Q.push(*ei);
 
+					std::size_t count = 0;
                     while (! Q.empty()) {
                         Edge e = Q.top();
                         Q.pop();
@@ -69,8 +70,11 @@ namespace vega
                         if ( u != v && get(weight, e) < threshold) {
                             *spanning_tree_edges++ = e;
                             dset.link(u, v);
+							++count;
                         }
                     }
+
+					return count;
                 }
 
             } // namespace detail 
@@ -80,7 +84,7 @@ namespace vega
             template <class Graph, class OutputIterator, class Weight>
             inline std::vector<typename boost::graph_traits<Graph>::vertex_descriptor>
                 kruskal_threshold(const Graph& g,
-                OutputIterator spanning_tree_edges, Weight weight_threshold)
+                OutputIterator spanning_tree_edges, std::size_t& count, Weight weight_threshold)
             {
                 typedef typename graph_traits<Graph>::vertices_size_type size_type;
                 typedef typename graph_traits<Graph>::vertex_descriptor vertex_t;
@@ -93,7 +97,7 @@ namespace vega
 
                 if (num_vertices(g) == 0) return pred_map; // Nothing to do in this case
 
-                detail::kruskal_threshold
+                count = detail::kruskal_threshold
                     (g, spanning_tree_edges, 
                     make_iterator_property_map(rank_map.begin(), get(vertex_index, g), rank_map[0]),
                     make_iterator_property_map(pred_map.begin(), get(vertex_index, g), pred_map[0]),

@@ -60,24 +60,26 @@ void vega::data::volume_graph::mst_kruskal()
 
     std::cout << "Applying Thresholded Kruskal MST... ";
 
-    mySet.clear();
-
+	size_t count = mst.size();
     mst.resize(num_vertices(*myGraph) - 1);
 
-    size_t count = 0;
-    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), 0.1f);
+    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), count, 0.1f);
 
+	mySet.clear();
     mySet.insert(mySet.begin(), parent_set.begin(), parent_set.end());
-
+	
     std::cout << count << " edges added !" << std::endl;
     
-    myGraph->clear();
     auto weight = get(edge_weight, *myGraph);
 
-    for(auto it = mst.begin(); it != mst.end(); ++it)
+	auto g = std::make_shared<Graph>(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
+
+    for(size_t i=0; i<count; ++i)
     {
-        add_edge(it->m_source, it->m_target, get(weight, *it), *myGraph);
+        add_edge(mst[i].m_source, mst[i].m_target, get(weight, mst[i]), *g);
     }
+
+	myGraph = g;
 
     std::cout << "Done !" << std::endl;
 
