@@ -117,6 +117,7 @@ namespace vega
                 }
 
                 paint_voxels();
+                myRawDataIsDirty = true;
             }
 
         private:

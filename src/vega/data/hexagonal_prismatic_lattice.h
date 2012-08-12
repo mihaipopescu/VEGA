@@ -4,6 +4,8 @@
 #include <vector>
 #include "volume.h"
 
+#define NEIGHBOR_COUNT 8 // 20
+
 namespace vega
 {
     namespace data
@@ -25,9 +27,20 @@ namespace vega
                 //
                 //
 
+                //     z=0           z=-1         z=+1
+                //      __            __           __
+                //   __/4 \__      __/  \__     __/  \__
+                //  /3 \__/5 \    /  \__/  \   /  \__/  \
+                //  \__/* \__/    \__/6 \__/   \__/7 \__/
+                //  /2 \__/0 \    /  \__/  \   /  \__/  \
+                //  \__/1 \__/    \__/  \__/   \__/  \__/
+                //     \__/          \__/         \__/
+                //
+                //
+
                 float density;                              //!< average density
                 uint16 x, y, z;                             //!< node coordinates
-                uint32 hex[20];                             //!< neighbors
+                uint32 hex[NEIGHBOR_COUNT];                 //!< neighbors
 
                 math::vector3d get_vertex() const;
             };

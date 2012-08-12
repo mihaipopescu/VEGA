@@ -39,14 +39,21 @@ vega::data::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const volu
                 cell.y = i + j/2 + j%2;
                 cell.z = k;
 
-                static const int hex_neighbor_offset[6+7+7][3] = 
+
+                static const int hex_neighbor_offset[NEIGHBOR_COUNT][3] = 
                 { 
                                {1, 1, 0}, {0, 1, 0}, {-1, 0, 0}, {-1, -1, 0}, {0, -1, 0}, {1, 0, 0},
-                    {0, 0,-1}, {1, 1,-1}, {0, 1,-1}, {-1, 0,-1}, {-1, -1,-1}, {0, -1,-1}, {1, 0,-1},
-                    {0, 1, 1}, {1, 1, 1}, {0, 1, 1}, {-1, 0, 1}, {-1, -1, 1}, {0, -1, 1}, {1, 0, 1}
+                    {0, 0,-1}, 
+#if NEIGHBOR_COUNT==20
+                               {1, 1,-1}, {0, 1,-1}, {-1, 0,-1}, {-1, -1,-1}, {0, -1,-1}, {1, 0,-1},
+#endif
+                    {0, 0, 1}, 
+#if NEIGHBOR_COUNT==20                               
+                               {1, 1, 1}, {0, 1, 1}, {-1, 0, 1}, {-1, -1, 1}, {0, -1, 1}, {1, 0, 1}
+#endif
                 };
 
-                for(int h=0; h<20; ++h)
+                for(int h=0; h<NEIGHBOR_COUNT; ++h)
                 {
                     int hj = cell.x + hex_neighbor_offset[h][0];
                     int hi = cell.y + hex_neighbor_offset[h][1] - hj/2 - hj%2;

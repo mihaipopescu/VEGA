@@ -54,7 +54,7 @@ camera g_cam;
 
 //#define UNIT_TEST_2D
 #define UNIT_TEST_3D
-//#define SYNTHETIC_SCENE
+#define SYNTHETIC_SCENE
 
 
 std::vector<std::shared_ptr<mvc::i_view>> g_Views;
@@ -265,6 +265,7 @@ bool init_gl_objects()
         return false;
 
     v->resample<vega::algorithm::resample::bilinear_filter>(64, 64, 64);
+    v->save_as("resized_bonsai.raw");
 
     auto voltex = std::make_shared<volume_texture_view>();
     auto volctrl = std::make_shared<volume_texture_controller>();

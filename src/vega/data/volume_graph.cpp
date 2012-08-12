@@ -33,7 +33,7 @@ bool vega::data::volume_graph::create()
             for(int j=0;j<myLattice->myWidth;++j)
             {
                 hexagonal_prismatic_lattice::prismatic_hexagon_node& node = myLattice->myLatticeCells[c];
-                for(int h=0;h<20;++h)
+                for(int h=0;h<NEIGHBOR_COUNT;++h)
                 {
                     if( node.hex[h] != (uint32)-1 )
                     {
