@@ -29,7 +29,7 @@ vega::render::volume_texture_view::volume_texture_view()
 
 bool vega::render::volume_texture_view::create( )
 {
-    auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
+    auto pVolume = std::dynamic_pointer_cast<i_volume>(myModel);
 
     if( pVolume == NULL )
         return false;
@@ -155,7 +155,7 @@ void vega::render::volume_texture_view::render() const
 
 void vega::render::volume_texture_view::update_proxy_geometry()
 {
-    auto pVolume = std::dynamic_pointer_cast<volume>(myModel);
+    auto pVolume = std::dynamic_pointer_cast<i_volume>(myModel);
 
     if( pVolume && pVolume->get_size() == 0 )
         return;

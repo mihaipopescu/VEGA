@@ -24,6 +24,7 @@ namespace vega
             virtual ~i_observable() {}
 
             void subscribe(const std::shared_ptr<i_observer> &o);
+            void unsubscribe(const std::shared_ptr<i_observer> &o);
             void notify() const;
 
         protected:

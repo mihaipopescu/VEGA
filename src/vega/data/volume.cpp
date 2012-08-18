@@ -39,7 +39,6 @@ vega::data::volume::volume( uint16 iWidth, uint16 iHeight, uint16 iDepth )
 
 vega::data::volume::~volume(void)
 {
-    save();
 }
 
 bool vega::data::volume::create()

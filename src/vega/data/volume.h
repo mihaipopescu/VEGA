@@ -20,7 +20,20 @@ namespace vega
 {
     namespace data
     {
-        class volume : public mvc::i_model
+        class i_volume : public mvc::i_model
+        {
+        public:
+            virtual size_t get_size             () const = 0;
+            virtual uint16 get_width            () const = 0;
+            virtual uint16 get_height           () const = 0;
+            virtual uint16 get_depth            () const = 0;
+
+            virtual void*  get_raw_data()       = 0;
+            virtual void*  get_lut_data()       = 0;
+            virtual void*  get_color_data()     = 0;
+        };
+
+        class volume : public i_volume
         {
         public:
             volume                      (const std::string& _FileName, bool _UseGradients);

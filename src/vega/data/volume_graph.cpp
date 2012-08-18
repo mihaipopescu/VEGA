@@ -10,18 +10,16 @@ using namespace vega::data;
 using namespace vega::math;
 
 
-vega::data::volume_graph::volume_graph( const std::string& _FileName )
-    : volume(_FileName, false)
+vega::data::volume_graph::volume_graph( std::shared_ptr<volume>& v )
 {
+    myVolume = v;
 }
 
 bool vega::data::volume_graph::create()
 {
     SMART_LOG_FN;
 
-    volume::create();
-
-    myLattice = std::make_shared<hexagonal_prismatic_lattice>(*this);
+    myLattice = std::make_shared<hexagonal_prismatic_lattice>(*myVolume);
 
     myGraph = std::make_shared<Graph>(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
 

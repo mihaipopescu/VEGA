@@ -235,7 +235,12 @@ bool init_gl_objects()
     
 #endif
 
-    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>("data/volume/synthetic.vega");
+    std::shared_ptr<resizeable_volume> vol = std::make_shared<resizeable_volume>("data/volume/bonsai.vega");
+    vol->create();
+    vol->resample<vega::algorithm::resample::bilinear_filter>(64, 64, 64);
+    
+
+    std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>((std::shared_ptr<volume>&)(vol));
 
     if( !vg->create() )
         return false;
