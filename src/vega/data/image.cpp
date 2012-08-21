@@ -1,7 +1,9 @@
 #include <iostream>
 #include <windows.h>
+#include <sstream>
 #include "image.h"
 #include "../math/vector3d.h"
+#include "../common/logger.h"
 
 
 
@@ -23,14 +25,19 @@ namespace vega
             const HDC gldc = wglGetCurrentDC();
             HDC mdc = CreateCompatibleDC(gldc);
 
-            std::cout << "Loading image file [" << myBMPFileName.c_str() << "]... ";
+            std::stringstream msg;
+            msg << "Loading image file [" << myBMPFileName.c_str() << "]... ";
+
+            VEGA_LOG_INFO(msg.str().c_str());
 
             // Loads the image.
             HBITMAP _DIBHandle = (HBITMAP)LoadImage(0, myBMPFileName.c_str(), IMAGE_BITMAP, 0, 0, LR_DEFAULTCOLOR | LR_CREATEDIBSECTION | LR_LOADFROMFILE);	
 
             if(!_DIBHandle)
             {
-                std::cerr << "Failed ! Reason: Unable to load image." << std::endl;
+                msg.str("");
+                msg << "Failed ! Reason: Unable to load image." << std::endl;
+                VEGA_LOG_ERROR(msg.str().c_str());
                 DeleteDC(mdc);
                 return false;
             }
@@ -72,7 +79,9 @@ namespace vega
             {
                 myHeight = 0;
                 myWidth = 0;
-                std::cerr << "Failed ! Reason: Invalid image bit count." << std::endl;
+                msg.str("");
+                msg << "Failed ! Reason: Invalid image bit count." << std::endl;
+                VEGA_LOG_ERROR(msg.str().c_str());
                 DeleteObject(_DIBHandle);
                 DeleteDC(mdc);
                 return false;
@@ -81,7 +90,11 @@ namespace vega
             DeleteObject(_DIBHandle);
             DeleteDC(mdc);
 
-            std::cout << "Width = " << myWidth << ", Height = " << myHeight << std::endl;
+            msg.str("");
+            msg << "Width = " << myWidth << ", Height = " << myHeight << std::endl;
+
+            VEGA_LOG_INFO(msg.str().c_str());
+
             return true;
         }
 

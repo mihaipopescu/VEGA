@@ -1,6 +1,7 @@
 #include "hexagonal_lattice.h"
 #include "../common/logger.h"
 #include "../math/transformations.h"
+#include "../common/logger.h"
 
 #include <iostream>
 #include <vector>
@@ -9,7 +10,7 @@
 
 vega::data::hexagonal_lattice::hexagonal_lattice( const data::image & img )
 {
-    SMART_LOG_FN;
+    VEGA_LOG_FN;
 
     // Lattice L = {Lx, Ly};
     static const int Lx[2] = {2, -1};

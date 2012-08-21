@@ -17,7 +17,7 @@ vega::data::volume_graph::volume_graph( std::shared_ptr<volume>& v )
 
 bool vega::data::volume_graph::create()
 {
-    SMART_LOG_FN;
+    VEGA_LOG_FN;
 
     myLattice = std::make_shared<hexagonal_prismatic_lattice>(*myVolume);
 
@@ -44,7 +44,7 @@ bool vega::data::volume_graph::create()
         }
     }
 
-    mySet.reserve(num_edges(*myGraph));
+    mySet.reserve(num_vertices(*myGraph));
     mySet.insert(mySet.begin(), num_vertices(*myGraph), 0);
 
     return true;
@@ -56,7 +56,7 @@ void vega::data::volume_graph::mst_kruskal()
 
     std::vector<graph_traits<Graph>::edge_descriptor> mst;
 
-    std::cout << "Applying Thresholded Kruskal MST... ";
+    VEGA_LOG_DEBUG("Applying Thresholded Kruskal MST... ");
 
 	size_t count = mst.size();
     mst.resize(num_vertices(*myGraph) - 1);
@@ -66,7 +66,9 @@ void vega::data::volume_graph::mst_kruskal()
 	mySet.clear();
     mySet.insert(mySet.begin(), parent_set.begin(), parent_set.end());
 	
-    std::cout << count << " edges added !" << std::endl;
+    std::stringstream msg;
+    msg << count << " edges added ! ";
+    VEGA_LOG_DEBUG(msg.str().c_str());
     
     auto weight = get(edge_weight, *myGraph);
 
@@ -79,7 +81,15 @@ void vega::data::volume_graph::mst_kruskal()
 
 	myGraph = g;
 
-    std::cout << "Done !" << std::endl;
+    uint32 c = 0;
+    for(auto it=myLattice->myLatticeCells.begin(); it != myLattice->myLatticeCells.end(); ++it)
+    {
+        myLattice->fill_volume_cell(*myVolume, *it);
+    }
+    
+    myVolume->paint_voxels();
+
+    VEGA_LOG_DEBUG("Done !\n");
 
     notify();
 }

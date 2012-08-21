@@ -41,11 +41,12 @@ namespace vega
                 float density;                              //!< average density
                 uint16 x, y, z;                             //!< node coordinates
                 uint32 hex[NEIGHBOR_COUNT];                 //!< neighbors
-
                 math::vector3d get_vertex() const;
             };
 
             hexagonal_prismatic_lattice(const volume& v);
+
+            void fill_volume_cell(volume& v, const prismatic_hexagon_node & node);
 
         public:
             std::vector<prismatic_hexagon_node> myLatticeCells;

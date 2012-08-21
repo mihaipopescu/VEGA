@@ -25,12 +25,15 @@ namespace vega
 
             struct _profile_entry
             {
-                _profile_entry(uint64 _now) : start(_now), elapsed(0ul) { }
+                _profile_entry(uint64 _now) : start(_now), elapsed(0ul), count(1ul), peak(0ul) { }
                 
                 uint64 start;
                 uint64 elapsed;
+                uint64 count;
+                uint64 peak;
 
                 static void dump(const profile_map::value_type& p);
+                float get_elapsed_time() const;
             };
 
         public:
@@ -39,6 +42,8 @@ namespace vega
             void end_profile(uint32 key);
             void dump_map() const;
             void dump_key(uint32 key) const;
+
+            float get_elapsed_time_by_key(uint32 key) const;
 
         protected:
             profile_map myProfileMap;

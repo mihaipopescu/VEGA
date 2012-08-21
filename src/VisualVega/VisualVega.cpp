@@ -114,8 +114,8 @@ void reshapeCB(int w, int h)
 
 void cleanupCB()
 {
-    profiler::destroy();
     logger::destroy();
+    profiler::destroy();
 }
 
 void timerCB(int value)
@@ -201,7 +201,7 @@ bool init_glut(int argc, char **argv)
 bool init_gl_objects()
 {
     profiler::create();
-    profiler::get()->set_dump_on_end(true);
+    profiler::get()->set_dump_on_end(false);
 
     logger::create();
     logger::get()->initialize();
@@ -236,7 +236,10 @@ bool init_gl_objects()
 #endif
 
     std::shared_ptr<resizeable_volume> vol = std::make_shared<resizeable_volume>("data/volume/bonsai.vega");
-    vol->create();
+
+    if( !vol->create() )
+        return false;
+
     vol->resample<vega::algorithm::resample::bilinear_filter>(64, 64, 64);
     
 

@@ -57,6 +57,8 @@ namespace vega
             float       get_voxel_color_distance(uint16 x1, uint16 y1, uint16 z1, uint16 x2, uint16 y2, uint16 z2) const;
             r8g8b8a8    get_voxel_color         (uint16 x, uint16 y, uint16 z) const { return myPaintedVoxels[_I(x, y, z)]; }
 
+            void paint_voxels           ();
+
         public:
             virtual bool create         ();
             bool save                   ();
@@ -66,7 +68,6 @@ namespace vega
             bool load_raw               ();
             bool save_raw               () const;
             
-            void paint_voxels           ();
             void compute_gradients      (int nSampleRadius = 1);
             bool load_gradients         ();
             bool save_gradients         () const;

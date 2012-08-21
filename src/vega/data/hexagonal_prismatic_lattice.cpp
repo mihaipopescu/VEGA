@@ -12,7 +12,7 @@ using namespace vega::math;
 
 vega::data::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const volume& v )
 {
-    SMART_LOG_FN;
+    VEGA_LOG_FN;
 
     // Lattice L = {Lx, Ly, Lz};
     static const int Lx[3] = {2, -1, 0};
@@ -99,6 +99,25 @@ vega::data::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const volu
             }
         }
 
+    }
+}
+
+void vega::data::hexagonal_prismatic_lattice::fill_volume_cell( volume& v, const prismatic_hexagon_node & node )
+{
+    static const int hex_pixel_offset[8][2] = { {1, 0}, {2, 0}, {0, 1}, {1, 1}, {2, 1}, {3, 1}, {1, 2}, {2, 2}};
+
+    math::vector3d vertex = node.get_vertex();
+
+    for(size_t h=0;h<8;++h)
+    {
+        math::vector3d pixel;
+        int xx = (int)vertex.x + hex_pixel_offset[h][0];
+        int yy = (int)vertex.y + hex_pixel_offset[h][1];
+        int zz = (int)vertex.z;
+        if( xx >= 0 && yy >= 0 && zz >= 0 && xx < v.get_width() && yy < v.get_height() && zz < v.get_depth() )
+        {
+            v.set_voxel(xx, yy, zz, (voxel)(node.density * 255.f));
+        }
     }
 }
 

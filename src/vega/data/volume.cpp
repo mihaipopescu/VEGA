@@ -3,13 +3,16 @@
 #include <xutility>
 #include <assert.h>
 #include <algorithm>
+#include <sstream>
 
 #include "volume.h"
 #include "../math/transfer_function.h"
 #include "../math/transformations.h"
+#include "../common/logger.h"
 
 
-#define clamp(val, vmin, vmax) std::min((vmax), std::max((vmin), (val)))
+#define clamp(val, vmin, vmax) min((vmax), max((vmin), (val)))
+
 
 using namespace vega::math;
 using namespace std;
@@ -45,13 +48,18 @@ bool vega::data::volume::create()
 {
     ifstream input(myHeaderFilename, ios::in);
 
-    cout << "Loading volume file ["<< myHeaderFilename.c_str() << "]...";
+    std::stringstream msg;
 
     if( input.fail() )
     {
-        cerr << "Failed to open volume file " << myHeaderFilename.c_str() << endl;
+        msg.str("");
+        msg << "Failed to open volume file " << myHeaderFilename.c_str() << endl;
+        VEGA_LOG_ERROR(msg.str().c_str());
         return false;
     }
+
+    msg << "Loading volume file ["<< myHeaderFilename.c_str() << "]...";
+    VEGA_LOG_INFO(msg.str().c_str());
 
     int iWidth = 0, iHeight = 0, iDepth = 0;
 
@@ -107,7 +115,9 @@ bool vega::data::volume::create()
 
     if( input.fail() )
     {
-        cerr << "Error reading volume file " << myHeaderFilename.c_str() << endl;
+        msg.str("");
+        msg << "Error reading volume file " << myHeaderFilename.c_str() << endl;
+        VEGA_LOG_ERROR(msg.str().c_str());
         input.close();
         return false;
     }
@@ -132,7 +142,9 @@ bool vega::data::volume::create()
     // load raw volume data
     load_raw();
 
-    std::cout << "Width = " << myWidth << ", Height = " << myHeight << ", Depth = " << myDepth << std::endl;
+    msg.str("");
+    msg << "Width = " << myWidth << ", Height = " << myHeight << ", Depth = " << myDepth << std::endl;
+    VEGA_LOG_INFO(msg.str().c_str());
 
     paint_voxels();
 

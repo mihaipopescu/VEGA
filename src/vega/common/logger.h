@@ -3,30 +3,43 @@
 
 #include "types.h"
 #include "singleton.h"
+#include <windows.h>
 
-#define SMART_LOG_MSG(msg) vega::utils::smart_log fnlog(msg)
-#define SMART_LOG_FN SMART_LOG_MSG(__FUNCTION__)
+#define VEGA_LOG(ch, msg) vega::utils::logger::get()->log(vega::utils::ch, (msg))
+
+#define VEGA_LOG_VERBOSE(msg) VEGA_LOG(LOG_VERBOSE, msg)
+#define VEGA_LOG_DEBUG(msg) VEGA_LOG(LOG_DEBUG, msg)
+#define VEGA_LOG_INFO(msg) VEGA_LOG(LOG_INFO, msg)
+#define VEGA_LOG_WARN(msg) VEGA_LOG(LOG_WARN, msg)
+#define VEGA_LOG_ERROR(msg) VEGA_LOG(LOG_ERROR, msg)
+
+#define VEGA_LOG_FN VEGA_LOG_VERBOSE(__FUNCTION__)
+
 
 namespace vega
 {
     namespace utils
     {
+        enum LOG_CHANNEL
+        {
+            LOG_VERBOSE,
+            LOG_DEBUG,
+            LOG_INFO,
+            LOG_WARN,
+            LOG_ERROR,
+            LOG_ASSERT,
+        };
+
         class logger : public singleton<logger>
         {
             SINGLETON_DECL(logger);
 
-            uint16 myIndentation;
-
+            HANDLE hConsole;
         public:
-            void initialize();
-            void log(const char * msg);
-            void caret_return() { myIndentation --; }
-        };
+            ~logger();
 
-        struct smart_log
-        {
-            smart_log(const char * msg) { logger::get()->log(msg); }
-            ~smart_log() { logger::get()->caret_return(); }
+            void initialize();
+            void log(LOG_CHANNEL channel, const char * msg);
         };
     }
 }
