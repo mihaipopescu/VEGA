@@ -2,7 +2,7 @@
 #include "../common/logger.h"
 #include "../algorithm/mst/kruskal.hpp"
 #include "boost/pending/disjoint_sets.hpp"
-
+#include "../math/transformations.h"
 #include <iostream>
 
 using namespace boost;
@@ -35,7 +35,15 @@ bool vega::data::volume_graph::create()
                 {
                     if( node.hex[h] != (uint32)-1 )
                     {
+#ifndef USE_COLOR_MAP
                         add_edge(c, node.hex[h], fabsf(node.density - myLattice->myLatticeCells[node.hex[h]].density), *myGraph);
+#else
+                        auto & node2 = myLattice->myLatticeCells[node.hex[h]];
+                        math::vector3d p1(node.color.R, node.color.G, node.color.B);
+                        math::vector3d p2(node2.color.R, node2.color.G, node2.color.B);
+
+                        add_edge(c, node.hex[h], math::HSV_distance_from_RGB(p1 * (1.f/255), p2 * (1.f/255)), *myGraph);
+#endif
                     }
                 }
 

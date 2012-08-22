@@ -5,6 +5,7 @@
 #include "volume.h"
 
 #define NEIGHBOR_COUNT 8 // 20
+#define USE_COLOR_MAP
 
 namespace vega
 {
@@ -37,8 +38,11 @@ namespace vega
                 //     \__/          \__/         \__/
                 //
                 //
-
+#ifdef USE_COLOR_MAP
+                r8g8b8a8 color;                             //!< average color
+#else
                 float density;                              //!< average density
+#endif
                 uint16 x, y, z;                             //!< node coordinates
                 uint32 hex[NEIGHBOR_COUNT];                 //!< neighbors
                 math::vector3d get_vertex() const;

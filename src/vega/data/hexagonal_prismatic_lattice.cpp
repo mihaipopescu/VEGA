@@ -77,8 +77,11 @@ vega::data::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const volu
                 static const int hex_pixel_offset[8][2] = { {1, 0}, {2, 0}, {0, 1}, {1, 1}, {2, 1}, {3, 1}, {1, 2}, {2, 2}};
                 
                 math::vector3d vertex = cell.get_vertex();
-
+#ifndef USE_COLOR_MAP
                 cell.density = 0.f;
+#else
+                cell.color.RGBA = 0;
+#endif
 
                 // compute average density
                 int k = 0;
@@ -90,8 +93,16 @@ vega::data::hexagonal_prismatic_lattice::hexagonal_prismatic_lattice( const volu
                     int zz = (int)vertex.z;
                     if( xx >= 0 && yy >= 0 && zz >= 0 && xx < v.get_width() && yy < v.get_height() && zz < v.get_depth() )
                     {
+#ifndef USE_COLOR_MAP                        
                         float vx = v.get_voxel(xx, yy, zz);
                         cell.density = (cell.density * k + vx) * (1.f/(++k));
+#else
+                        r8g8b8a8 vx = v.get_voxel_color(xx, yy, zz);
+                        cell.color.A = (cell.color.A * k + vx.A) / ++k;
+                        cell.color.R = (cell.color.R * k + vx.R) / ++k;
+                        cell.color.G = (cell.color.G * k + vx.G) / ++k;
+                        cell.color.B = (cell.color.B * k + vx.B) / ++k;
+#endif
                     }
                 }
 
@@ -116,7 +127,7 @@ void vega::data::hexagonal_prismatic_lattice::fill_volume_cell( volume& v, const
         int zz = (int)vertex.z;
         if( xx >= 0 && yy >= 0 && zz >= 0 && xx < v.get_width() && yy < v.get_height() && zz < v.get_depth() )
         {
-            v.set_voxel(xx, yy, zz, (voxel)(node.density * 255.f));
+            v.set_voxel(xx, yy, zz, (voxel)(node.color.A * 255.f));
         }
     }
 }

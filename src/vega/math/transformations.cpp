@@ -100,8 +100,14 @@ float vega::math::HSV_distance_from_RGB( const vector3d & c1, const vector3d & c
     RGBtoHSV(c1.x, c1.y, c1.z, &h1, &s1, &v1);
     RGBtoHSV(c2.x, c2.y, c2.z, &h2, &s2, &v2);
 
-    // distance in HSV space
-    return 1.f - 1.f/sqrtf(5) * sqrtf( SQR(v1 - v2) + SQR(s1*cosf(h1) - s2*cosf(h2)) + SQR(s1*sinf(h1) - s2*sinf(h2)) );
+    // distance in HSV space (ref: Smith et. al)
+    //return 1.f - 1.f/sqrtf(5) * sqrtf( SQR(v1 - v2) + SQR(s1*cosf(h1) - s2*cosf(h2)) + SQR(s1*sinf(h1) - s2*sinf(h2)) );
+
+    // Euclidean distance in HSV space
+    vector3d hsv1(v1*s1*cosf(h1), v1*s1*sinf(h1), v1);
+    vector3d hsv2(v2*s2*cosf(h2), v2*s2*sinf(h2), v2);
+    
+    return hsv1.dist(hsv2);
 }
 
 void vega::math::transform_coord_array( std::vector<vector3d>& vertices, const matrix4x4& m )
