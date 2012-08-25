@@ -1,11 +1,12 @@
 CVS
-lib
-tmp
+_lib
+_obj
 *.exe
 *.ilk
 *.pdb
 *.suo
 *.sdf
+*.idb
 .cvsignore
 *.ipch
 doc/html/*
