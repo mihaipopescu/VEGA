@@ -69,7 +69,7 @@ void vega::data::volume_graph::mst_kruskal()
 	size_t count = mst.size();
     mst.resize(num_vertices(*myGraph) - 1);
 
-    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), count, 0.1f);
+    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), count, 0.002f);
 
 	mySet.clear();
     mySet.insert(mySet.begin(), parent_set.begin(), parent_set.end());
