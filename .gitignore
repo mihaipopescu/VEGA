@@ -1,13 +1,24 @@
+# cvs
 CVS
+.cvsignore
+
+# binary folders
 _lib
 _obj
+doc/html/*
+
+# executables
 *.exe
+
+# Visual Studio
 *.ilk
 *.pdb
 *.suo
 *.sdf
 *.idb
-.cvsignore
 *.ipch
-doc/html/*
 *.opensdf
+*.sln
+*.vcxproj
+*.filters
+*.user

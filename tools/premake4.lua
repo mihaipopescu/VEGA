@@ -5,12 +5,13 @@ solution "VegaTools"
     
     local boost_dir = os.getenv("BOOST_ROOT") or error("BOOST_ROOT must be defined !")
     
-    targetdir "../."
-    objdir "../_obj"
     
     project "PrecisionRecall"
         kind "ConsoleApp"
         language "C++"
+        
+        targetdir "../."
+        objdir "../_obj"
         
         files
         {
@@ -28,6 +29,8 @@ solution "VegaTools"
         kind "ConsoleApp"
         language "C++"
         
+        targetdir "../."
+        objdir "../_obj"
         
         files
         {
