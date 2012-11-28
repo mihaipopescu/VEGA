@@ -196,14 +196,14 @@ float dist_match(const volume &s1, const volume &s2) {
 
 int main(int argc, char ** argv) {
 
-    cout << "Precission-Recall 3D" << endl;
+    cout << "Precision-Recall 3D" << endl;
     
     
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "produce this help message")
-        ("file,f", po::value<string>(), "file to compare")
-        ("reference,r", po::value<string>(), "reference file")
+        ("file,f", po::value<string>(), "volume to compare (df3)")
+        ("reference,r", po::value<string>(), "reference volume (df3)")
     ;
     
     po::variables_map vm;
@@ -244,8 +244,8 @@ int main(int argc, char ** argv) {
     }
 
 
-	cout << "Naive PR=" << naive_benchmark(vol, volRef);
-	cout << "Distance PR=" << dist_match(vol, volRef);
+	cout << "Naive PR=" << naive_benchmark(vol, volRef) << endl;
+	cout << "Distance PR=" << dist_match(vol, volRef) << endl;
     
     return 0;
 }

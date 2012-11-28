@@ -26,9 +26,10 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    ifstream raw(argv[4], ios::in);
+    ifstream raw(argv[4], ios_base::in | ios_base::binary);
     if( raw.fail() ) {
         cerr << "ERROR: could not open input raw volume file " << argv[4] << " !" << endl;
+        return 1;
     }
 
     short width = (short)atoi(argv[1]);
@@ -43,15 +44,17 @@ int main(int argc, char **argv) {
     if( raw.fail() ) {
         cerr << "Failed to read from raw volume file !" << endl;
         raw.close();
+        delete [] data;
         return 1;
     }
     
     raw.close();
    
-
     ofstream df3(argv[5], ios::out | ios::binary);
     if( df3.fail() ) {
         cerr << "ERROR: could not open file " << argv[5] << " for writing !" << endl;
+        delete [] data;
+        return 1;
     }
 
 #ifdef LITTLE_ENDIAN
