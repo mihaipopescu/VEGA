@@ -15,7 +15,7 @@ solution "VegaTools"
         files
         {
             "precall3d.cpp",
-            boost_dir .. "libs/program_options/src/**.cpp",
+            boost_dir .. "/libs/program_options/src/**.cpp",
         }
         
         includedirs(boost_dir)
