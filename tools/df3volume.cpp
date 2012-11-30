@@ -30,7 +30,7 @@ bool df3volume::load(const char * file) {
     ffile.open(file, ios_base::binary | ios_base::in);
 
     if( ffile.fail() ) {
-        cout << "ERROR: Could not read input volume file '" << file << "' ! " << endl;
+        cerr << "ERROR: Could not read input volume file '" << file << "' ! " << endl;
         return false;
     }
     
@@ -54,7 +54,10 @@ bool df3volume::load(const char * file) {
     
     ffile.close();
     
+#ifdef _DEBUG
     cout << "Volume " << file << " size = " << size << " bytes" << endl;
+#endif
+
     return true;
 }
 
@@ -64,7 +67,7 @@ bool df3volume::load_raw(uint16 _width, uint16 _height, uint16 _depth, const cha
     
     ffile.open(file, ios_base::binary | ios_base::in);
     if( ffile.fail() ) {
-        cout << "Could not read input volume file '" << file << "' ! " << endl;
+        cerr << "Could not read input volume file '" << file << "' ! " << endl;
         return false;
     }
     
@@ -82,7 +85,9 @@ bool df3volume::load_raw(uint16 _width, uint16 _height, uint16 _depth, const cha
     height = _height;
     depth = _depth;
     
+#ifdef _DEBUG
     cout << "Volume " << file << " size = " << size << " bytes" << endl;
+#endif
     return true;
 }
 

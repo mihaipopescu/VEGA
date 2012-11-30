@@ -24,25 +24,30 @@ float naive_benchmark(const df3volume& v1, const df3volume& v2) {
         if (v1.data[i] == 0 && v2.data[i] == 0) {
             TN++;
         } else if (v1.data[i] == v2.data[i]) {
-            TP ++;
-        }
-        else if (v1.data[i] == 0) {
-            FN ++;
+            TP++;
+        } else if (v1.data[i] == 0) {
+            FN++;
         } else {
-            FP ++;
+            FP++;
         }
     }
 
-    float p = -1.f;
+    if (TP == 0)
+        return -1.f;
 
-    if (TP + FP > 0)
+    float p = 0;
+
+    if (TP + FP > 0) {
         p = TP * 1.f / (TP + FP);
+    }
 
     float r = -1.f;
 
-    if (TP + FN > 0)
+    if (TP + FN > 0) {
         r = TP * 1.f / (TP + FN);
-        
+    }
+    
+    cout << p << " " << r << endl;
 
     return p / r;
 }
@@ -61,7 +66,8 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
     uint16 height = s1.height;
     uint16 depth = s1.depth;
     uint32 matched = 0;
-
+    uint32 count = 0;
+    
     bool found = false;
 
     // for each voxel
@@ -71,7 +77,8 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
             
                 // if there is a boundary voxel in s1 at (x,y,z)
                 if(s1.data[_I(x,y,z)] != 0) {
-                
+                    count++;
+                    
                     found = false;
                     // within a cube neighborhood around (x,y,z)
                     for(int k=z-EPSILON;k<=z+EPSILON;k++) {
@@ -106,7 +113,7 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
                                             int xx = (int)floorf(x + d*vx + 0.5f);
                                             int yy = (int)floorf(y + d*vy + 0.5f);
                                             int zz = (int)floorf(z + d*vz + 0.5f);
-                                            if (_IN(xx,yy,zz) && xx!=i && yy!=j && zz!=k && s1.data[_I(xx,yy,zz)]) {
+                                            if (_IN(xx,yy,zz) && xx!=i && yy!=j && zz!=k && s1.data[_I(xx,yy,zz)] != 0) {
                                                 // there is another voxel in between
                                                 noBlock = false;
                                                 break;
@@ -125,7 +132,6 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
                                     if (noBlock && sameDir) {
                                     
                                         matched++;
-                                        //d_avg += len;
                                         found = true;
                                         break;
                                     }
@@ -142,8 +148,10 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
     }
 
 
-    //d_avg = d_avg/matched;
-    return float(matched) / (width * height * depth);
+    if (count == 0)
+        return -1.f;
+
+    return float(matched) / count;
 }
 
 
@@ -151,14 +159,16 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
 
 int main(int argc, char ** argv) {
 
+#ifdef _DEBUG
     cout << "Precision-Recall 3D" << endl;
-    
+#endif
     
     po::options_description desc("Allowed options");
     desc.add_options()
         ("help,h", "produce this help message")
-        ("file,f", po::value<string>(), "df3volume to compare (df3)")
-        ("reference,r", po::value<string>(), "reference df3volume (df3)")
+        ("file,f", po::value<string>(), "volume to compare (df3)")
+        ("reference,r", po::value<string>(), "reference volume (df3)")
+		("mode,m", po::value<string>(), "[naive,distmatch]")
     ;
     
     po::variables_map vm;
@@ -174,20 +184,35 @@ int main(int argc, char ** argv) {
     
     if (vm.count("file")) {
         file = vm["file"].as<string>();
+#ifdef _DEBUG
         cout << "File to compare = " << file << endl;
+#endif
     } else {
-        cout << "File to compare was not set !" << endl;
+        cerr << "File to compare was not set !" << endl;
     }
     
     string fileRef;
     
     if (vm.count("reference")) {
         fileRef = vm["reference"].as<string>();
+#ifdef _DEBUG
         cout << "Reference file = " << fileRef << endl;
+#endif
     } else {
-        cout << "Reference file not set !" << endl;
+        cerr << "Reference file not set !" << endl;
     }
     
+    string bench;
+
+    if (vm.count("mode")) {
+        bench = vm["mode"].as<string>();
+#ifdef _DEBUG
+        cout << "Benchmark mode =" << bench << endl;
+#endif
+    } else {
+        cerr << "Benchmark mode not set !" << endl;
+    }
+
     df3volume vol;
     if (!vol.load(file.c_str())) {
         return 1;
@@ -198,8 +223,13 @@ int main(int argc, char ** argv) {
         return 1;
     }
 
-    cout << "Naive PR=" << naive_benchmark(vol, volRef) << endl;
-    cout << "Distance PR=" << dist_match(vol, volRef) << endl;
+    if (bench.compare("naive") == 0) {
+        naive_benchmark(vol, volRef);
+    }
+
+    if (bench.compare("distmatch") == 0) {
+        cout << dist_match(vol, volRef) << " " << dist_match(volRef, vol) << endl;
+    }
     
     return 0;
 }
