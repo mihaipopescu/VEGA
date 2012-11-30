@@ -16,6 +16,8 @@ solution "VegaTools"
         files
         {
             "precall3d.cpp",
+            "df3volume.cpp",
+            "df3volume.h",
             boost_dir .. "/libs/program_options/src/**.cpp",
         }
         
@@ -35,6 +37,26 @@ solution "VegaTools"
         files
         {
             "raw2df3.cpp",
+            "df3volume.cpp",
+            "df3volume.h",
+        }
+        
+        flags { "FatalWarnings" }
+
+        
+        
+    project "thseg"
+        kind "ConsoleApp"
+        language "C++"
+        
+        targetdir "../."
+        objdir "../_obj"
+        
+        files
+        {
+            "thseg.cpp",
+            "df3volume.cpp",
+            "df3volume.h",
         }
         
         flags { "FatalWarnings" }
