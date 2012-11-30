@@ -66,38 +66,54 @@ void vega::data::volume_graph::mst_kruskal()
 
     VEGA_LOG_DEBUG("Applying Thresholded Kruskal MST... ");
 
-	size_t count = mst.size();
+    size_t count = mst.size();
     mst.resize(num_vertices(*myGraph) - 1);
 
-    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), count, 0.002f);
+    static float th = 0.002f;
+    static int seg = 1;
 
-	mySet.clear();
+    auto &&parent_set = vega::algorithm::mst::kruskal_threshold(*myGraph, mst.begin(), count, th);
+
+    mySet.clear();
     mySet.insert(mySet.begin(), parent_set.begin(), parent_set.end());
-	
+
     std::stringstream msg;
     msg << count << " edges added ! ";
     VEGA_LOG_DEBUG(msg.str().c_str());
     
+#ifdef APPLY_KRUSKAL_ITERATIVELY
     auto weight = get(edge_weight, *myGraph);
-
-	auto g = std::make_shared<Graph>(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
+    auto g = std::make_shared<Graph>(myLattice->myDepth * myLattice->myHeight * myLattice->myWidth);
 
     for(size_t i=0; i<count; ++i)
     {
         add_edge(mst[i].m_source, mst[i].m_target, get(weight, mst[i]), *g);
     }
 
-	myGraph = g;
+    myGraph = g;
+#endif
 
+    myVolume->reset();
     uint32 c = 0;
+
     for(auto it=myLattice->myLatticeCells.begin(); it != myLattice->myLatticeCells.end(); ++it)
     {
+        it->color.A = (vega::uint8)(255.f * parent_set[c++] / parent_set.size());
         myLattice->fill_volume_cell(*myVolume, *it);
     }
     
     myVolume->paint_voxels();
 
+    msg.str("");
+    msg << "data/volume/seg_" << seg << ".raw";
+
+    myVolume->save_as(msg.str().c_str());
+
     VEGA_LOG_DEBUG("Done !\n");
+
+    // increment threshold
+    th += 0.001f;
+    seg++;
 
     notify();
 }

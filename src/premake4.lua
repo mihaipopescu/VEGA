@@ -1,5 +1,5 @@
 solution "VEGA"
-    configurations { "Debug", "Release" }
+    configurations { "Debug", "Release", "Hybrid" }
     
     project "VisualVega"
         kind "ConsoleApp"
@@ -9,7 +9,7 @@ solution "VEGA"
         targetdir "../."
         
         objdir "../_obj"
-        debugdir "."
+        debugdir ".."
         
         files { "VisualVega/VisualVega.cpp", "vega/**.cpp", "vega/**.hpp", "vega/**.h" }
         
@@ -36,6 +36,10 @@ solution "VEGA"
         configuration { "Debug", "vs*" }
             linkoptions { "/NODEFAULTLIB:\"MSVCRT\"" }
             
+        configuration { "Hybrid" }
+            defines { "NDEBUG" }
+            flags { "Symbols" }
+            targetname "VisualVega_h"
  
         configuration "Release"
             defines { "NDEBUG" }

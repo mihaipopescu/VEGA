@@ -44,6 +44,11 @@ vega::data::volume::~volume(void)
 {
 }
 
+void vega::data::volume::reset()
+{
+    ZeroMemory(myVoxelArray.data(), myVoxelArray.size());
+}
+
 bool vega::data::volume::create()
 {
     ifstream input(myHeaderFilename, ios::in);
@@ -206,17 +211,28 @@ bool vega::data::volume::save_raw() const
     ofstream outfile;
     outfile.open(myRawFilename, ofstream::out | ios::binary);
 
+    std::stringstream msg;
+
     if( outfile.fail() )
+    {
+        msg << "Failed creating volume file " << myRawFilename << std::endl;
+        VEGA_LOG_ERROR(msg.str().c_str());
         return false;
+    }
     
     outfile.write((const char*)myVoxelArray.data(), get_size() * sizeof(voxel));
 
     if( outfile.fail() )
     {
+        msg << "Failed to write raw volume " << myRawFilename << endl;
+        VEGA_LOG_ERROR(msg.str().c_str());
         outfile.close();
         return false;
     }
     
+    msg << "Volume file " << myRawFilename << " was saved !" << std::endl;
+    VEGA_LOG_INFO(msg.str().c_str());
+
     outfile.close();
     return true;
 }
@@ -247,7 +263,7 @@ void vega::data::volume::compute_gradients(int nSampleRadius /*= 1*/)
     myGradients.clear();
     myGradients.reserve(get_size());
 
-    cout << "Computing gradients... ";
+    VEGA_LOG_INFO("Computing gradients... ");
 
     // Generates gradients central differences scheme
     for (uint16 z = 0; z < myDepth; z++)
@@ -269,7 +285,7 @@ void vega::data::volume::compute_gradients(int nSampleRadius /*= 1*/)
         }
     }
 
-    cout << "Filtering gradients... ";
+    VEGA_LOG_INFO("Filtering gradients... ");
 
     int index = 0;
     // Applies an NxNxN filter to the gradients.
@@ -284,7 +300,7 @@ void vega::data::volume::compute_gradients(int nSampleRadius /*= 1*/)
         }
     }
 
-    cout << "Done !" << endl;
+    VEGA_LOG_INFO("Done !\n");
 }
 
 vector3d vega::data::volume::filter_gradient(uint16 x, uint16 y, uint16 z, uint16 nFilterRadius) const

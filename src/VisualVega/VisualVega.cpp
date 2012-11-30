@@ -241,7 +241,7 @@ bool init_gl_objects()
         return false;
 
     vol->resample<vega::algorithm::resample::bilinear_filter>(64, 64, 64);
-    
+    vol->save_as("data/volume/bonsai_lowres.raw");
 
     std::shared_ptr<volume_graph> vg = std::make_shared<volume_graph>((std::shared_ptr<volume>&)(vol));
 

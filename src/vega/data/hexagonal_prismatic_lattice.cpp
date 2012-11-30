@@ -127,7 +127,11 @@ void vega::data::hexagonal_prismatic_lattice::fill_volume_cell( volume& v, const
         int zz = (int)vertex.z;
         if( xx >= 0 && yy >= 0 && zz >= 0 && xx < v.get_width() && yy < v.get_height() && zz < v.get_depth() )
         {
-            v.set_voxel(xx, yy, zz, (voxel)(node.color.A * 255.f));
+#ifndef USE_COLOR_MAP
+            v.set_voxel(xx, yy, zz, (voxel)(node.density * 255.f));
+#else
+            v.set_voxel(xx, yy, zz, (voxel)(node.color.A));
+#endif
         }
     }
 }
