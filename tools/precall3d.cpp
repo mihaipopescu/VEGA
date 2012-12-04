@@ -70,7 +70,7 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
     
     bool found = false;
 
-    // for each voxel
+    // for each voxel from s1
     for(int z=0; z<depth; z++) {
         for(int y=0; y<height; y++) {
             for(int x=0; x<width; x++) {
@@ -119,33 +119,67 @@ float dist_match(const df3volume &s1, const df3volume &s2) {
                                                 break;
                                             }
                                         }
-                                    }
                                     
-                                    bool sameDir = false;
-                                    // if we passed the first test...
-                                    if (noBlock) {
-                                        // now we check that (x,y,z) is the direction of the closest boundary from (i,j,k) in s2
+                                        bool sameDir = false;
+
+                                        // if we passed the first test...
+                                        if (noBlock) {
+
+                                            // now we check that (x,y,z) is the direction of the closest boundary from (i,j,k) in s2
+                                            float dmin = 1000;
+                                            int fx = i;
+                                            int fy = j;
+                                            int fz = k;
+
+                                            for(int zz=k-EPSILON;zz<=k+EPSILON;zz++) {
+                                                for(int yy=j-EPSILON;yy<=j+EPSILON;yy++) {
+                                                    for(int xx=i-EPSILON;xx<=i+EPSILON;xx++) {
+                                                        if(_IN(xx,yy,zz) && s1.data[_I(xx,yy,zz)] != 0) {
+                                                            float dist = sqrtf(float(xx - x)*(xx - x) + float(yy - y)*(yy - y) + float(zz - z)*(zz - z));
+                                                            if (dist < dmin) {
+                                                                fx = xx;
+                                                                fy = yy;
+                                                                fz = zz;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         
-                                        sameDir = true;
-                                    }
+                                            float ux = float(i-fx);
+                                            float uy = float(j-fy);
+                                            float uz = float(k-fz);
+
+                                            mag = sqrtf(ux*ux + uy*uy + uz*uz);
+                                            if( mag > 0.f ) {
+                                                ux /= mag;
+                                                uy /= mag;
+                                                uz /= mag;
+
+                                                if ((ux*vx)+(uy*vy)+(uz*vz) < -0.9f) {
+                                                    sameDir = true;
+                                                }
+                                            }
+                                        }
                                     
-                                    if (noBlock && sameDir) {
+                                        if (noBlock && sameDir) {
                                     
-                                        matched++;
-                                        found = true;
-                                        break;
+                                            matched++;
+                                            found = true;
+                                            break;
+                                        }
                                     }
-                                }
-                            }
+                                } // if boundary in s2
+                            } // for i
                             if (found) break;
-                        }
+                        } // for j
                         if (found) break;
-                    }
+                    } // for k
                     
-                }
-            }
-        }
-    }
+                } // if boundary in s1
+            } // for x
+        } // for y
+    } // for z
 
 
     if (count == 0)

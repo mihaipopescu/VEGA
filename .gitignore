@@ -6,6 +6,7 @@ CVS
 _lib
 _obj
 doc/html/*
+_test
 
 # executables
 *.exe
