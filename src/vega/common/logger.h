@@ -3,7 +3,6 @@
 
 #include "types.h"
 #include "singleton.h"
-#include <windows.h>
 
 #define VEGA_LOG(ch, msg) vega::utils::logger::get()->log(vega::utils::ch, (msg))
 

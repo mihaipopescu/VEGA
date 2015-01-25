@@ -1,6 +1,7 @@
 #include "logger.h"
 #include "profiler.h"
 
+#include <windows.h>
 #include <iostream>
 #include <iomanip>
 

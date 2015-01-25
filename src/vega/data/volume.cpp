@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <algorithm>
 #include <sstream>
+#include <windows.h>
 
 #include "volume.h"
 #include "../math/transfer_function.h"

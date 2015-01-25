@@ -10,6 +10,8 @@ namespace vega
     typedef unsigned __int64 uint64;
     typedef const char * lpcstr;
     typedef uint8 voxel;
+    typedef void* HANDLE;
+
 
     union r8g8b8a8
     {
